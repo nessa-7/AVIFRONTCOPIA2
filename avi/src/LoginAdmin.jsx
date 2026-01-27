@@ -18,6 +18,8 @@ function LoginAdmin() {
     const {guardarNombre} = useAuth(); 
     const {guardarRol} = useAuth();
 
+    const [showPassword, setShowPassword] = useState(false);
+
 
     async function Ingresar(event) {
         event.preventDefault();
@@ -92,7 +94,24 @@ function LoginAdmin() {
 
                     <div className="form-group">
                         <label htmlFor="password">Contraseña</label>
-                        <input type="password" id="password" name="password" required onChange={(event)=> setPass(event.target.value)}/>
+
+                        <div className="password-input">
+                            <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            name="password"
+                            required
+                            onChange={(event) => setPass(event.target.value)}
+                            />
+
+                            <span
+                            className="eye"
+                            onClick={() => setShowPassword(!showPassword)}
+                            >
+                            {showPassword ? "🙈" : "👁️"}
+                            </span>
+                        </div>
+
                         <span className="error-message" id="password-error"></span>
                     </div>
 

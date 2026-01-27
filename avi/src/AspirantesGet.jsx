@@ -19,14 +19,7 @@ function AspirantesGet() {
     obtenerAspirantes();
   }, []);
 
-  const toggleBloqueo = async (id, estadoActual) => {
-    await fetch(`${API}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bloqueado: !estadoActual })
-    });
-    obtenerAspirantes();
-  };
+
 
   const eliminarAspirante = async (id) => {
     if (!confirm("¿Seguro que deseas eliminar este aspirante?")) return;
@@ -50,7 +43,6 @@ function AspirantesGet() {
             <th>Email</th>
             <th>Teléfono</th>
             <th>Ver Reportes</th>
-            <th>Bloqueado/desbloqueado</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
           </tr>
@@ -70,15 +62,6 @@ function AspirantesGet() {
                   onClick={() => verReportes(a.idASPIRANTE)}
                 >
                   Ver Reportes
-                </button>
-              </td>
-
-              <td>
-                <button
-                  className={a.bloqueado ? "btn-desbloquear" : "btn-bloquear"}
-                  onClick={() => toggleBloqueo(a.idASPIRANTE, a.bloqueado)}
-                >
-                  {a.bloqueado ? "Desbloquear" : "Bloquear"}
                 </button>
               </td>
 
