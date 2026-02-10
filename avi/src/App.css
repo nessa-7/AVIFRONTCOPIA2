@@ -120,20 +120,6 @@ nav a:hover {
   border: 2px solid #71277a;
 }
 
-.btn-logout {
-  background-color: #ca0e0e;
-  color: #ffffff;
-  border: 2px solid #ca0e0e;
-  margin-left: 20rem;
-}
-
-.btn-logout:hover {
-  background-color: #a81313;
-  color: white;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  border: 2px solid #ca0e0e;
-}
 
 
 
@@ -830,74 +816,6 @@ nav a:hover {
 
 
 
-/*Seleccion*/
-
-  
- .cards-login {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, 550px);
-      text-align: center;
-      justify-content: center;
-      gap: 100px;
-      margin-bottom: 60px;
-      margin: 50px;
-      margin-top: 100px;
-      cursor: pointer;
-    }
-
-    .cardlogin {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.cardlogin:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-}
-
-.h2asp{
-  color: #40d33b;
-      
-}
-
-
-.h2ad {
-      color: #9e4dc4;
-      margin-bottom: 12px;
-    }
-
-
-.card-text {
-  font-size: 18px;
-  color: #555;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  line-height: 1.4;
-   text-align: justify;
-}
-
-.card-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin-top: 10px;
-}
-
-.card-img2 {
-  width: 70%;
-  height: auto;
-  border-radius: 12px;
-  margin-top: 10px;
-}
-
-
-
-
-
 
 
 
@@ -1204,4 +1122,12 @@ html, body {
     width: 100%;
     font-size: 16px;
   }
+}
+
+
+
+
+.admin-page {
+  margin-left: 240px;
+  padding: 20px;
 }

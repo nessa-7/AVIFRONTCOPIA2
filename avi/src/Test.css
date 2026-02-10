@@ -1,0 +1,103 @@
+/* General Styles for TestRIASEC */
+.test-riasec-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.test-riasec-header {
+  color: #43b6b6;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  margin-top: -3rem;
+}
+
+.test-riasec-question-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  margin: 30px;
+}
+
+.test-riasec-question {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Button Styles */
+.test-riasec-button {
+  background-color: #6da7e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  margin: 10px 0px ;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.test-riasec-button:hover {
+  background-color: #357ab7;
+  transform: translateY(-2px);
+}
+
+.test-riasec-button:active {
+  background-color: #2c649a;
+  transform: translateY(1px);
+}
+
+/* Small Buttons */
+.test-riasec-button-small {
+  width: auto;
+  margin: 10px 5px;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  background-color: #50e3c2;
+}
+
+.test-riasec-button-small:hover {
+  background-color: #44bfa5;
+}
+
+.test-riasec-button-small:active {
+  background-color: #399b8a;
+}
+
+/* Accessibility */
+.test-riasec-button:focus {
+  outline: 2px solid #357ab7;
+  outline-offset: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .test-riasec-header {
+    font-size: 2rem;
+  }
+
+  .test-riasec-question-container {
+    padding: 1rem;
+    width: 90%;
+  }
+
+  .test-riasec-button {
+    padding: 10px 20px;
+  }
+}

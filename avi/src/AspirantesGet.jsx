@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
+import "./Aspirante.css";
 
 function AspirantesGet() {
-
-   const VITE_API_GETASPIRANTES = import.meta.env.VITE_API_GETASPIRANTES
-  
-  const API = VITE_API_GETASPIRANTES;
+  const API = import.meta.env.VITE_API_GETASPIRANTES;
 
   const [aspirantes, setAspirantes] = useState([]);
-  
 
   const obtenerAspirantes = async () => {
     const res = await fetch(API);
@@ -18,8 +15,6 @@ function AspirantesGet() {
   useEffect(() => {
     obtenerAspirantes();
   }, []);
-
-
 
   const eliminarAspirante = async (id) => {
     if (!confirm("¿Seguro que deseas eliminar este aspirante?")) return;
@@ -32,55 +27,58 @@ function AspirantesGet() {
   };
 
   return (
-    <div className="tabla-container">
-      <h2 className="tituloasp">Lista de Aspirantes</h2>
+    <div className="asp-container">
+      <div className="asp-header">
+        <h2>Aspirantes</h2>
+        <button className="btn-nuevo">+ Nuevo Aspirante</button>
+      </div>
 
-      <table className="tabla-aspirantes">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Nombre </th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Ver Reportes</th>
-            <th>Actualizar</th>
-            <th>Eliminar</th>
-          </tr>
-        </thead>
+      <input
+        className="asp-search"
+        placeholder="Buscar por nombre o email"
+      />
 
-        <tbody>
-          {aspirantes.map((a) => (
-            <tr key={a.idASPIRANTE}>
-              <td>{a.idASPIRANTE}</td>
-              <td>{a.nombre_completo}</td>
-              <td>{a.email}</td>
-              <td>{a.telefono}</td>
+      <div className="asp-list">
+        {aspirantes.map((a) => (
+          <div key={a.idASPIRANTE} className="asp-card">
+            <div className="asp-avatar">
+              {a.nombre_completo.charAt(0)}
+            </div>
 
-              <td>
-                <button
-                  className="btn-reportes"
-                  onClick={() => verReportes(a.idASPIRANTE)}
-                >
-                  Ver Reportes
-                </button>
-              </td>
+            <div className="asp-info">
+              <h3>{a.nombre_completo}</h3>
+              <span className="asp-puesto">Aspirante</span>
 
-              <td>
-                <button className="btn-modificar" onClick={() => actualizarAspirante(a.idASPIRANTE)}>
-                  modificar
-                </button>
-              </td>
+              <p>📧 {a.email}</p>
+              <p>📞 {a.telefono}</p>
 
-              <td>
-                <button className="btn-eliminar" onClick={() => eliminarAspirante(a.idASPIRANTE)}>
-                  eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <div className="asp-tags">
+                <span className="tag pendiente">Ver reportes</span>
+              </div>
+            </div>
+
+            <div className="asp-actions">
+              <button
+                className="icon editar"
+                onClick={() => actualizarAspirante(a.idASPIRANTE)}
+              >
+                ✏️
+              </button>
+
+              <button className="icon bloquear">🔒</button>
+
+              <button
+                className="icon eliminar"
+                onClick={() => eliminarAspirante(a.idASPIRANTE)}
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
-export default AspirantesGet
+
+export default AspirantesGet;

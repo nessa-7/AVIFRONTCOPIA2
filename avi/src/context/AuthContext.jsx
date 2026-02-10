@@ -10,6 +10,7 @@ export const AuthPro = ({children})=>{
     const [token, setToken] = useState(null);
     const [nombre, setNombre] = useState("");
     const [rol, setRol] = useState(null);
+    const [email, setEmail] = useState("");
 
 
     const guardarToken=(tk /*recibir token login*/)=>{
@@ -24,6 +25,10 @@ export const AuthPro = ({children})=>{
         setRol(rol)
     }
 
+    const guardarEmail = (correo) => {
+        setEmail(correo);
+    };
+
     const logout=()=>{
         setToken(null);
         setNombre("");
@@ -31,7 +36,17 @@ export const AuthPro = ({children})=>{
     }
 
     return(
-        <AuthContext.Provider value={{token,guardarToken, nombre, guardarNombre, rol, guardarRol, logout}}>
+        <AuthContext.Provider value={{
+            token,
+            guardarToken,
+            nombre,
+            guardarNombre,
+            email,
+            guardarEmail,
+            rol,
+            guardarRol,
+            logout
+        }}>
             {children}
         </AuthContext.Provider>
     )

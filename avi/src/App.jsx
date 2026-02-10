@@ -4,7 +4,6 @@ import {AuthPro, useAuth } from "./context/AuthContext";
 
 import './App.css'
 import BienvenidaTest from "./BienvenidaTest";
-import Test from "./Test";
 import Registro from "./Registro";
 import Resultado from "./Resultado";
 import Programas from "./Programas";
@@ -18,12 +17,15 @@ import LoginAdmin from "./LoginAdmin";
 import Seleccion from "./Seleccion";
 import Navbar from "./Navbar";
 import AdminGet from "./AdminGet";
+import EditarPerfil from "./EditarPerfil";
+import TestRIASEC from "./TestRIASEC";
+
 
 
 function App() {
 
   return (
-      <div>
+      <div >
       <AuthPro>
         <BrowserRouter>
           
@@ -31,7 +33,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Inicio></Inicio>}></Route>
               <Route path="/bienvenidatest" element={<BienvenidaTest></BienvenidaTest>}></Route>
-              <Route path="/test" element={<Test></Test>}></Route>
               <Route path="/registro" element={<Registro></Registro>}></Route>
               <Route path="/resultado" element={<Resultado></Resultado>}></Route>
               <Route path="/programas" element={<Programas></Programas>}></Route>
@@ -43,6 +44,8 @@ function App() {
               <Route path="/loginadmin" element={<LoginAdmin></LoginAdmin>}></Route>
               <Route path="/seleccion" element={<Seleccion></Seleccion>}></Route>
               <Route path="/listaradmins" element={<AdminGet></AdminGet>}></Route>
+              <Route path="/editar-perfil" element={<EditarPerfil></EditarPerfil>}></Route>
+              <Route path="/preguntastest" element={<TestRIASEC></TestRIASEC>}></Route>
             </Routes>
           
         </BrowserRouter>

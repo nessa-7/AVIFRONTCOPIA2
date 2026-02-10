@@ -8,6 +8,8 @@ function Registro() {
   const [nombre_completo, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [barrio, setBarrio] = useState("")
+  const [direccion, setDireccion] = useState("")
   const [password, setPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -62,6 +64,8 @@ function Registro() {
         nombre_completo,
         email,
         telefono,
+        barrio,
+        direccion,
         password,
       }),
     });
@@ -107,6 +111,16 @@ function Registro() {
           <div className="form-group">
             <label>Teléfono *</label>
             <input type="tel" required onChange={(e) => setTelefono(e.target.value)} />
+          </div>
+
+          <div className="form-group">
+            <label>Barrio *</label>
+            <input type="text" required onChange={(e) => setBarrio(e.target.value)} />
+          </div>
+
+          <div className="form-group">
+            <label>Direccion *</label>
+            <input type="text" required onChange={(e) => setDireccion(e.target.value)} />
           </div>
 
           {/* 🔐 CONTRASEÑA */}

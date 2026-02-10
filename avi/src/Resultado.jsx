@@ -1,6 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const Resultado = () => {
-  
+
+  const navigate = useNavigate()
+
+  function verprogramas() {
+    navigate("/programas");
+  }
+
+  function irtest() {
+    navigate("/bienvenidatest");
+  }
+
   return (
     <>
       {/* Contenido principal */}
@@ -26,12 +40,10 @@ const Resultado = () => {
         </section>
 
         <section className="acciones">
-          <a href="/programas" className="nav-link loader-link">
-            <button className="nav-link register-btn">Ver más programas</button>
-          </a>
-          <a href="/bienvenidatest" className="nav-link loader-link">
-            <button>Volver a intentar</button>
-          </a>
+            <button type="button" className="nav-link register-btn" onClick={verprogramas}>Ver más programas</button>
+          
+            <button type="button" onClick={irtest}>Volver a intentar</button>
+          
         </section>
       </main>
     </>

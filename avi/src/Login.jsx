@@ -1,134 +1,149 @@
-import Swal from 'sweetalert2'
-
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import { useAuth } from "./context/AuthContext";
+import "./Login.css";
 
 function Login() {
+  const LOGINASPIRANTE_API = import.meta.env.VITE_API_LOGINASPIRANTE;
+  const LOGINADMINS_API = import.meta.env.VITE_API_LOGINADMINS;
 
-     const LOGINASPIRANTE_API = import.meta.env.VITE_API_LOGINASPIRANTE
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [rolSeleccionado, setRolSeleccionado] = useState("aspirante");
+  const [id, setId] = useState("");
+  const [pass, setPass] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-    const [id, setId] = useState("");
-    const [pass, setPass] = useState("");
+  const { guardarToken, guardarNombre, guardarRol, guardarEmail } = useAuth();
 
-    const {guardarToken} = useAuth();
-    const {guardarNombre} = useAuth(); 
-    const {guardarRol} = useAuth();
+  async function Ingresar(e) {
+    e.preventDefault();
 
-    const [showPassword, setShowPassword] = useState(false);
+    const endpoint =
+      rolSeleccionado === "aspirante"
+        ? LOGINASPIRANTE_API
+        : LOGINADMINS_API;
 
+    const respuesta = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: parseInt(id),
+        pass,
+      }),
+    });
 
+    const data = await respuesta.json();
 
-    async function Ingresar(event) {
-        event.preventDefault();
-
-        const idEntero = parseInt(id)
-
-        const respuesta = await fetch(`${LOGINASPIRANTE_API}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ id: idEntero, pass }),
-        });
-
-        const data = await respuesta.json();
-        console.log(data)
-
-        
-        
-        if (data.mensaje==="Credenciales incorrectas") {
-            Swal.fire({
-                icon: "error",
-                title: "Datos incorrectos",
-                confirmButtonColor: "#39a900",
-            })
-            return
-        }
-
-        if (!respuesta.ok) {
-            Swal.fire({
-                icon: "error",
-                title: "Error al iniciar sesion",
-                confirmButtonColor: "#39a900",
-            })
-            return
-        }
-
-            guardarToken(data.token);
-            guardarNombre(data.usuario.nombre_completo);
-            guardarRol(data.rol)
-
-            console.log(data.usuario.nombre_completo);
-
-            console.log(data.rol)
-
-        if (respuesta.ok) {
-
-            Swal.fire({
-                icon: "success",
-                title: "¡Bienvenido a AVI!",
-                confirmButtonColor: "#39a900",
-            }).then(() => {
-                    navigate("/BienvenidaTest")
-            })
-
-        } 
-
+    if (!respuesta.ok || data.mensaje === "Credenciales incorrectas") {
+      Swal.fire({
+        icon: "error",
+        title: "Datos incorrectos",
+        confirmButtonColor: "#7b2cbf",
+      });
+      return;
     }
 
+    guardarToken(data.token);
+    guardarRol(data.rol);
+    
 
-    return (
-        <section className="auth-section">
-            <div className="auth-container">
-                <div className="auth-header">
-                    <h1>Iniciar Sesión</h1>
-                    <p>Accede a tu cuenta para continuar con el test vocacional</p>
-                </div>
+    if (rolSeleccionado === "aspirante") {
+      guardarNombre(data.usuario.nombre_completo);
+      guardarEmail(data.usuario.email);
 
-                <form id="loginForm" className="auth-form" onSubmit={Ingresar}>
-                    <div className="form-group">
-                        <label htmlFor="identificacion">Número de Identificación</label>
-                        <input type="text" id="identificacion" name="identificacion" required onChange={(event)=> setId(event.target.value)}/>
-                        <span className="error-message" id="identificacion-error"></span>
-                    </div>
+    } else {
+      guardarNombre(data.nombre);
+    }
 
-                    <div className="form-group">
-                        <label htmlFor="password">Contraseña</label>
+    Swal.fire({
+      icon: "success",
+      title: "¡Bienvenido a AVI!",
+      confirmButtonColor: "#7b2cbf",
+    }).then(() => {
+      navigate(
+        rolSeleccionado === "aspirante"
+          ? "/BienvenidaTest"
+          : "/Estadisticas"
+      );
+    });
+  }
 
-                        <div className="password-input">
-                            <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            name="password"
-                            required
-                            onChange={(event) => setPass(event.target.value)}
-                            />
+  return (
+    <section className="login-page">
+        
+      <div className="login-card">
 
-                            <span
-                            className="eye"
-                            onClick={() => setShowPassword(!showPassword)}
-                            >
-                            {showPassword ? "🙈" : "👁️"}
-                            </span>
-                        </div>
+        {/* Selector de rol */}
+        <div className="role-switch">
+          <button
+            className={rolSeleccionado === "aspirante" ? "active" : ""}
+            onClick={() => setRolSeleccionado("aspirante")}
+            type="button"
+          >
+            Aspirante
+          </button>
+          <button
+            className={rolSeleccionado === "admin" ? "active" : ""}
+            onClick={() => setRolSeleccionado("admin")}
+            type="button"
+          >
+            Administrador
+          </button>
+          
+        </div>
 
-                        <span className="error-message" id="password-error"></span>
-                    </div>
-
-
-                    <button type="submit" className="auth-button" >Ingresar</button>
-                </form>
-
-                <div className="auth-footer">
-                    <p>¿No tienes cuenta? <a href="/registro" className="loader-link">Regístrate aquí</a></p>
-                </div>
+        <div className="login-description">
+            {rolSeleccionado === "aspirante" ? (
+                <p>
+                Ingresa como <strong>aspirante</strong> para conocer las recomendaciones
+                que nuestro test vocacional tiene para ti.
+                </p>
+            ) : (
+                <p>
+                Ingresa como <strong>administrador</strong> para visualizar estadísticas,
+                gestionar usuarios y administrar la plataforma.
+                </p>
+            )}
             </div>
-        </section>
-    );
+
+
+        <form onSubmit={Ingresar} className="login-form">
+          <input
+            type="text"
+            placeholder="Número de identificación"
+            required
+            onChange={(e) => setId(e.target.value)}
+          />
+
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              required
+              onChange={(e) => setPass(e.target.value)}
+            />
+            <span onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
+
+          <button type="submit" className="login-btn">
+            Iniciar Sesión
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <a href="#">Olvidé mi contraseña</a>
+          {rolSeleccionado === "aspirante" && (
+
+            <a href="/registro">Crear cuenta</a>
+          )}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default Login;

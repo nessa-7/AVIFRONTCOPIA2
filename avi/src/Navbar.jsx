@@ -2,16 +2,22 @@ import { useAuth } from "./context/AuthContext";
 import NavAdmin from "./NavAdmin"
 import Nav from "./Nav"
 import {Link} from 'react-router-dom'
+import Sidebar from "./Sidebar";
+import AdminLayout from "./AdminLayout";
 
 
-function Navbar(){
+function Navbar({children}){
     
     const {rol} = useAuth();
 
     console.log(rol)
 
         if(rol === "admin"){
-            return <NavAdmin></NavAdmin>
+            return (
+            <AdminLayout>
+                {children}
+            </AdminLayout>
+            )
         } 
         
         if (rol === "aspirante"){
@@ -28,7 +34,7 @@ function Navbar(){
 
 
                 <div className="nav-right">
-                    <Link to="/seleccion" className='btn-nav btn-login'>Login</Link>
+                    <Link to="/login" className='btn-nav btn-login'>Login</Link>
                     <Link to="/registro" className='btn-nav btn-register'>Registro</Link>
                 </div>
             </nav>

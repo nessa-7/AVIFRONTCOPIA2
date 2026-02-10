@@ -30,45 +30,58 @@ function AdminGet() {
   };
 
   return (
-    <div className="tabla-container">
-      <h2 className="tituloasp">Lista de Administradores</h2>
+  
 
-      <table className="tabla-aspirantes">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Nombre </th>
-            <th>Email</th>
-            <th>Actualizar</th>
-            <th>Eliminar</th>
-          </tr>
-        </thead>
+<div className="asp-container">
+      <div className="asp-header">
+        <h2>Administradores</h2>
+        <button className="btn-nuevo">+ Nuevo Admin</button>
+      </div>
 
-        <tbody>
-          {admins.map((a) => (
-            <tr key={a.idADMIN}>
-              <td>{a.idADMIN}</td>
-              <td>{a.nombre}</td>
-              <td>{a.email}</td>
+      <input
+        className="asp-search"
+        placeholder="Buscar por nombre o email"
+      />
 
-        
+      <div className="asp-list">
+        {admins.map((a) => (
+          <div key={a.idADMIN} className="asp-card">
+            <div className="asp-avatar">
+              {a.nombre.charAt(0)}
+            </div>
 
-              <td>
-                <button className="btn-modificar" onClick={() => actualizarAdmin(a.idADMIN)}>
-                  modificar
-                </button>
-              </td>
+            <div className="asp-info">
+              <h3>{a.nom}</h3>
+              <span className="asp-puesto">Administrador</span>
 
-              <td>
-                <button className="btn-eliminar" onClick={() => eliminarAdmin(a.idADMIN)}>
-                  eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <p>🌟 {a.nombre}</p>
+              <p>📧 {a.email}</p>
+
+              
+            </div>
+
+            <div className="asp-actions">
+              <button
+                className="icon editar"
+                onClick={() => actualizarAdmin(a.idADMIN)}
+              >
+                ✏️
+              </button>
+
+              <button className="icon bloquear">🔒</button>
+
+              <button
+                className="icon eliminar"
+                onClick={() => eliminarAdmin(a.idADMIN)}
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+
   );
 }
 export default AdminGet
