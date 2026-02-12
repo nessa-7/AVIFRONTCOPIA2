@@ -1,0 +1,137 @@
+/* Contenedor principal */
+.pretest-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Título del formulario */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+/* Formulario principal */
+.pretest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Cuadro de cada pregunta */
+.pretest-question {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.pretest-question:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilo para las preguntas */
+.pretest-question p {
+  font-size: 1.2rem;
+  color: #000000;
+  margin-bottom: 1rem;
+}
+
+/* Estilo para el rango de respuesta */
+input[type="range"] {
+  width: 100%;
+  margin: 0.5rem 0;
+  -webkit-appearance: none;
+  height: 8px;
+  background: linear-gradient(to right, #4caf50 0%, #4caf50 50%, #ddd 50%, #ddd 100%);
+  border-radius: 10px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d5b3ff;
+  cursor: pointer;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+/* Estilo para los valores mostrados */
+span {
+  font-size: 1rem;
+  color: #4caf50;
+}
+
+/* Botón de envío */
+button {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:focus {
+  outline: none;
+}
+
+
+/* Contenedor de las etiquetas del slider */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #1a1a70;
+  width: 100%;
+}
+
+/* Resaltar la etiqueta activa */
+.slider-labels span.active {
+  font-weight: bold;
+  color: #4caf50;
+}
+
+/* Espaciado entre las etiquetas */
+.slider-labels span {
+  margin: 0 5px; /* Ajusta el valor aquí para el espacio entre las etiquetas */
+  transition: color 0.2s ease; /* Para suavizar la transición de colores */
+}
+
+/* Establecer el color para cada etiqueta según el valor del slider */
+.slider-labels span:nth-child(1) {
+  color: #ff0d00; 
+}
+.slider-labels span:nth-child(2) {
+  color: #fb9b00;
+}
+.slider-labels span:nth-child(3) {
+  color: rgb(255, 221, 0); 
+}
+.slider-labels span:nth-child(4) {
+  color: #94e90c; 
+}
+.slider-labels span:nth-child(5) {
+  color: #3de342;
+}

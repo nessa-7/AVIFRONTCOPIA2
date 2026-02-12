@@ -102,18 +102,28 @@
 
 .asp-actions {
   display: flex;
-  gap: 10px;
+  gap: 30px;
+  margin-right: 2px;
+}
+
+.ad-actions {
+  display: flex;
+  gap: 30px;
+  align-items: end;
 }
 
 .icon {
+width: auto;
+font-size: 1rem;
   border: none;
   background: #f4f4f4;
   padding: 10px;
   border-radius: 12px;
   cursor: pointer;
+  color: #555;
 }
 
-.icon.eliminar {
+.icon.editar {
   background: #ffe4e4;
 }
 

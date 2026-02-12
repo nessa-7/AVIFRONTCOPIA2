@@ -67,12 +67,7 @@ function AspirantesGet() {
 
               <button className="icon bloquear">🔒</button>
 
-              <button
-                className="icon eliminar"
-                onClick={() => eliminarAspirante(a.idASPIRANTE)}
-              >
-                🗑️
-              </button>
+              
             </div>
           </div>
         ))}

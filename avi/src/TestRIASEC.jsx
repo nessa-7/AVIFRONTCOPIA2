@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
 import "./Test.css"
 
-export default function TestRIASEC() {
+export default function TestRIASEC({ pretestScores }) {
+
   const [sessionId] = useState(() => crypto.randomUUID());
-  const [scores, setScores] = useState({ R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 });
+
+  const [scores, setScores] = useState(
+    pretestScores || { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
+  );
+
+
   const [question, setQuestion] = useState(null);
   const [count, setCount] = useState(0);
   const API = import.meta.env.VITE_API_OPENAI;
+
+
+  useEffect(() => {
+    if (pretestScores) {
+      setScores(pretestScores);
+    }
+  }, [pretestScores]);
+
+
 
   const getQuestion = async () => {
     const res = await fetch(`${API}/next-question`, {
@@ -34,11 +49,18 @@ export default function TestRIASEC() {
     setScores(data.updated_scores);
     setCount(count + 1);
 
-    if (count < 9) {
-      getQuestion();
-    } else {
-      getResult(data.updated_scores);
-    }
+    setCount(prev => {
+      const newCount = prev + 1;
+
+      if (newCount < 10) {
+        getQuestion();
+      } else {
+        getResult(data.updated_scores);
+      }
+
+      return newCount;
+    });
+
   };
 
   const getResult = async (finalScores) => {

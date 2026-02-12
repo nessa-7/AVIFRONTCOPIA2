@@ -46,7 +46,6 @@ const Sidebar = () => {
       return (
         <div>
           <button onClick={veraspirantes}>Ver aspirantes</button>
-          <button>Reportes</button>
         </div>
       );
     }

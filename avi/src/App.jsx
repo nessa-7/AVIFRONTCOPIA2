@@ -19,6 +19,8 @@ import Navbar from "./Navbar";
 import AdminGet from "./AdminGet";
 import EditarPerfil from "./EditarPerfil";
 import TestRIASEC from "./TestRIASEC";
+import Pretest from "./PreTest";
+import EditarAdmin from "./EditarAdmin";
 
 
 
@@ -46,6 +48,8 @@ function App() {
               <Route path="/listaradmins" element={<AdminGet></AdminGet>}></Route>
               <Route path="/editar-perfil" element={<EditarPerfil></EditarPerfil>}></Route>
               <Route path="/preguntastest" element={<TestRIASEC></TestRIASEC>}></Route>
+              <Route path="/pretest" element={<Pretest></Pretest>}></Route>
+              <Route path="/editar/:id" element={<EditarAdmin></EditarAdmin>}></Route>
             </Routes>
           
         </BrowserRouter>

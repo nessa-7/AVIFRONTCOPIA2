@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Aspirante.css"
 
 function AdminGet() {
 
@@ -7,6 +9,8 @@ function AdminGet() {
   const API = VITE_API_GETADMINS;
 
   const [admins, setAdmins] = useState([]);
+
+  const navigate = useNavigate()
 
   const obtenerAdmins = async () => {
     const res = await fetch(API);
@@ -19,23 +23,25 @@ function AdminGet() {
   }, []);
 
 
-  const eliminarAdmin = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este administrador?")) return;
-    await fetch(`${API}/${id}`, { method: "DELETE" });
+  const editarAdmin = (id) => {
+    navigate(`/editar/${id}`);
+  };
+
+  const cambiarEstado = async (id, activo) => {
+    await fetch(`${API}/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ activo: !activo }),
+    });
     obtenerAdmins();
   };
 
-  const actualizarAdmin = (id) => {
-    window.location.href = `/editar/${id}`;
-  };
-
   return (
-  
 
-<div className="asp-container">
+      <div className="asp-container">
       <div className="asp-header">
         <h2>Administradores</h2>
-        <button className="btn-nuevo">+ Nuevo Admin</button>
+        <button className="btn-nuevo">+ Nuevo Administrador</button>
       </div>
 
       <input
@@ -44,44 +50,42 @@ function AdminGet() {
       />
 
       <div className="asp-list">
-        {admins.map((a) => (
-          <div key={a.idADMIN} className="asp-card">
-            <div className="asp-avatar">
-              {a.nombre.charAt(0)}
+
+      {admins.map((admin) => (
+        <div key={admin.idADMIN} className="asp-card">
+
+          <div className="asp-avatar">
+              {admin.nombre.charAt(0)}
             </div>
 
-            <div className="asp-info">
-              <h3>{a.nom}</h3>
-              <span className="asp-puesto">Administrador</span>
+          <div className="asp-info">
+          <h3>{admin.nombre}</h3>
+          <p>📧 {admin.email}</p>
+          <p>
+            {admin.activo ? "✅ Habilitado" : "❌ Deshabilitado"}
+          </p>
 
-              <p>🌟 {a.nombre}</p>
-              <p>📧 {a.email}</p>
-
-              
-            </div>
-
-            <div className="asp-actions">
-              <button
-                className="icon editar"
-                onClick={() => actualizarAdmin(a.idADMIN)}
-              >
-                ✏️
-              </button>
-
-              <button className="icon bloquear">🔒</button>
-
-              <button
-                className="icon eliminar"
-                onClick={() => eliminarAdmin(a.idADMIN)}
-              >
-                🗑️
-              </button>
-            </div>
           </div>
-        ))}
+
+          <div className="ad-actions">
+          
+            <button onClick={() => editarAdmin(admin.idADMIN)}
+              className="icon editar">
+              ✏️ Editar
+            </button>
+            
+            <button onClick={() => cambiarEstado(admin.idADMIN, admin.activo)}
+              className="icon bloquear">
+              {admin.activo ? "🔒 Deshabilitar" : "🔓 Habilitar"}
+            </button>
+          </div>
+        </div>
+      ))}
+            
       </div>
     </div>
-
+      
   );
 }
-export default AdminGet
+
+export default AdminGet;

@@ -14,7 +14,7 @@ function BienvenidaTest() {
 
 
   function iniciartest() {
-    navigate("/preguntastest");
+    navigate("/pretest");
   }
 
   useEffect(() => {
