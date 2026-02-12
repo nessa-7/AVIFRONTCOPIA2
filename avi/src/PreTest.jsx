@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Pretest.css";
+import "./PreTest.css";
 import { useNavigate } from "react-router-dom";
 import TestRIASEC from "./TestRIASEC";
 
