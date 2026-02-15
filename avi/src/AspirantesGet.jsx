@@ -60,6 +60,7 @@ function AspiranteGet() {
 
           <div className="asp-info">
           <h3>{aspirante.nombre_completo}</h3>
+          <p>🗓️ {aspirante.edad}</p>
           <p>📧 {aspirante.email}</p>
           <p>📞 {aspirante.telefono}</p>
           <p>🏡 {aspirante.barrio}, {aspirante.direccion}</p>

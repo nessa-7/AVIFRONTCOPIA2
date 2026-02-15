@@ -10,7 +10,7 @@ function ProgramasAdmin() {
     nombre: "",
     tipo: "Técnico",
     descripcion: "",
-    centroId: ""
+    centroId: 1
   });
 
   const [centros, setCentros] = useState([]);

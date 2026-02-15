@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
+import "./Registro.css"
 
 function Registro() {
   const REGISTROASPIRANTES_API = import.meta.env.VITE_API_REGISTROASPIRANTES;
@@ -7,14 +8,20 @@ function Registro() {
   const [idASPIRANTE, setId] = useState("");
   const [nombre_completo, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [telefono, setTelefono] = useState("");
   const [barrio, setBarrio] = useState("")
   const [direccion, setDireccion] = useState("")
+  const [ocupacion, setOcupacion] = useState("");
+  const [institucion, setInstitucion] = useState("");
   const [password, setPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const hoy = new Date().toISOString().split("T")[0];
+
 
   // 🔍 Validaciones en tiempo real
   const validations = {
@@ -62,12 +69,19 @@ function Registro() {
       body: JSON.stringify({
         idASPIRANTE: parseInt(idASPIRANTE),
         nombre_completo,
+        fechaNacimiento,
         email,
         telefono,
         barrio,
         direccion,
+        ocupacion,
+        institucion:
+          ocupacion === "Colegio" || ocupacion === "Universidad"
+            ? institucion
+            : null,
         password,
       }),
+
     });
 
     if (respuesta.ok) {
@@ -109,6 +123,19 @@ function Registro() {
           </div>
 
           <div className="form-group">
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input 
+              type="date" max={hoy}
+              id="fechaNacimiento" 
+              name="fechaNacimiento" 
+              required
+              value={fechaNacimiento}
+              onChange={(e) => setFechaNacimiento(e.target.value)}
+            />
+          </div>
+
+
+          <div className="form-group">
             <label>Teléfono *</label>
             <input type="tel" required onChange={(e) => setTelefono(e.target.value)} />
           </div>
@@ -122,6 +149,68 @@ function Registro() {
             <label>Direccion *</label>
             <input type="text" required onChange={(e) => setDireccion(e.target.value)} />
           </div>
+
+          <div className="form-group">
+            <label>¿A qué te dedicas actualmente? *</label>
+
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="ocupacion"
+                  value="Colegio"
+                  onChange={(e) => setOcupacion(e.target.value)}
+                  required
+                />
+                Estudio en colegio
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="ocupacion"
+                  value="Universidad"
+                  onChange={(e) => setOcupacion(e.target.value)}
+                />
+                Estudio en universidad
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="ocupacion"
+                  value="Trabajo"
+                  onChange={(e) => setOcupacion(e.target.value)}
+                />
+                Trabajo
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="ocupacion"
+                  value="Ninguno"
+                  onChange={(e) => setOcupacion(e.target.value)}
+                />
+                No estudio ni trabajo
+              </label>
+            </div>
+          </div>
+
+          {/* Mostrar institución solo si estudia */}
+          {(ocupacion === "Colegio" || ocupacion === "Universidad") && (
+            <div className="form-group">
+              <label>Nombre de la institución *</label>
+              <input
+                type="text"
+                required
+                value={institucion}
+                onChange={(e) => setInstitucion(e.target.value)}
+                placeholder="Ej: Colegio XYZ / Universidad ABC"
+              />
+            </div>
+          )}
+
 
           {/* 🔐 CONTRASEÑA */}
           <div className="form-group">
