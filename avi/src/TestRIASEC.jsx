@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import "./Test.css"
+import { useNavigate } from "react-router-dom";
+import "./Test.css";
 
 export default function TestRIASEC({ pretestScores }) {
+
+  const navigate = useNavigate();
 
   const [sessionId] = useState(() => crypto.randomUUID());
 
@@ -9,11 +12,10 @@ export default function TestRIASEC({ pretestScores }) {
     pretestScores || { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
   );
 
-
   const [question, setQuestion] = useState(null);
   const [count, setCount] = useState(0);
-  const API = import.meta.env.VITE_API_OPENAI;
 
+  const API = import.meta.env.VITE_API_OPENAI;
 
   useEffect(() => {
     if (pretestScores) {
@@ -21,13 +23,14 @@ export default function TestRIASEC({ pretestScores }) {
     }
   }, [pretestScores]);
 
-
-
   const getQuestion = async () => {
     const res = await fetch(`${API}/next-question`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ riasec_scores: scores, session_id: sessionId })
+      body: JSON.stringify({
+        riasec_scores: scores,
+        session_id: sessionId
+      })
     });
 
     const data = await res.json();
@@ -47,7 +50,6 @@ export default function TestRIASEC({ pretestScores }) {
 
     const data = await res.json();
     setScores(data.updated_scores);
-    setCount(count + 1);
 
     setCount(prev => {
       const newCount = prev + 1;
@@ -60,7 +62,6 @@ export default function TestRIASEC({ pretestScores }) {
 
       return newCount;
     });
-
   };
 
   const getResult = async (finalScores) => {
@@ -71,7 +72,11 @@ export default function TestRIASEC({ pretestScores }) {
     });
 
     const data = await res.json();
-    alert(JSON.stringify(data));
+
+    // 👉 Navegar a Resultado
+    navigate("/resultado", {
+      state: { result: data }
+    });
   };
 
   const options = [
@@ -88,11 +93,25 @@ export default function TestRIASEC({ pretestScores }) {
 
   return (
     <div className="test-riasec-container">
-      <h1 className="test-riasec-header">Test Vocacional RIASEC</h1>
+
+      <div className="test-riasec-header">
+        <span className="question-counter">
+          Pregunta {Math.min(count + 1, 10)} de 10
+        </span>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${((count) / 10) * 100}%` }}
+          />
+        </div>
+      </div>
 
       {question && (
         <div className="test-riasec-question-container">
-          <p className="test-riasec-question">{question.question}</p>
+          <p className="test-riasec-question">
+            {question.question}
+          </p>
 
           {options.map((opt) => (
             <button
@@ -105,6 +124,7 @@ export default function TestRIASEC({ pretestScores }) {
           ))}
         </div>
       )}
+
     </div>
   );
 }

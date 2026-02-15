@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import "./Aspirante.css";
+import { useNavigate } from "react-router-dom";
+import "./Aspirante.css"
 
-function AspirantesGet() {
-  const API = import.meta.env.VITE_API_GETASPIRANTES;
+function AspiranteGet() {
+
+  const VITE_API_GETASPIRANTES = import.meta.env.VITE_API_GETASPIRANTES
+  
+  const API = VITE_API_GETASPIRANTES;
 
   const [aspirantes, setAspirantes] = useState([]);
+
+  const navigate = useNavigate()
 
   const obtenerAspirantes = async () => {
     const res = await fetch(API);
@@ -16,18 +22,23 @@ function AspirantesGet() {
     obtenerAspirantes();
   }, []);
 
-  const eliminarAspirante = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este aspirante?")) return;
-    await fetch(`${API}/${id}`, { method: "DELETE" });
+
+  const editarAspirante = (id) => {
+    navigate(`/editar-aspirante/${id}`);
+  };
+
+  const cambiarEstado = async (id, activo) => {
+    await fetch(`${API}/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ activo: !activo }),
+    });
     obtenerAspirantes();
   };
 
-  const actualizarAspirante = (id) => {
-    window.location.href = `/editar/${id}`;
-  };
-
   return (
-    <div className="asp-container">
+
+      <div className="asp-container">
       <div className="asp-header">
         <h2>Aspirantes</h2>
         <button className="btn-nuevo">+ Nuevo Aspirante</button>
@@ -39,41 +50,45 @@ function AspirantesGet() {
       />
 
       <div className="asp-list">
-        {aspirantes.map((a) => (
-          <div key={a.idASPIRANTE} className="asp-card">
-            <div className="asp-avatar">
-              {a.nombre_completo.charAt(0)}
+
+      {aspirantes.map((aspirante) => (
+        <div key={aspirante.idASPIRANTE} className="asp-card">
+
+          <div className="asp-avatar">
+              {aspirante.nombre_completo.charAt(0)}
             </div>
 
-            <div className="asp-info">
-              <h3>{a.nombre_completo}</h3>
-              <span className="asp-puesto">Aspirante</span>
+          <div className="asp-info">
+          <h3>{aspirante.nombre_completo}</h3>
+          <p>📧 {aspirante.email}</p>
+          <p>📞 {aspirante.telefono}</p>
+          <p>🏡 {aspirante.barrio}, {aspirante.direccion}</p>
+          <p> </p>
+          <p>
+            {aspirante.activo ? "✅ Habilitado" : "❌ Deshabilitado"}
+          </p>
 
-              <p>📧 {a.email}</p>
-              <p>📞 {a.telefono}</p>
-
-              <div className="asp-tags">
-                <span className="tag pendiente">Ver reportes</span>
-              </div>
-            </div>
-
-            <div className="asp-actions">
-              <button
-                className="icon editar"
-                onClick={() => actualizarAspirante(a.idASPIRANTE)}
-              >
-                ✏️
-              </button>
-
-              <button className="icon bloquear">🔒</button>
-
-              
-            </div>
           </div>
-        ))}
+
+          <div className="ad-actions">
+          
+            <button onClick={() => editarAspirante(aspirante.idASPIRANTE)}
+              className="icon editar">
+              ✏️ Editar
+            </button>
+            
+            <button onClick={() => cambiarEstado(aspirante.idASPIRANTE, aspirante.activo)}
+              className="icon bloquear">
+              {aspirante.activo ? "🔒 Deshabilitar" : "🔓 Habilitar"}
+            </button>
+          </div>
+        </div>
+      ))}
+            
       </div>
     </div>
+      
   );
 }
 
-export default AspirantesGet;
+export default AspiranteGet;

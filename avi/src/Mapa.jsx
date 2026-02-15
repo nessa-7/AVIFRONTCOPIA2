@@ -1,47 +1,57 @@
+import React from "react";
+import "./Mapa.css";
+
 function Mapa() {
+
+  const descargarApp = () => {
+    window.location.href = "https://play.google.com/store";
+  };
+
   return (
-    <div>
-      <section className="mapa">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127558.93675643497!2d-76.67032502107222!3d2.4346597180690104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30059e6a5931bb%3A0x3a8b57a83729be94!2sCENTRO%20DE%20TELEINFORM%C3%81TICA%20Y%20PRODUCCI%C3%93N%20INDUSTRIAL!5e0!3m2!1ses-419!2sco!4v1753072976090!5m2!1ses-419!2sco"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Mapa CTPI"
-        ></iframe>
-      </section>
+    <div className="mapa-container">
+      <div className="contenido">
 
-      <hr />
-      <br />
+        <h1 className="titulo">BIENVENIDO AL MAPA DEL SENA</h1>
+        <h2 className="subtitulo">"CTPI"</h2>
 
-      <section>
-        <div className="container">
-          <div className="welcome-content">
-            <h1 className="welcome-title">
-              Centro de Teleinformática y Producción Industrial (CTPI)
-            </h1>
-            <br />
-            <h2>
-              Dentro de nuestro centro encontrarás ambientes donde se llevan a cabo
-              cada uno de nuestros programas
-            </h2>
-            <br />
+        <div className="layout">
 
-            <div className="neon-box">
-              <div id="container-info">
-                <ul>
-                  <li>Encuentra tu vocación</li>
-                  <li>Descubre tu ambiente</li>
-                  <li>Construye tu futuro</li>
-                </ul>
-              </div>
-            </div>
+          {/* COLUMNA IZQUIERDA */}
+          <div className="col-izquierda">
+
+            <video 
+              src="/video.mp4" 
+              controls 
+              autoPlay 
+              loop 
+              className="video"
+            />
+
+            <button 
+              className="btn-descargar" 
+              onClick={descargarApp}
+            >
+              Descargar Aplicación
+            </button>
+
           </div>
+
+          {/* COLUMNA DERECHA */}
+          <div className="col-derecha">
+
+            <div className="card-blanca">
+              <img 
+                src="/aplicacion.png" 
+                alt="Aplicación móvil" 
+                className="imagen"
+              />
+            </div>
+
+          </div>
+
         </div>
-      </section>
+
+      </div>
     </div>
   );
 }

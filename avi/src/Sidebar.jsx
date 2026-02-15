@@ -13,6 +13,10 @@ const Sidebar = () => {
     navigate("/estadisticas")
   }
 
+  function irprogramas(){
+    navigate("/listarprogramas")
+  }
+
   function veraspirantes(){
     navigate("/listaraspirantes")
   }
@@ -27,6 +31,7 @@ const Sidebar = () => {
 
 
   const [estadisticas, setEstadisticas] = useState();
+  const [programas, setProgramas] = useState()
   const [aspirante, setAspirante] = useState();
   const [gestionarAdmin, setGestionarAdmin] = useState();
 
@@ -35,6 +40,16 @@ const Sidebar = () => {
       return (
         <div>
           <button onClick={irestadisticas}>Ver estadísticas</button>
+        </div>
+      );
+    }
+  };
+
+  const mostrarProgramas = () => {
+    if (programas) {
+      return (
+        <div>
+          <button onClick={irprogramas}>Ver programas</button>
         </div>
       );
     }
@@ -90,7 +105,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
 
-    <h1>      
+    <h1 style={{color:"white"}}>      
       
       <img src="/logoAVI.png" alt="AVI Logo" className="logo-img sidebaravi" style={{height:"50px", width: "auto"}}></img>
       AVI
@@ -101,6 +116,13 @@ const Sidebar = () => {
         Estadísticas
       </button>
       {mostrarEstadisticas()}
+
+      <hr />
+
+      <button onClick={() => setProgramas(!programas)}>
+        Programas
+      </button>
+      {mostrarProgramas()}
 
       <hr />
 
@@ -117,6 +139,7 @@ const Sidebar = () => {
       {mostrarGestionarAdmin()}
 
       <hr />
+
 
       <button className="logout-btn" onClick={salir}>Cerrar Sesión</button>
 
