@@ -10,6 +10,7 @@
   background: #f4f6f9;
   min-height: 100vh;
   margin-left: var(--sidebar-width);
+
 }
 
 .contenido h1 {
@@ -35,6 +36,7 @@
 .avi-card h3 {
   margin-bottom: 15px;
   color: #111827;
+  
 }
 
 .avi-card input,
@@ -80,6 +82,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
+  
 }
 
 /* Estado */
@@ -111,4 +114,9 @@
 
 .avi-card button:hover {
   background: #111827;
+}
+
+.descripcion{
+  margin-top: 10px;
+  text-align: justify;
 }

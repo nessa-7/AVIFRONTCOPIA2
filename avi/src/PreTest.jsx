@@ -1,39 +1,60 @@
 import { useState } from "react";
 import "./PreTest.css";
-import { useNavigate } from "react-router-dom";
 import TestRIASEC from "./TestRIASEC";
-
 
 export default function Pretest() {
   const [startTest, setStartTest] = useState(false);
-  const [scores, setScores] = useState({ R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 });
-
-  const navigate = useNavigate;
 
   const questions = [
     {
-      text: "Disfruto arreglar cosas, usar herramientas o resolver problemas técnicos",
-      profiles: ["R", "I"],
+      type: "text",
+      text: "¿Qué querías ser cuando eras niño/a y por qué?",
     },
     {
-      text: "Me gusta crear cosas originales como dibujos, música o diseños",
-      profiles: ["A", "I"],
+      type: "text",
+      text: "Si tuvieras que elegir una actividad para hacer durante 4 horas seguidas sin aburrirte, ¿cuál sería?",
     },
     {
-      text: "Prefiero ayudar a las personas y trabajar en equipo",
-      profiles: ["S", "E"],
+      type: "options",
+      text: "¿Qué tipo de problemas disfrutas resolver más?",
+      options: [
+        "Técnicos o mecánicos",
+        "Científicos o de investigación",
+        "Creativos o artísticos",
+        "Personales o sociales",
+        "Comerciales o estratégicos",
+        "Administrativos u organizativos",
+      ],
     },
     {
-      text: "Me siento cómodo liderando grupos o tomando decisiones importantes",
-      profiles: ["E", "C"],
+      type: "options",
+      text: "En un trabajo ideal, ¿qué valoras más?",
+      options: [
+        "Estabilidad y orden",
+        "Libertad creativa",
+        "Impacto en otras personas",
+        "Liderar proyectos",
+        "Descubrir cosas nuevas",
+        "Trabajar con herramientas o tecnología",
+      ],
     },
     {
-      text: "Disfruto organizar información y seguir procesos ordenados",
-      profiles: ["C", "R"],
+      type: "options",
+      text: "Cuando trabajas en equipo, ¿qué rol sueles asumir naturalmente?",
+      options: [
+        "El que organiza",
+        "El que propone ideas nuevas",
+        "El que analiza datos",
+        "El que ejecuta tareas prácticas",
+        "El que motiva y guía",
+        "El que cuida el ambiente y apoya",
+      ],
     },
   ];
 
-  const [answers, setAnswers] = useState(Array(questions.length).fill(3));
+  const [answers, setAnswers] = useState(
+    Array(questions.length).fill("")
+  );
 
   const handleChange = (i, value) => {
     const updated = [...answers];
@@ -43,31 +64,13 @@ export default function Pretest() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-    questions.forEach((q, i) => {
-      q.profiles.forEach((p) => {
-        newScores[p] += answers[i];
-      });
-    });
-
-    setScores(newScores);
+    console.log("Respuestas:", answers);
     setStartTest(true);
   };
 
-  // Las etiquetas que se mostrarán en el slider
-  const labels = [
-    "Odio esto",
-    "No me gusta",
-    "Neutral",
-    "Me gusta",
-    "Me encanta",
-  ];
-
-    if (startTest) {
-    return <TestRIASEC pretestScores={scores} />;
-    }
-
+  if (startTest) {
+    return <TestRIASEC pretestAnswers={answers} />;
+  }
 
   return (
     <div className="pretest-container">
@@ -76,30 +79,34 @@ export default function Pretest() {
       <form onSubmit={handleSubmit} className="pretest-form">
         {questions.map((q, i) => (
           <div key={i} className="pretest-question">
-            <p>
-              {i + 1}. {q.text}
-            </p>
+            <p>{i + 1}. {q.text}</p>
 
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={answers[i]}
-              onChange={(e) => handleChange(i, Number(e.target.value))}
-              style={{
-                background: `linear-gradient(to right, #d5b3ff ${((answers[i] - 1) / 4) * 100}%, #cee2ff ${((answers[i] - 1) / 4) * 100}%)`,
-              }}
-            />
-            <div className="slider-labels">
-              {labels.map((label, index) => (
-                <span
-                  key={index}
-                  className={answers[i] === index + 1 ? "active" : ""}
-                >
-                  {label}
-                </span>
+            {/* Preguntas abiertas */}
+            {q.type === "text" && (
+              <textarea
+                value={answers[i]}
+                onChange={(e) => handleChange(i, e.target.value)}
+                placeholder="Escribe tu respuesta..."
+                required
+                rows={4}
+              />
+            )}
+
+            {/* Preguntas con opciones */}
+            {q.type === "options" &&
+              q.options.map((option, index) => (
+                <label key={index} className="option-label">
+                  <input
+                    type="radio"
+                    name={`question-${i}`}
+                    value={option}
+                    checked={answers[i] === option}
+                    onChange={() => handleChange(i, option)}
+                    required
+                  />
+                  {option}
+                </label>
               ))}
-            </div>
           </div>
         ))}
 

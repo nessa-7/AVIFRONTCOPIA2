@@ -136,7 +136,7 @@ function ProgramasAdmin() {
 
             <h3>{p.nombre}</h3>
             <p><b>Tipo:</b> {p.nivel}</p>
-            <p>{p.descripcion}</p>
+            <p className="descripcion">{p.descripcion}</p>
 
             <p className={p.activo ? "estado-on" : "estado-off"}>
               {p.activo ? "✅ Habilitado" : "❌ Inhabilitado"}

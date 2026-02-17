@@ -1,12 +1,12 @@
 /* CONTENIDO GENERAL */
-.contenido {
+.contenidomapa {
   padding: 40px;
   text-align: center;
 }
 
 /* TITULOS */
 .titulo {
-  color: white;
+  color: rgb(80, 192, 29);
 }
 
 .subtitulo {
@@ -33,13 +33,13 @@
 
 /* VIDEO */
 .video {
-  width: 320px;
+  width: 300px;
   border-radius: 20px;
 }
 
 /* BOTON */
 .btn-descargar {
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 15px 35px;
   border: none;
   border-radius: 50px;
@@ -64,21 +64,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 /* CONTENEDOR BLANCO OVALADO */
 .card-blanca {
   background: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 35px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  width: 400px;
 }
 
 /* IMAGEN */
 .imagen {
-  width: 300px;
   display: block;
   border-radius: 15px;
+  width: 100%;
 }
 
 /* FONDO COMPLETO */

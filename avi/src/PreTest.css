@@ -44,36 +44,57 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* Estilo para el rango de respuesta */
-input[type="range"] {
+
+textarea {
   width: 100%;
-  margin: 0.5rem 0;
-  -webkit-appearance: none;
-  height: 8px;
-  background: linear-gradient(to right, #4caf50 0%, #4caf50 50%, #ddd 50%, #ddd 100%);
+  padding: 10px;
   border-radius: 10px;
-  outline: none;
+  border: 1px solid #ccc;
+  resize: none;
+  border-color: #b8c2ff;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #d5b3ff;
+textarea:focus{
+  outline: none;      
+  border-color: #a677d3;
+}
+
+
+.option-label input {
+  display: none;
+}
+
+.option-label {
+  display: block;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #f5f7ff;
+  border: 2px solid transparent;
   cursor: pointer;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-top: 20px;
 }
 
-input[type="range"]:focus {
-  outline: none;
+/* Hover bonito */
+.option-label:hover {
+  background: #e6ebff;
+  transform: translateY(-2px);
 }
 
-/* Estilo para los valores mostrados */
-span {
-  font-size: 1rem;
-  color: #4caf50;
+/* Cuando está seleccionada */
+.option-label input:checked + span {
+  color: #1f2a44;
+  font-weight: 600;
 }
+
+.option-label:has(input:checked) {
+  background: #dff4ff;
+  border-color: #75cfd0;
+  box-shadow: 0 4px 12px rgba(91,108,255,0.25);
+}
+
 
 /* Botón de envío */
 button {
@@ -97,41 +118,4 @@ button:focus {
 }
 
 
-/* Contenedor de las etiquetas del slider */
-.slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  color: #1a1a70;
-  width: 100%;
-}
 
-/* Resaltar la etiqueta activa */
-.slider-labels span.active {
-  font-weight: bold;
-  color: #4caf50;
-}
-
-/* Espaciado entre las etiquetas */
-.slider-labels span {
-  margin: 0 5px; /* Ajusta el valor aquí para el espacio entre las etiquetas */
-  transition: color 0.2s ease; /* Para suavizar la transición de colores */
-}
-
-/* Establecer el color para cada etiqueta según el valor del slider */
-.slider-labels span:nth-child(1) {
-  color: #ff0d00; 
-}
-.slider-labels span:nth-child(2) {
-  color: #fb9b00;
-}
-.slider-labels span:nth-child(3) {
-  color: rgb(255, 221, 0); 
-}
-.slider-labels span:nth-child(4) {
-  color: #94e90c; 
-}
-.slider-labels span:nth-child(5) {
-  color: #3de342;
-}

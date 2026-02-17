@@ -123,9 +123,6 @@ nav a:hover {
 
 
 
-
-
-
 /* ---- BIENVENIDA AL TEST ---- */
 .welcome-section {
   padding: 3rem 0;
@@ -226,94 +223,6 @@ nav a:hover {
 
 
 
-/* ---- REGISTRO ---- */
-
-
-
-/* ---- REPORTE ---- */
- 
-.texto-centro {
-  text-align: center;
-}
-
-.texto-centro h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.texto-centro p {
-  margin: 4px 0 0;
-  font-size: 16px;
-}
-
-
-.resultados {
-  padding: 32px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.resumen, .sugerencias {
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.programa-nombre {
-  color: #39A900;
-  font-weight: 700;
-  margin: 8px 0;
-  font-size: 20px;
-}
-
-.descripcion {
-  font-size: 16px;
-  line-height: 26px;
-}
-
-.sugerencias ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.sugerencias li {
-  background: #e5fbe5;
-  padding: 12px;
-  margin: 8px 0;
-  border-left: 6px solid #39A900;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.acciones {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.acciones button {
-  background-color: #39A900;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  margin: 8px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  
-}
-
-.acciones button:hover {
-  background-color: #2f8e00;
-}
-
-
-
-
-
 /* ---- PROGRAMAS ---- */
 
 .programas {
@@ -368,8 +277,6 @@ nav a:hover {
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
-
 
 
 
