@@ -1,9 +1,17 @@
 import { useState } from "react";
 import "./PreTest.css";
 import TestRIASEC from "./TestRIASEC";
+import { useAuth } from "./context/AuthContext";
 
 export default function Pretest() {
+
+  const API = import.meta.env.VITE_API_BACKEND;
+
   const [startTest, setStartTest] = useState(false);
+  const [pretestScores, setPretestScores] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
+
+  const { id } = useAuth()
 
   const questions = [
     {
@@ -62,14 +70,29 @@ export default function Pretest() {
     setAnswers(updated);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Respuestas:", answers);
+
+    const res = await fetch(`${API}/pretest`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        aspiranteId: id,
+        answers
+      })
+    });
+
+    const data = await res.json();
+
+    setPretestScores(data.scores);
     setStartTest(true);
+    setSessionId(data.session_id);
+
   };
 
+
   if (startTest) {
-    return <TestRIASEC pretestAnswers={answers} />;
+    return <TestRIASEC pretestScores={pretestScores} sessionId={sessionId}/>
   }
 
   return (

@@ -15,7 +15,7 @@ function Login() {
   const [pass, setPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { guardarToken, guardarNombre, guardarRol, guardarEmail } = useAuth();
+  const { guardarToken, guardarNombre, guardarRol, guardarEmail, guardarId } = useAuth();
 
   async function Ingresar(e) {
     e.preventDefault();
@@ -47,11 +47,13 @@ function Login() {
 
     guardarToken(data.token);
     guardarRol(data.rol);
+    guardarId(data.id)
     
 
     if (rolSeleccionado === "aspirante") {
       guardarNombre(data.usuario.nombre_completo);
       guardarEmail(data.usuario.email);
+      guardarId(data.usuario.idASPIRANTE)
 
     } else {
       guardarNombre(data.nombre);

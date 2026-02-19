@@ -8,9 +8,10 @@ import AdminLayout from "./AdminLayout";
 
 function Navbar({children}){
     
-    const {rol} = useAuth();
+    const {rol, id} = useAuth();
 
     console.log(rol)
+    console.log(id)
 
         if(rol === "admin"){
             return (

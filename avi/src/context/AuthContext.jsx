@@ -11,7 +11,12 @@ export const AuthPro = ({children})=>{
     const [nombre, setNombre] = useState("");
     const [rol, setRol] = useState(null);
     const [email, setEmail] = useState("");
+    const [id, setId] = useState(null)
 
+
+    const guardarId = (idUsuario) => {
+        setId(idUsuario);
+    };
 
     const guardarToken=(tk /*recibir token login*/)=>{
         setToken(tk)
@@ -33,6 +38,7 @@ export const AuthPro = ({children})=>{
         setToken(null);
         setNombre("");
         setRol(null);
+        setId(null)
     }
 
     return(
@@ -45,6 +51,8 @@ export const AuthPro = ({children})=>{
             guardarEmail,
             rol,
             guardarRol,
+            id,
+            guardarId,
             logout
         }}>
             {children}
