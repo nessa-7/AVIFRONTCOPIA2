@@ -75,12 +75,11 @@ function AspiranteGet() {
           
             <button onClick={() => editarAspirante(aspirante.idASPIRANTE)}
               className="icon editar">
-              ✏️ Editar
+              ✏️
             </button>
-            
             <button onClick={() => cambiarEstado(aspirante.idASPIRANTE, aspirante.activo)}
               className="icon bloquear">
-              {aspirante.activo ? "🔒 Deshabilitar" : "🔓 Habilitar"}
+              {aspirante.activo ? "🔒" : "🔓"}
             </button>
           </div>
         </div>

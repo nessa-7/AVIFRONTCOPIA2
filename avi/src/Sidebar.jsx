@@ -71,7 +71,6 @@ const Sidebar = () => {
       return (
         <div>
           <button onClick={veradmins}>Ver Administradores</button>
-          <button onClick={registroadmin}>Registrar Administrador</button>
         </div>
       );
     }

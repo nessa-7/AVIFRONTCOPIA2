@@ -9,7 +9,7 @@ function Mapa() {
 
   return (
     <div className="mapa-container">
-      <div className="contenido">
+      <div className="contenidomapa">
 
         <h1 className="titulo">BIENVENIDO AL MAPA DEL SENA</h1>
         <h2 className="subtitulo">"CTPI"</h2>

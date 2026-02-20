@@ -49,6 +49,8 @@ function Nav(){
                 <div className='nav-left'>
                     <Link to="/bienvenidatest">Test</Link>
                     <Link to="/programas">Programas</Link>
+                    <Link to="/misreportes">Reportes</Link>
+                    <Link to="/mapa">Mapa</Link>
 
 
                     <button

@@ -27,6 +27,10 @@ function AdminGet() {
     navigate(`/editar/${id}`);
   };
 
+  function nuevoadmin() {
+    navigate("/registroadmin");
+  }
+
   const cambiarEstado = async (id, activo) => {
     await fetch(`${API}/${id}/status`, {
       method: "PATCH",
@@ -41,7 +45,7 @@ function AdminGet() {
       <div className="asp-container">
       <div className="asp-header">
         <h2>Administradores</h2>
-        <button className="btn-nuevo">+ Nuevo Administrador</button>
+        <button className="btn-nuevo" onClick={nuevoadmin}>+ Nuevo Administrador</button>
       </div>
 
       <input
@@ -71,12 +75,12 @@ function AdminGet() {
           
             <button onClick={() => editarAdmin(admin.idADMIN)}
               className="icon editar">
-              ✏️ Editar
+              ✏️
             </button>
             
             <button onClick={() => cambiarEstado(admin.idADMIN, admin.activo)}
               className="icon bloquear">
-              {admin.activo ? "🔒 Deshabilitar" : "🔓 Habilitar"}
+              {admin.activo ? "🔒 " : "🔓 "}
             </button>
           </div>
         </div>
