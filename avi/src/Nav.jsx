@@ -7,8 +7,10 @@ import PerfilPopup from './PerfilPopup';
 
 function Nav(){
 
-    const {logout} = useAuth();
+    const { logout, foto, nombre, email } = useAuth();
     const navigate = useNavigate();
+
+    const [mostrarPerfil, setMostrarPerfil] = useState(false);
 
     const salir = () => {
         Swal.fire({
@@ -28,16 +30,7 @@ function Nav(){
         });
     };
 
-
-
-    const [mostrarPerfil, setMostrarPerfil] = useState(false);
-
-    const usuario = {
-        nombre_completo: localStorage.getItem("nombre"),
-        email: localStorage.getItem("email"),
-    };
-
-
+    
     return(
         <div>
             <nav>
@@ -66,26 +59,31 @@ function Nav(){
                             background: "transparent"
                         }}
                         >
-                            {/*
                         <img
-                            src={usuario.foto || "/placeholder.svg"}
-                            alt="Perfil"
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                        />
-                         */}
+                        src={foto || "/placeholder.svg"}
+                        alt="Perfil"
+                        style={{
+                            width: "40px",
+                            height: "40px",
+                            borderRadius: "50%",
+                            objectFit: "cover"
+                        }}
+                    />
                         </button>
 
                     {mostrarPerfil && (
-                        <PerfilPopup
-                        usuario={usuario}
+                    <PerfilPopup
+                        usuario={{
+                            nombre_completo: nombre,
+                            email: email,
+                            foto: foto
+                        }}
                         onClose={() => setMostrarPerfil(false)}
-                        />
-                    )}
+                        onLogout={salir}
+                    />
+                )}
                     
-                </div>
-
-                
-                    
+                </div>    
             </nav>
         </div>
     )

@@ -13,6 +13,12 @@ export const AuthPro = ({children})=>{
     const [email, setEmail] = useState("");
     const [id, setId] = useState(null)
 
+    const [foto, setFoto] = useState(null);
+    
+    const guardarFoto = (url) => {
+        setFoto(url)
+    };
+
 
     const guardarId = (idUsuario) => {
         setId(idUsuario);
@@ -39,6 +45,8 @@ export const AuthPro = ({children})=>{
         setNombre("");
         setRol(null);
         setId(null)
+        setFoto(null);
+        setEmail("");
     }
 
     return(
@@ -53,7 +61,9 @@ export const AuthPro = ({children})=>{
             guardarRol,
             id,
             guardarId,
-            logout
+            logout,
+            foto,        
+            guardarFoto, 
         }}>
             {children}
         </AuthContext.Provider>

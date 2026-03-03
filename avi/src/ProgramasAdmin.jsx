@@ -1,154 +1,202 @@
 import { useEffect, useState } from "react";
-import "./Programas.css";
+import "./ProgramasAdmin.css";
 
 function ProgramasAdmin() {
-
   const API = import.meta.env.VITE_API_PROGRAMAS;
+  const API_CENTROS = import.meta.env.VITE_API_CENTROS;
 
   const [programas, setProgramas] = useState([]);
-  const [nuevo, setNuevo] = useState({
+  const [centros, setCentros] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
+
+  const [descripcionModal, setDescripcionModal] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [editarPrograma, setEditarPrograma] = useState(null);
+
+  const [form, setForm] = useState({
     nombre: "",
-    tipo: "Técnico",
+    nivel: "Ninguno",
     descripcion: "",
     centroId: 1
   });
 
-  const [centros, setCentros] = useState([]);
+  useEffect(() => {
+    obtenerProgramas();
+    obtenerCentros();
+  }, []);
 
-
-  // 🔥 Obtener programas
   const obtenerProgramas = async () => {
     const res = await fetch(API);
     const data = await res.json();
     setProgramas(data);
   };
 
+  const obtenerCentros = async () => {
+    const res = await fetch(API_CENTROS);
+    const data = await res.json();
+    setCentros(data);
+  };
 
-  // 🔥 Agregar programa
-  const agregarPrograma = async () => {
+  const abrirModalCrear = () => {
+    setEditarPrograma(null);
+    setForm({
+      nombre: "",
+      nivel: "Ninguno",
+      descripcion: "",
+      centroId: centros.length ? centros[0].idCENTRO : 1
+    });
+    setMostrarModal(true);
+  };
 
-    if (!nuevo.nombre || !nuevo.descripcion) return;
+  const abrirModalEditar = (programa) => {
+    setEditarPrograma(programa);
+    setForm({
+      nombre: programa.nombre,
+      nivel: programa.nivel,
+      descripcion: programa.descripcion,
+      centroId: programa.centroId
+    });
+    setMostrarModal(true);
+  };
 
-    await fetch(API, {
+  const guardarPrograma = async () => {
+    if (editarPrograma) {
+      // EDITAR programa usando la API
+      await fetch(`${API}/${editarPrograma.idPROGRAMA}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+    } else {
+      // CREAR programa
+      await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            nombre: nuevo.nombre,
-            nivel: nuevo.tipo,
-            descripcion: nuevo.descripcion,
-            centroId: nuevo.centroId
-        }),
-    });
+        body: JSON.stringify(form),
+      });
+    }
 
-
+    setMostrarModal(false);
     obtenerProgramas();
-
-    setNuevo({
-        nombre: "",
-        tipo: "Técnico",
-        descripcion: "",
-        centroId: 1
-    });
-
   };
 
-  // 🔥 Cambiar estado
-  const cambiarEstado = async (id, activo) => {
-
-    await fetch(`${API}/${id}/estado`, {
+  const cambiarEstado = async (programa) => {
+    await fetch(`${API}/${programa.idPROGRAMA}/estado`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ activo: !activo }),
+      body: JSON.stringify({ activo: !programa.activo }),
     });
-
     obtenerProgramas();
   };
 
-
-
-  const API_CENTROS = import.meta.env.VITE_API_CENTROS;
-
-    const obtenerCentros = async () => {
-        const res = await fetch(API_CENTROS);
-        const data = await res.json();
-        setCentros(data);
-    };
-
-    useEffect(() => {
-        obtenerProgramas();
-        obtenerCentros();
-    }, []);
-
+  const recortarDescripcion = (texto) => {
+    if (!texto) return "";
+    return texto.length > 40 ? texto.substring(0, 40) + "..." : texto;
+  };
 
   return (
     <div className="contenido">
       <h1>Programas de Formación CTPI</h1>
 
-      <br />
+      <button className="btn-crear" onClick={abrirModalCrear}>➕</button>
 
-      {/* Agregar */}
-      <div className="avi-card">
-        <h3>Agregar Programa</h3>
+      <input
+        type="text"
+        placeholder="Buscar programa..."
+        value={busqueda}
+        onChange={e => setBusqueda(e.target.value)}
+        className="buscador"
+      />
 
-        <input
-          placeholder="Nombre"
-          value={nuevo.nombre}
-          onChange={e => setNuevo({ ...nuevo, nombre: e.target.value })}
-        />
-
-        <select
-          value={nuevo.tipo}
-          onChange={e => setNuevo({ ...nuevo, tipo: e.target.value })}
-        >
-          <option>Técnico</option>
-          <option>Tecnólogo</option>
-        </select>
-
-        <select
-            value={nuevo.centroId}
-            onChange={e => setNuevo({ ...nuevo, centroId: Number(e.target.value) })}
-            >
-
-            {centros.map(c => (
-                <option key={c.idCENTRO} value={c.idCENTRO}>
-                {c.descripcion}
-                </option>
+      <table className="tabla-programas">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Nivel</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {programas
+            .filter(p => p.nombre.toLowerCase().includes(busqueda.toLowerCase()))
+            .map(p => (
+              <tr key={p.idPROGRAMA}>
+                <td>{p.nombre}</td>
+                <td>{p.nivel}</td>
+                <td>
+                  {recortarDescripcion(p.descripcion)}{" "}
+                  <button onClick={() => setDescripcionModal(p.descripcion)}>👀</button>
+                </td>
+                <td className={p.activo ? "estado-on" : "estado-off"}>
+                  {p.activo ? "Habilitado" : "Inhabilitado"}
+                </td>
+                <td>
+                  <button onClick={() => cambiarEstado(p)}>
+                    {p.activo ? "🔒" : "🔓"}
+                  </button>
+                  <button onClick={() => abrirModalEditar(p)}>✏️</button>
+                </td>
+              </tr>
             ))}
-        </select>
+        </tbody>
+      </table>
 
+      {/* MODAL CREAR/EDITAR */}
+      {mostrarModal && (
+        <div className="modal-overlay" onClick={() => setMostrarModal(false)}>
+          <div className="modal amplio" onClick={e => e.stopPropagation()}>
+            <h2>{editarPrograma ? "Editar Programa" : "Crear Programa"}</h2>
 
+            <input
+              placeholder="Nombre"
+              value={form.nombre}
+              onChange={e => setForm({ ...form, nombre: e.target.value })}
+            />
 
-        <textarea
-          placeholder="Descripción"
-          value={nuevo.descripcion}
-          onChange={e => setNuevo({ ...nuevo, descripcion: e.target.value })}
-        />
+            <select
+              value={form.nivel}
+              onChange={e => setForm({ ...form, nivel: e.target.value })}
+            >
+              <option>Ninguno</option>
+              <option>Técnico</option>
+              <option>Tecnólogo</option>
+            </select>
 
-        <button className="btn-avi" onClick={agregarPrograma}>
-          Agregar
-        </button>
-      </div>
+            <textarea
+              placeholder="Descripción"
+              value={form.descripcion}
+              onChange={e => setForm({ ...form, descripcion: e.target.value })}
+            />
 
-      {/* Lista */}
-      <div className="avi-grid">
-        {programas.map((p) => (
-          <div key={p.idPROGRAMA} className="avi-card">
+            <select
+              value={form.centroId}
+              onChange={e => setForm({ ...form, centroId: Number(e.target.value) })}
+            >
+              {centros.map(c => (
+                <option key={c.idCENTRO} value={c.idCENTRO}>{c.nombre}</option>
+              ))}
+            </select>
 
-            <h3>{p.nombre}</h3>
-            <p><b>Tipo:</b> {p.nivel}</p>
-            <p className="descripcion">{p.descripcion}</p>
-
-            <p className={p.activo ? "estado-on" : "estado-off"}>
-              {p.activo ? "✅ Habilitado" : "❌ Inhabilitado"}
-            </p>
-
-            <button onClick={() => cambiarEstado(p.idPROGRAMA, p.activo)}>
-              {p.activo ? "Inhabilitar" : "Habilitar"}
-            </button>
-
+            <div className="botones-modal">
+              <button onClick={guardarPrograma}>Guardar</button>
+              <button onClick={() => setMostrarModal(false)}>Cancelar</button>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {/* MODAL DESCRIPCIÓN */}
+      {descripcionModal && (
+        <div className="modal-overlay" onClick={() => setDescripcionModal(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h3>Descripción completa</h3>
+            <p>{descripcionModal}</p>
+            <button onClick={() => setDescripcionModal(null)}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

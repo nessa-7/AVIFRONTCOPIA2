@@ -15,7 +15,7 @@ function Login() {
   const [pass, setPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { guardarToken, guardarNombre, guardarRol, guardarEmail, guardarId } = useAuth();
+  const { guardarToken, guardarNombre, guardarRol, guardarEmail, guardarId, guardarFoto } = useAuth();
 
   async function Ingresar(e) {
     e.preventDefault();
@@ -55,6 +55,7 @@ function Login() {
       guardarEmail(data.usuario.email);
       guardarId(data.usuario.idASPIRANTE)
 
+      guardarFoto(data.usuario.foto)
     } else {
       guardarNombre(data.nombre);
     }

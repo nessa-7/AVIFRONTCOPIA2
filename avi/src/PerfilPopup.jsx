@@ -5,7 +5,7 @@ import "./Perfil.css";
 
 function PerfilPopup( {onClose }) {
     const navigate = useNavigate();
-    const { logout, nombre, email } = useAuth();
+    const { logout, nombre, email, foto} = useAuth();
 
     function irAEditar() {
         navigate("/editar-perfil");
@@ -24,12 +24,22 @@ function PerfilPopup( {onClose }) {
         <div className="perfil-popup">
             <div className="perfil-header">
                 <span>{email}</span>
-                <button onClick={onClose}>✕</button>
+                <button className="closepopup" onClick={onClose}>✕</button>
             </div>
 
 
             <div className="perfil-body">
-                <div className="avatar">👤</div>
+                <div className="avatar">
+                    <img
+                            src={foto || "/placeholder.svg"} // muestra la foto del usuario o placeholder
+                            alt={`Perfil de ${nombre || "Aspirante"}`}
+                            style={{
+                                width: "80%",
+                                height: "80%",
+                                objectFit: "cover",
+                                borderRadius: "50%", // para que sea redonda
+                            }}/>
+                </div>
                 <h2>¡Hola, {nombre || "Aspirante"}!</h2>
 
 
@@ -40,7 +50,7 @@ function PerfilPopup( {onClose }) {
 
 
             <div className="perfil-footer">
-                <button className="btn-logout" onClick={salir}>
+                <button className="btn-logout-popup" onClick={salir}>
                 Cerrar Sesión
                 </button>
             </div>
