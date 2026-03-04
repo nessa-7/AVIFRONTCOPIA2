@@ -1,11 +1,10 @@
 /* Contenedor principal */
 .pretest-container {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 1100px;
+  margin: 5rem auto;
   padding: 2rem;
   background-color: #f9fafb;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   font-family: 'Roboto', sans-serif;
 }
 
@@ -17,11 +16,21 @@ h1 {
   margin-bottom: 2rem;
 }
 
+.pretest-layout {
+  width: min(1240px, 98%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(360px, 42%) minmax(520px, 58%);
+  gap: 30px;
+  align-items: center;
+}
+
 /* Formulario principal */
 .pretest-form {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  
 }
 
 /* Cuadro de cada pregunta */
@@ -31,6 +40,7 @@ h1 {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
+  margin-top: 20px;
 }
 
 .pretest-question:hover {
@@ -120,3 +130,30 @@ textarea:focus{
 
 
 
+
+
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.spinner {
+  margin-top: 20px;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ddd;
+  border-top: 5px solid #6c63ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
