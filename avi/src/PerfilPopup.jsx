@@ -29,7 +29,7 @@ function PerfilPopup( {onClose }) {
 
 
             <div className="perfil-body">
-                <div className="avatar">
+                <div className="fotoasp">
                     <img
                             src={foto || "/placeholder.svg"} // muestra la foto del usuario o placeholder
                             alt={`Perfil de ${nombre || "Aspirante"}`}

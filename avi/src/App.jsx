@@ -23,7 +23,7 @@ import Pretest from "./PreTest";
 import EditarAdmin from "./EditarAdmin";
 import ProgramasAdmin from "./ProgramasAdmin";
 import MisReportes from "./MisReportes";
-
+import ReportesAspirante from "./ReportesAspirante";
 
 
 function App() {
@@ -54,6 +54,7 @@ function App() {
               <Route path="/editar/:id" element={<EditarAdmin></EditarAdmin>}></Route>
               <Route path="/listarprogramas" element={<ProgramasAdmin></ProgramasAdmin>}></Route>
               <Route path="/misreportes" element={<MisReportes></MisReportes>}></Route>
+              <Route path="/reportesporasp/:id" element={<ReportesAspirante></ReportesAspirante>}></Route>
             </Routes>
           
         </BrowserRouter>

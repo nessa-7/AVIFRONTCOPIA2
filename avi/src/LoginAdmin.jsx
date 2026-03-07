@@ -14,9 +14,7 @@ function LoginAdmin() {
     const [id, setId] = useState("");
     const [pass, setPass] = useState("");
 
-    const {guardarToken} = useAuth();
-    const {guardarNombre} = useAuth(); 
-    const {guardarRol} = useAuth();
+    const {guardarToken, guardarNombreAd, guardarRol, guardarId} = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -56,9 +54,11 @@ function LoginAdmin() {
             return
         }
 
+        
             guardarToken(data.token);
-            guardarNombre(data.nombre);
+            guardarNombreAd(data.nombre);
             guardarRol(data.rol)
+            guardarId(data.id)
 
             console.log(data.rol);
 

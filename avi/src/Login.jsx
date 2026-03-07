@@ -15,7 +15,7 @@ function Login() {
   const [pass, setPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { guardarToken, guardarNombre, guardarRol, guardarEmail, guardarId, guardarFoto } = useAuth();
+  const { guardarToken, guardarNombre, guardarRol, guardarEmail, guardarId, guardarFoto, guardarNombreAd } = useAuth();
 
   async function Ingresar(e) {
     e.preventDefault();
@@ -57,7 +57,7 @@ function Login() {
 
       guardarFoto(data.usuario.foto)
     } else {
-      guardarNombre(data.nombre);
+      guardarNombre(data.usuario.nombre);
     }
 
     Swal.fire({
