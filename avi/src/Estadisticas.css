@@ -1,18 +1,32 @@
-#tituloestadisticas {
+.contenedorestadisticas{
+  min-height: 100vh;
+  margin: 50px;
+  padding: 0;
+}
+
+
+.tituloestadisticas {
   text-align: center;
-  padding-top: 30px;
-  color: black;
+  padding-top: 0px;
+  color: rgb(88, 29, 139);
+  margin-top: -50px;
+  height: 80px;
+  font-size: 13px;
+
 }
 
 
 /* CONTENEDOR PRINCIPAL */
-.Test{
+.Test {
   display: flex;
+  flex-wrap: wrap; /* permite que las cards bajen en pantallas pequeñas */
   gap: 24px;
   padding: 20px;
   margin-left: var(--sidebar-width);
+  justify-content: center; /* centra las cards */
+  margin-top: -20px;
+  height: 500px;
 }
-
 
 /* TARJETAS */
 .dataCard {
@@ -21,9 +35,11 @@
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   margin: 20px;
-  flex: 1;
-  height: 550px;
-  overflow: hidden;
+  flex: 1 1 400px; /* flex-grow, flex-shrink, base-width */
+  max-width: 800px; /* no crece demasiado en escritorio */
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* TÍTULOS */
@@ -39,18 +55,11 @@
   align-items: center;
 }
 
-.donita {
-  max-height: 400px;
-  max-width: 400px;
+/* GRÁFICOS */
+.dataCard canvas {
+  width: 100% !important;
+  height: 90% !important; /* permite que Chart.js llene el contenedor */
 }
-
-
-/* MESES */
-.meses {
-  display: flex;
-  flex-direction: column;
-}
-
 
 /* SELECT */
 .year-select {
@@ -74,15 +83,18 @@
   box-shadow: 0 0 0 2px rgba(54,162,235,0.2);
 }
 
-
-
-
 /* ---------------- RESPONSIVE ---------------- */
 
 /* TABLET */
 @media (max-width: 1024px) {
   .Test {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .dataCard {
+    max-width: 90%;
+    margin: 12px 0;
   }
 }
 
@@ -95,6 +107,7 @@
 
   .dataCard {
     padding: 18px;
+    flex: 1 1 100%; /* ocupa todo el ancho */
   }
 
   .dataCard h3 {
@@ -104,5 +117,6 @@
   .year-select {
     width: 90%;
     margin-top: 8px;
+    margin-left: 0;
   }
 }

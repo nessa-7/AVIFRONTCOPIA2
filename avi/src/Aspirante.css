@@ -9,11 +9,10 @@
 
 
 .contenedordelista{
-  margin-left:var(--sidebar-width);
   background-color: #f3ecfb;
-  padding-top: 0px;
   padding-bottom: 20px;
   min-height: 100vh;
+  margin: 0;
 }
 
 .table-container{
@@ -28,17 +27,18 @@
 }
 
 
-h2{
+.contenedordelista h2{
 margin-bottom:10px;
 }
 
-
 .tituloadmin{
   margin: 0;
-  margin-left: 20px;
-  font-size: 35px;
+  margin-left: 0px;
+  margin-top: -40px;
+  font-size: 40px;
   color: rgb(153, 95, 195);
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-transform: uppercase;
 }
 
 
@@ -326,6 +326,83 @@ color:white;
 
 }
 
+/* RESPONSIVE */
+@media (max-width: 1200px){
+  .table-container{
+    margin: 24px;
+    padding: 28px;
+  }
+
+  .tituloadmin{
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 900px){
+  .table-controls{
+    padding: 16px;
+  }
+
+  .buttonsaÃ±adir{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .botonesaÃ±adir{
+    flex-wrap: wrap;
+    margin-right: 0;
+  }
+
+  .top-header{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .top-actions{
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search{
+    width: 100%;
+  }
+
+  .table-container{
+    margin: 16px;
+    padding: 22px;
+    overflow-x: auto;
+  }
+
+  .tablalista{
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 600px){
+  .tituloadmin{
+    margin-left: 0;
+    font-size: 24px;
+  }
+
+  .table-container{
+    margin: 12px;
+    padding: 18px;
+  }
+
+  .pagination{
+    flex-wrap: wrap;
+  }
+
+  .details-btn,
+  .edit-btn,
+  .report-btn{
+    margin-top: 6px;
+  }
+}
+
 
 
 /* MODAL */
@@ -610,4 +687,21 @@ box-shadow: 0 8px 20px rgba(79, 182, 200, 0.35);
 .asp-btn-save:disabled{
 opacity: 0.7;
 cursor: wait;
+}
+
+.buttonsañadir,
+.buttonsañadir{
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+gap: 15px;
+margin-top: 0px;
+}
+
+.botonesañadir,
+.botonesañadir{
+display: flex;
+gap: 20px;
+margin-right: 20px;
 }

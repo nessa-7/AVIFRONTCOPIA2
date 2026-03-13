@@ -31,10 +31,19 @@ padding: 10px 15px;
 border-bottom: 1px solid #ddd;
 }
 
-
 .perfil-body {
 text-align: center;
 padding: 20px;
+align-items:center;
+justify-content:center;
+}
+
+.fotoasp{
+  width: 200px;
+  height: 200px;
+  display: flex;
+  margin: auto;
+  margin-bottom: 10px;
 }
 
 

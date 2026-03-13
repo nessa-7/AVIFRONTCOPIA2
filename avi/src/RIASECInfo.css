@@ -1,0 +1,293 @@
+:root {
+  --primary: #58caeb;
+  --secondary: #8a67df;
+  --accent: #8e47d4;
+  --highlight: #d5a62f;
+  --support: #2fb1b8;
+
+  --text-main: #2e2e2e;
+  --text-muted: #666;
+  --bg-soft: #f6f4fb;
+}
+
+
+/* Colores por tipo RIASEC */
+.type-R { --type-color: #e74c3c; }
+.type-I { --type-color: var(--primary); }
+.type-A { --type-color: var(--accent); }
+.type-S { --type-color: var(--support); }
+.type-E { --type-color: var(--highlight); }
+.type-C { --type-color: #4b5563; }
+
+
+.riasec-container {
+  margin: auto;
+  padding: 40px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+    background: linear-gradient(180deg, #f7f2ff 0%, #faf6ff 100%);
+}
+
+/* GRID */
+.riasec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* CARD BASE */
+.card {
+  background: white;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+/* MODELO */
+.riasec-model h1 {
+  font-size: 1.9rem;
+  margin-bottom: 12px;
+  color: #61339c;
+  text-align: center;
+}
+
+
+.riasec-model p {
+  color: #555;
+  line-height: 1.7;
+}
+
+/* STEPS */
+.model-steps {
+  margin-top: 25px;
+  display: grid;
+  gap: 30px;
+}
+
+.step {
+  background: #f3f6fb;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: .95rem;
+}
+
+/* TIPOS */
+.riasec-types h1 {
+  font-size: 1.9rem;
+  margin-bottom: 12px;
+  color: #61339c;
+  text-align: center;
+}
+
+/* HEXAGONO */
+.riasec-hexagon {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 20px auto 30px;
+}
+
+.hex {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+
+.hex:hover { transform: scale(1.15); }
+.hex.active { outline: 4px solid #fff; }
+
+.r { top:0; left:88px; background:#e74c3c }
+.i { top:45px; right:0; background:#3498db }
+.a { bottom:45px; right:0; background:#9b59b6 }
+.s { bottom:0; left:88px; background:#2ecc71 }
+.e { bottom:45px; left:0; background:#f39c12 }
+.c { top:45px; left:0; background:#34495e }
+
+/* CARD INFO */
+.type-card {
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    color-mix(in srgb, var(--type-color) 12%, white)
+  );
+  padding: 26px;
+  border-radius: 18px;
+  text-align: center;
+  animation: fadeIn .25s ease;
+  border: 2px solid color-mix(in srgb, var(--type-color) 40%, transparent);
+}
+
+.type-icon {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.type-card p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.type-card span {
+  display: block;
+  margin-top: 10px;
+  font-size: .9rem;
+  color: #777;
+}
+
+.riasec-algorithm {
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.riasec-reference {
+  margin-bottom: 40px;
+}
+
+.type-card h3 {
+  margin-bottom: 8px;
+  color: var(--type-color);
+}
+
+.type-icon svg {
+  color: var(--type-color);
+}
+
+/* ANIMACIÓN */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .riasec-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.h13{
+font-size: 1.9rem;
+  margin-top: 10px;
+  margin-bottom:30px;
+  color: #3b1858;
+  text-align: center;
+}
+
+/* STEPPER */
+/* STEPPER CARD */
+.riasec-steps-card {
+  margin-top: 30px;
+  padding: 24px 28px;
+  border-radius: 18px;
+  background-color: #fbf9ff;
+  color: rgb(60, 11, 109);
+  border: 1px solid rgba(139, 57, 177, 0.258);
+  box-shadow: 0 12px 28px rgba(155, 135, 202, 0.35);
+}
+
+/* HEADER */
+.steps-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+
+.step-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0 12px;
+}
+
+/* NAV */
+.step-nav {
+  background: rgba(169, 129, 232, 0.458);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.step-nav:hover {
+  background: rgb(168, 129, 232);
+}
+
+/* BARRA LINEAL */
+.steps-bar {
+  margin-top: 16px;
+  height: 5px;
+  width: 100%;
+  background: rgba(229, 217, 235, 0.563);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.steps-bar-fill {
+  height: 100%;
+  background:  rgb(168, 129, 232);
+  border-radius: 6px;
+  transition: width .35s ease;
+}
+
+
+
+
+/* REFERENCIA CARD */
+.reference-card {
+  margin-top: 30px;
+  background: white;
+  padding: 26px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+/* HEADER REFERENCIA */
+.reference-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--support);
+  margin-bottom: 10px;
+}
+
+.reference-header h3 {
+  margin: 0;
+}
+
+.ref-muted {
+  color: #777;
+  font-size: .9rem;
+  margin-bottom: 8px;
+}
+
+
+.Ri-top-cat {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  min-height: 170px;
+}
+
+.Ri-top-cat img {
+  width: min(300px, 100%);
+  height: auto;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 8px 10px rgba(116, 81, 178, 0.28));
+  margin-top: 30px;
+}
+

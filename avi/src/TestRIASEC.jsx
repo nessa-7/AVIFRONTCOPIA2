@@ -46,9 +46,19 @@ const speak = (text, setSpeaking, setEmotion) => {
 
 export default function TestRIASEC({ pretestScores, sessionId, reporteId }) {
 
-  const { id } = useAuth();
+  const { id, token } = useAuth();
   const navigate = useNavigate();
   const API = import.meta.env.VITE_API_BACKEND;
+
+  const fetchAuth = (url, options = {}) => {
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`
+      }
+    });
+  };
 
   // Test RIASEC siempre es el test 1
   const [testId] = useState(1);
@@ -63,6 +73,17 @@ export default function TestRIASEC({ pretestScores, sessionId, reporteId }) {
   const [count, setCount] = useState(0);
 
 
+
+  if (!token) {
+    return (
+      <div className="test-riasec-container">
+        <div className="loading-screen">
+          <h2>Necesitas iniciar sesión</h2>
+          <p>Inicia sesión para continuar con el test.</p>
+        </div>
+      </div>
+    );
+  }
 
   const [speaking, setSpeaking] = useState(false);
   const [emotion, setEmotion] = useState("neutral");
@@ -90,7 +111,7 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
 
        setLoading(true);
 
-      const res = await fetch(`${API}/next-question`, {
+      const res = await fetchAuth(`${API}/next-question`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -121,7 +142,7 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
 
     try {
 
-      await fetch(`${API}/answer`, {
+      await fetchAuth(`${API}/answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -173,7 +194,7 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
   );
 
   try {
-    const res = await fetch(`${API}/finish`, {
+    const res = await fetchAuth(`${API}/finish`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -198,11 +219,11 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
 };
 
   const options = [
-    { label: "😍 Me encanta", value: 5 },
-    { label: "🙂 Me gusta", value: 4 },
-    { label: "😐 Neutral", value: 3 },
-    { label: "🙁 No me gusta", value: 2 },
-    { label: "😡 Odio esto", value: 1 }
+    { label: "Me encanta", value: 5 },
+    { label: "Me gusta", value: 4 },
+    { label: "Neutral", value: 3 },
+    { label: "No me gusta", value: 2 },
+    { label: "Odio esto", value: 1 }
   ];
 
 

@@ -1,6 +1,6 @@
 .admin-layout {
   display: flex;
-  height: 100vh;
+  height: auto;
 }
 
 .sidebar {
@@ -13,4 +13,21 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+@media (max-width: 900px){
+  .admin-layout{
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar{
+    width: 100%;
+    height: auto;
+  }
+
+  .admin-content{
+    padding: 12px;
+  }
 }

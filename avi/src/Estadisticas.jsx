@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 
 import "./Estadisticas.css";
+import { useAuth } from "./context/AuthContext";
 
 /* -------- REGISTRO CHARTJS -------- */
 ChartJS.register(
@@ -50,27 +51,39 @@ function Estadisticas() {
   const [evolucionPrograma, setEvolucionPrograma] = useState([]);
   const [yearPrograma, setYearPrograma] = useState(new Date().getFullYear());
 
+  const { token } = useAuth();
+
+  const fetchAuth = (url, options = {}) => {
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`
+      }
+    });
+  };
+
   /* -------- FETCHS -------- */
   async function getResumen() {
-    const res = await fetch(API_RESUMEN);
+    const res = await fetchAuth(API_RESUMEN);
     const json = await res.json();
     setResumen(json.data);
   }
 
   async function getMensual(year) {
-    const res = await fetch(`${API_MENSUAL}?year=${year}`);
+    const res = await fetchAuth(`${API_MENSUAL}?year=${year}`);
     const json = await res.json();
     setMensual(json.data.meses || []);
   }
 
   async function getProgramasTop() {
-    const res = await fetch(`${API_TOP_PROGRAMAS}?limit=5&meses=${meses}`);
+    const res = await fetchAuth(`${API_TOP_PROGRAMAS}?limit=5&meses=${meses}`);
     const json = await res.json();
     setProgramasTop(json.data || []);
   }
 
   async function getProgramasSelect() {
-    const res = await fetch(API_PROGRAMAS_SELECT);
+    const res = await fetchAuth(API_PROGRAMAS_SELECT);
     const json = await res.json();
     setProgramasSelect(json.data || []);
 
@@ -82,7 +95,7 @@ function Estadisticas() {
   async function getProgramaMes() {
     if (!programaSel) return;
 
-    const res = await fetch(
+    const res = await fetchAuth(
       `${API_PROGRAMA_MES}?programaId=${programaSel}&year=${yearPrograma}`
     );
     const json = await res.json();
@@ -91,21 +104,29 @@ function Estadisticas() {
 
   /* -------- EFFECTS -------- */
   useEffect(() => {
-    getResumen();
-    getProgramasSelect();
-  }, []);
+    if (token) {
+      getResumen();
+      getProgramasSelect();
+    }
+  }, [token]);
 
   useEffect(() => {
-    getMensual(yearTests);
-  }, [yearTests]);
+    if (token) {
+      getMensual(yearTests);
+    }
+  }, [token, yearTests]);
 
   useEffect(() => {
-    getProgramasTop();
-  }, [meses]);
+    if (token) {
+      getProgramasTop();
+    }
+  }, [token, meses]);
 
   useEffect(() => {
-    getProgramaMes();
-  }, [programaSel, yearPrograma]);
+    if (token) {
+      getProgramaMes();
+    }
+  }, [token, programaSel, yearPrograma]);
 
   if (!resumen) return <p>Cargando estadísticas...</p>;
 
@@ -178,9 +199,12 @@ function Estadisticas() {
   };
 
   return (
-    <div>
+    <div className="contenedorestadisticas">
 
-      <h1 id="tituloestadisticas">Estadísticas de Tests</h1>
+    <div className="tituloestadisticas">
+      <h1>Estadísticas de Tests</h1>
+    </div>
+      
 
       <div className="Test">
 
@@ -189,6 +213,8 @@ function Estadisticas() {
           <Bar
             data={resumenBarData}
             options={{
+              responsive: true,
+              maintainAspectRatio: false,
               plugins: { legend: { display: false } },
               scales: {
                 y: {
@@ -216,6 +242,7 @@ function Estadisticas() {
           <Line data={mensualData} 
             options={{
               responsive: true,
+              maintainAspectRatio: false,
               scales: {
                 y: {
                   beginAtZero: true,
@@ -234,7 +261,10 @@ function Estadisticas() {
 
       </div>
 
-      <h1 id="tituloestadisticas">Estadísticas de Programas</h1>
+      <div className="tituloestadisticas">
+      <h1>Estadísticas de Programas</h1>
+    </div>
+
 
       <div className="Test">
 
@@ -255,6 +285,8 @@ function Estadisticas() {
           <Doughnut
             data={programasDonutData}
               options={{
+                responsive: true,
+                maintainAspectRatio: false,
                 cutout: "60%",
                 plugins: {
                   legend: {
@@ -262,7 +294,7 @@ function Estadisticas() {
                     position: "right", 
                     labels: {
                       boxWidth: 14,
-                      padding: 15,
+                      padding: 20,
                       font: {
                         size: 12
                       }
@@ -305,6 +337,7 @@ function Estadisticas() {
           <Line data={programaLineData} 
             options={{
               responsive: true,
+              maintainAspectRatio: false,
               scales: {
                 y: {
                   beginAtZero: true,

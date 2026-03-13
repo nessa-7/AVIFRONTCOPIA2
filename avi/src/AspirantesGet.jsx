@@ -44,7 +44,17 @@ const [guardandoEdicion, setGuardandoEdicion] = useState(false);
 const [subiendoExcel, setSubiendoExcel] = useState(false);
 const excelInputRef = useRef(null);
 
-const { nombre } = useAuth();
+const { nombre, token } = useAuth();
+
+const fetchAuth = (url, options = {}) => {
+  return fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
 
 const formatearFecha = (valor) => {
   if (!valor) return "";
@@ -59,12 +69,14 @@ const formatearFecha = (valor) => {
 };
 
 
-useEffect(()=>{
- obtenerAspirantes()
-},[])
+useEffect(() => {
+  if (token) {
+    obtenerAspirantes();
+  }
+}, [token])
 
 const obtenerAspirantes = async ()=>{
- const res = await fetch(API)
+ const res = await fetchAuth(API)
  const data = await res.json()
  setAspirantes(data)
 }
@@ -109,7 +121,7 @@ const confirmarEstado = async (asp) => {
 
   if(result.isConfirmed){
 
-  await fetch(`${API}/${asp.idASPIRANTE}/status`,{
+  await fetchAuth(`${API}/${asp.idASPIRANTE}/status`,{
   method:"PATCH",
   headers:{ "Content-Type":"application/json"},
   body:JSON.stringify({activo:!asp.activo})
@@ -186,7 +198,7 @@ const registrarNuevoAspirante = async (e) => {
   setGuardandoNuevo(true);
 
   try {
-    const res = await fetch(REGISTROASPIRANTES_API, {
+    const res = await fetchAuth(REGISTROASPIRANTES_API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -258,7 +270,7 @@ const guardarEdicionAspirante = async (e) => {
 
   setGuardandoEdicion(true);
   try {
-    const res = await fetch(`${API}/${modalEditar.idASPIRANTE}`, {
+    const res = await fetchAuth(`${API}/${modalEditar.idASPIRANTE}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editForm)
@@ -474,7 +486,7 @@ const subirExcelAspirantes = async (e) => {
       }
 
       try {
-        const res = await fetch(REGISTROASPIRANTES_API, {
+        const res = await fetchAuth(REGISTROASPIRANTES_API, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -531,7 +543,7 @@ return (
 
  <div className="buttonsañadir">
 
-    <h1 className="tituloadmin">Hola, {nombre}</h1>    
+    <h1 className="tituloadmin">{nombre}</h1>    
         <div className="botonesañadir">
               <button
                 onClick={abrirModalNuevo}

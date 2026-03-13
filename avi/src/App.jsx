@@ -3,7 +3,6 @@ import {AuthPro, useAuth } from "./context/AuthContext";
 
 
 import './App.css'
-import BienvenidaTest from "./BienvenidaTest";
 import Registro from "./Registro";
 import Resultado from "./Resultado";
 import Programas from "./Programas";
@@ -24,7 +23,14 @@ import EditarAdmin from "./EditarAdmin";
 import ProgramasAdmin from "./ProgramasAdmin";
 import MisReportes from "./MisReportes";
 import ReportesAspirante from "./ReportesAspirante";
+import InicioAspirante from "./InicioAspirante";
+import ComoFuncionaTest from "./ComoFuncionaTest";
 
+import AprendizGet from "./AprendizGet";
+import AprendizPrediccion from "./AprendicesIA";
+import AprendicesIA from "./AprendicesIA";
+import RIASECInfo from "./RIASECInfo";
+import InicioAdmin from "./InicioAdmin";
 
 function App() {
 
@@ -36,7 +42,6 @@ function App() {
             <Navbar></Navbar>
             <Routes>
               <Route path="/" element={<Inicio></Inicio>}></Route>
-              <Route path="/bienvenidatest" element={<BienvenidaTest></BienvenidaTest>}></Route>
               <Route path="/registro" element={<Registro></Registro>}></Route>
               <Route path="/resultado" element={<Resultado></Resultado>}></Route>
               <Route path="/programas" element={<Programas></Programas>}></Route>
@@ -55,6 +60,15 @@ function App() {
               <Route path="/listarprogramas" element={<ProgramasAdmin></ProgramasAdmin>}></Route>
               <Route path="/misreportes" element={<MisReportes></MisReportes>}></Route>
               <Route path="/reportesporasp/:id" element={<ReportesAspirante></ReportesAspirante>}></Route>
+              <Route path="/inicioaspirante" element={<InicioAspirante></InicioAspirante>}></Route>
+              <Route path="/inicioadmin" element={<InicioAdmin></InicioAdmin>}></Route>
+              <Route path="/comofuncionatest" element={<ComoFuncionaTest></ComoFuncionaTest>}></Route>
+              <Route path="/riasecinfo" element={<RIASECInfo></RIASECInfo>}></Route>
+
+              <Route path="/admin/aprendices" element={<AprendizGet></AprendizGet>}></Route>
+              <Route path="/listaraprendices" element={<AprendizGet />} />
+              <Route path="/prediccion-aprendiz/:id" element={<AprendicesIA></AprendicesIA>} ></Route>
+              <Route path="/prediccion-aprendiz" element={<AprendicesIA></AprendicesIA>} ></Route>
             </Routes>
           
         </BrowserRouter>

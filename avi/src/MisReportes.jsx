@@ -48,32 +48,58 @@ async function traer() {
 
     {reportes.map((reporte) => (
       <div key={reporte.idREPORTE} className="reporte-card">
-
-        <p className="fecha">
-             {new Date(reporte.Fecha).toLocaleDateString()}
-        </p>
-
-          <h4 className="seccion-titulo">Puntajes RIASEC</h4>
-            <div className="puntajes-grid">
-                <div className="puntaje-box">R: {reporte.puntajeR}</div>
-                <div className="puntaje-box">I: {reporte.puntajeI}</div>
-                <div className="puntaje-box">A: {reporte.puntajeA}</div>
-                <div className="puntaje-box">S: {reporte.puntajeS}</div>
-                <div className="puntaje-box">E: {reporte.puntajeE}</div>
-                <div className="puntaje-box">C: {reporte.puntajeC}</div>
-            </div>
+        <div className="reporte-main">
+          <p className="fecha">
+            {new Date(reporte.Fecha).toLocaleDateString()}
+          </p>
 
           <h4 className="seccion-titulo">Recomendaciones</h4>
 
           {reporte.recomendaciones.map((rec) => (
             <div key={rec.idRECOMENDACION} className="recomendacion-card">
-            <p><strong>{rec.nombre}</strong></p>
+              <p><strong>{rec.nombre}</strong></p>
               <p>{rec.descripcion}</p>
             </div>
           ))}
-
         </div>
-      ))}
+
+        <aside className="riasec-side">
+          <h4 className="riasec-title">RIASEC</h4>
+          <div className="riasec-hex">
+            <div className="riasec-node r">
+              <span className="riasec-letter">REALISTA</span>
+              <small>Hacer</small>
+              <span className="riasec-score">{reporte.puntajeR}</span>
+            </div>
+            <div className="riasec-node i">
+              <span className="riasec-letter">INVESTIGADOR</span>
+              <small>pensar</small>
+              <span className="riasec-score">{reporte.puntajeI}</span>
+            </div>
+            <div className="riasec-node a">
+              <span className="riasec-letter">ARTISTA</span>
+              <small>crear</small>
+              <span className="riasec-score">{reporte.puntajeA}</span>
+            </div>
+            <div className="riasec-node s">
+              <span className="riasec-letter">SOCIAL</span>
+              <small>ayudar</small>
+              <span className="riasec-score">{reporte.puntajeS}</span>
+            </div>
+            <div className="riasec-node e">
+              <span className="riasec-letter">EMPRENDEDOR</span>
+              <small>persuadir</small>
+              <span className="riasec-score">{reporte.puntajeE}</span>
+            </div>
+            <div className="riasec-node c">
+              <span className="riasec-letter">CONVENCIONAL</span>
+              <small>organizar</small>
+              <span className="riasec-score">{reporte.puntajeC}</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    ))}
 
     </div>
   );

@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Resultado.css"
-import "./Mapa.css";
 
 import { useEffect, useState } from "react";
 import Avatar3D from "./components/Avatar3D";
@@ -143,7 +142,6 @@ const handleProgramOpen = (program) => {
             </div>
         </div>
 
-        <hr className="resultado-divider" />
 
         {/* Tarjetas desplegables */}
         <div className="programs-pane">

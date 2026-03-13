@@ -34,8 +34,8 @@ function PerfilPopup( {onClose }) {
                             src={foto || "/placeholder.svg"} // muestra la foto del usuario o placeholder
                             alt={`Perfil de ${nombre || "Aspirante"}`}
                             style={{
-                                width: "80%",
-                                height: "80%",
+                                width: "100%",
+                                height: "100%",
                                 objectFit: "cover",
                                 borderRadius: "50%", // para que sea redonda
                             }}/>

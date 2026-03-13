@@ -1,8 +1,6 @@
 import { useAuth } from "./context/AuthContext";
-import NavAdmin from "./NavAdmin"
 import Nav from "./Nav"
-import {Link} from 'react-router-dom'
-import Sidebar from "./Sidebar";
+import {Link, useNavigate} from 'react-router-dom'
 import AdminLayout from "./AdminLayout";
 
 
@@ -25,20 +23,42 @@ function Navbar({children}){
             return <Nav></Nav>
         }
 
+    const navigate = useNavigate()
+
+
+    function Irlogin(){
+        navigate('/login')
+    }
+
+    function Irregistro(){
+        navigate('/registro')
+    }
+
+    function Irinicio(){
+        navigate('/')
+    }
+
+
     return(
 
         <div>
-            <nav>
-                <Link to="/">Inicio 
-                    <img src="/logoAVI.png" alt="AVI Logo" className="logo-img" style={{height:"50px", width: "auto"}}></img>
-                </Link>
 
-
-                <div className="nav-right">
-                    <Link to="/login" className='btn-nav btn-login'>Login</Link>
-                    <Link to="/registro" className='btn-nav btn-register'>Registro</Link>
+            <header className="landing-topbar">
+                <div className="landing-brand">
+                    <span className="brand-a" onClick={Irinicio}>AVI</span>
+                    <span className="brand-b" onClick={Irinicio}> SENA </span>
                 </div>
-            </nav>
+
+                <div className="landing-top-actions">
+                    <button type="button" className="landing-course-btn" onClick={Irlogin}>
+                    Login
+                    </button>
+                    <button type="button" className="landing-course-btn" onClick={Irregistro}>
+                    Registro
+                    </button>
+                </div>
+            </header>
+           
         </div>
         
 

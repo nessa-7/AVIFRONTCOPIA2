@@ -44,7 +44,28 @@ const speak = (text, setSpeaking) => {
 export default function Pretest() {
 
   const API = import.meta.env.VITE_API_BACKEND;
-  const { id } = useAuth();
+  const { id, token } = useAuth();
+
+  if (!token) {
+    return (
+      <div className="pretest-container">
+        <div className="loading-screen">
+          <h2>Necesitas iniciar sesión</h2>
+          <p>Inicia sesión para continuar con el pretest.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const fetchAuth = (url, options = {}) => {
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`
+      }
+    });
+  };
 
   const [startTest,setStartTest]=useState(false);
   const [pretestScores,setPretestScores]=useState(null);
@@ -169,7 +190,7 @@ const handleSubmit = async () => {
 
   try {
 
-    const startRes = await fetch(`${API}/start`, {
+    const startRes = await fetchAuth(`${API}/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ aspiranteId: id })
@@ -183,7 +204,7 @@ const handleSubmit = async () => {
     const startData = await startRes.json();
     setReporteId(startData.reporteId);
 
-    const res = await fetch(`${API}/pretest`, {
+    const res = await fetchAuth(`${API}/pretest`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

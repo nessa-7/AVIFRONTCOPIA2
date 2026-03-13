@@ -1,26 +1,31 @@
 .reportes-container {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 10px;
   font-family: 'Segoe UI', sans-serif;
+  color: #3f3170;
 }
 
 .titulo {
   text-align: center;
   margin-bottom: 40px;
   font-size: 28px;
-  color: #222;
+  color: #3f3170;
 }
 
 /* ================= CARD PRINCIPAL ================= */
 
 .reporte-card {
-  background: #ffffff;
+  background: linear-gradient(180deg, #f7f1ff 0%, #efe7fb 100%);
   border-radius: 18px;
   padding: 25px;
   margin-bottom: 35px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dbcff0;
+  box-shadow: 0 8px 25px rgba(94, 72, 139, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
+  gap: 20px;
 }
 
 .reporte-card:hover {
@@ -30,50 +35,93 @@
 
 .reporte-card h4 {
   margin-top: 20px;
-  margin-bottom: 15px;
-  color: #444;
+  margin-bottom: 5px;
+  color: #3f3170;
 }
 
 /* ================= FECHA ================= */
 
-.reporte-card strong {
-  color: #333;
-}
+.reporte-card strong { color: #2f2558; }
 
 /* ================= GRID RIASEC ================= */
 
-.puntajes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+.riasec-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
-  margin-top: 15px;
+  border-left: 1px dashed #dbcff0;
+  padding-left: 18px;
 }
 
-.puntaje-box {
-  background: linear-gradient(135deg, #e3f2fd, #f1f8ff);
-  padding: 12px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: 600;
-  color: #1976d2;
-  font-size: 14px;
+.riasec-title {
+  font-size: 1rem;
+  color: #5b44c0;
+  letter-spacing: 0.04em;
 }
+
+.riasec-hex {
+  position: relative;
+  width: 480px;
+  height: 300px;
+}
+
+.riasec-hex::before {
+  content: "";
+  position: absolute;
+  inset: 20px 28px;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  border: 2px dashed #d6c7ea;
+}
+
+.riasec-node {
+  position: absolute;
+  width: 150px;
+  height: 90px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12), 0 6px 12px rgba(88, 60, 140, 0.18);
+}
+
+.riasec-letter { font-size: 0.9rem; line-height: 1; }
+.riasec-score { font-size: 0.85rem; line-height: 1; }
+
+.riasec-node.r { top: 0; left: 170px; background: #f2c45a; }
+.riasec-node.i { top: 55px; right: 30px; background: #68cde9; }
+.riasec-node.a { bottom: 55px; right: 30px; background: #7d6ae7; }
+.riasec-node.s { bottom: 0; left: 170px; background: #f2c45a; }
+.riasec-node.e { bottom: 55px; left: 30px; background: #6ac7dc; }
+.riasec-node.c { top: 55px; left: 30px; background: #7d6ae7; }
+
+
+.riasec-node small{
+  position: absolute;
+  gap: 2px;
+  font-weight: 200;
+  color: #000000;
+}
+
 
 /* ================= RECOMENDACIONES ================= */
 
 .recomendacion-card {
-  background: #f9fafc;
+  background: #fbf8ff;
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 12px;
-  border-left: 4px solid #28d219;
+  border-left: 4px solid #6ac7dc;
   transition: all 0.25s ease;
 }
 
 .recomendacion-card:hover {
-  background: #fbfff4;
+  background: #f3ecff;
   transform: translateX(6px);
-  box-shadow: 0 8px 25px rgba(118, 75, 162, 0.15);
+  box-shadow: 0 8px 25px rgba(118, 75, 162, 0.18);
 }
 
 .recomendacion-card strong {
@@ -93,7 +141,7 @@
 
 .fecha {
   font-size: 14px;
-  color: #888;
+  color: #6d5aa7;
   margin-bottom: 25px;
 }
 
@@ -104,7 +152,7 @@
   font-weight: 500;
   margin-top: 30px;
   margin-bottom: 20px;
-  color: #444;
+  color: #3f3170;
 }
 
 /* ================= RESPONSIVE ================= */
@@ -112,9 +160,17 @@
 @media (max-width: 768px) {
   .reporte-card {
     padding: 18px;
+    grid-template-columns: 1fr;
   }
 
   .titulo {
     font-size: 22px;
+  }
+
+  .riasec-side {
+    border-left: none;
+    border-top: 1px dashed #dbcff0;
+    padding-left: 0;
+    padding-top: 18px;
   }
 }
