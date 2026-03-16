@@ -12,6 +12,8 @@ function ProgramasAdmin() {
     nombre: "",
     nivel: "Ninguno",
     descripcion: "",
+    modalidad: "",
+    AR: "",
     centroId: "",
     activo: true
   };
@@ -40,8 +42,9 @@ function ProgramasAdmin() {
     return fetch(url, {
       ...options,
       headers: {
-        ...options.headers,
-        Authorization: `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        ...(options.headers || {})
       }
     });
   };
@@ -77,7 +80,7 @@ function ProgramasAdmin() {
       String(p.idPROGRAMA || "").includes(txt) ||
       String(p.nombre || "").toLowerCase().includes(txt) ||
       String(p.nivel || "").toLowerCase().includes(txt) ||
-      String(p.centro?.nombre || "").toLowerCase().includes(txt)
+      String(p.centro?.descripcion || "").toLowerCase().includes(txt)
     );
   });
 
@@ -157,6 +160,8 @@ function ProgramasAdmin() {
           nombre: nuevoForm.nombre.trim(),
           nivel: nuevoForm.nivel,
           descripcion: nuevoForm.descripcion.trim(),
+          modalidad: nuevoForm.modalidad?.trim(),
+          AR: nuevoForm.AR?.trim(),
           centroId: Number(nuevoForm.centroId),
           activo: Boolean(nuevoForm.activo)
         })
@@ -190,6 +195,8 @@ function ProgramasAdmin() {
       nombre: programa.nombre || "",
       nivel: programa.nivel || "Ninguno",
       descripcion: programa.descripcion || "",
+      modalidad: programa.modalidad || "",
+      AR: programa.AR || "",
       centroId: String(programa.centroId || ""),
       activo: Boolean(programa.activo)
     });
@@ -219,6 +226,8 @@ function ProgramasAdmin() {
           nombre: editForm.nombre.trim(),
           nivel: editForm.nivel,
           descripcion: editForm.descripcion.trim(),
+          modalidad: editForm.modalidad?.trim() || null,
+          AR: editForm.AR?.trim() || null,
           centroId: Number(editForm.centroId),
           activo: Boolean(editForm.activo)
         })
@@ -269,6 +278,8 @@ function ProgramasAdmin() {
       nombre: tomar("nombre", "Nombre"),
       nivel: tomar("nivel", "Nivel", "tipo"),
       descripcion: tomar("descripcion", "Descripcion", "descripción"),
+      modalidad: tomar("modalidad", "Modalidad"),
+      AR: tomar("AR", "ar", "url", "realidad aumentada"),
       centroId: normalizarNumero(tomar("centroId", "CentroId", "idCentro", "centro_id")),
       activo
     };
@@ -331,6 +342,8 @@ function ProgramasAdmin() {
               nombre: fila.nombre.trim(),
               nivel: fila.nivel,
               descripcion: fila.descripcion.trim(),
+              modalidad: fila.modalidad || "",
+              AR: fila.AR || "",
               centroId: Number(fila.centroId),
               activo: Boolean(fila.activo)
             })
@@ -441,7 +454,11 @@ function ProgramasAdmin() {
                 <td>{p.idPROGRAMA}</td>
                 <td>{p.nombre}</td>
                 <td>{p.nivel}</td>
-                <td>{p.centro?.nombre || `Centro ${p.centroId || ""}`}</td>
+                <td>
+                  {p.centro?.descripcion ||
+                  centros.find(c => c.idCENTRO === p.centroId)?.descripcion ||
+                  "Centro no asignado"}
+                </td>                
                 <td>
                   <span
                     className={p.activo ? "pm-state pm-state-on" : "pm-state pm-state-off"}
@@ -499,7 +516,13 @@ function ProgramasAdmin() {
             <div className="pm-field"><b>ID:</b> {modalDetalle.idPROGRAMA}</div>
             <div className="pm-field"><b>Nombre:</b> {modalDetalle.nombre}</div>
             <div className="pm-field"><b>Nivel:</b> {modalDetalle.nivel}</div>
-            <div className="pm-field"><b>Centro:</b> {modalDetalle.centro?.nombre || "No asignado"}</div>
+            <div className="pm-field"><b>Modalidad:</b> {modalDetalle.modalidad || "No especificado"}</div>
+            <div className="pm-field"><b>URL AR:</b> {modalDetalle.AR ? <a href={modalDetalle.AR} target="_blank" rel="noreferrer">{modalDetalle.AR}</a> : "No registrado"}</div>
+            <div className="pm-field">
+              <b>Centro:</b> {modalDetalle.centro?.descripcion ||
+              centros.find(c => c.idCENTRO === modalDetalle.centroId)?.descripcion ||
+              "No asignado"}
+            </div>            
             <div className="pm-field"><b>Descripcion:</b> {modalDetalle.descripcion || "Sin descripcion"}</div>
             <div className="pm-field"><b>Estado:</b> {modalDetalle.activo ? "Habilitado" : "Deshabilitado"}</div>
           </div>
@@ -571,16 +594,21 @@ function ProgramasAdmin() {
                 <option value="false">Inactivo</option>
               </select>
 
+              <label>Modalidad</label>
+              <input
+                name="modalidad"
+                value={nuevoForm.modalidad}
+                onChange={handleNuevoChange}
+                className="pm-drawer-input"
+              />
+
               <label>URL Realidad Aumentada</label>
               <textarea
-                name="url"
+                name="AR"
                 value={nuevoForm.AR}
                 onChange={handleNuevoChange}
                 className="pm-drawer-input"
-                required
               />
-
-
 
               <div className="pm-drawer-actions">
                 <button type="button" className="pm-btn-cancel" onClick={cerrarModalNuevo}>
@@ -633,6 +661,22 @@ function ProgramasAdmin() {
                 value={editForm.descripcion}
                 onChange={handleEditChange}
                 required
+              />
+
+              <label>Modalidad</label>
+              <input
+                className="pm-edit-input"
+                name="modalidad"
+                value={editForm.modalidad}
+                onChange={handleEditChange}
+              />
+
+              <label>URL Realidad Aumentada</label>
+              <textarea
+                className="pm-edit-input"
+                name="AR"
+                value={editForm.AR}
+                onChange={handleEditChange}
               />
 
               <label>Centro</label>
