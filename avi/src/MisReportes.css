@@ -9,23 +9,25 @@
 .titulo {
   text-align: center;
   margin-bottom: 40px;
-  font-size: 28px;
   color: #3f3170;
+  font-size: 36px;
+  font-weight: 650;
+  color: #3e3467;
 }
 
 /* ================= CARD PRINCIPAL ================= */
 
 .reporte-card {
-  background: linear-gradient(180deg, #f7f1ff 0%, #efe7fb 100%);
   border-radius: 18px;
   padding: 25px;
   margin-bottom: 35px;
-  border: 1px solid #dbcff0;
+  border: 1px solid #d0bbf5;
   box-shadow: 0 8px 25px rgba(94, 72, 139, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
   gap: 20px;
+  background: linear-gradient(180deg, #f9f4ff 0%, #efe7fb 100%);
 }
 
 .reporte-card:hover {
@@ -77,26 +79,38 @@
 
 .riasec-node {
   position: absolute;
-  width: 150px;
+  width: 135px;
   height: 90px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  gap: 2px;
+  gap: 1px;
   font-weight: 500;
   color: #fff;
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12), 0 6px 12px rgba(88, 60, 140, 0.18);
 }
 
-.riasec-letter { font-size: 0.9rem; line-height: 1; }
-.riasec-score { font-size: 0.85rem; line-height: 1; }
+.riasec-letter { 
+  font-size: 0.9rem; 
+  line-height: 1; 
+  margin-bottom: -25px;
+}
 
-.riasec-node.r { top: 0; left: 170px; background: #f2c45a; }
-.riasec-node.i { top: 55px; right: 30px; background: #68cde9; }
-.riasec-node.a { bottom: 55px; right: 30px; background: #7d6ae7; }
-.riasec-node.s { bottom: 0; left: 170px; background: #f2c45a; }
-.riasec-node.e { bottom: 55px; left: 30px; background: #6ac7dc; }
-.riasec-node.c { top: 55px; left: 30px; background: #7d6ae7; }
+.riasec-score { 
+  font-size: 0.8rem; 
+  line-height: 1; 
+  margin-top: -15px;
+  font-weight: 700;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: rgba(255, 255, 255, 0.734);
+}
+  
+.riasec-node.r { top: 0; left: 175px; background: #68cde9; color: #1f7289; }
+.riasec-node.i { top: 55px; right: 40px; background: #ef9cdcf8; color: #d03cc1f8;}
+.riasec-node.a { bottom: 55px; right: 40px; background: #5af27d; color: #149c34; }
+.riasec-node.s { bottom: 0; left: 175px; background: #c06adcf2; color: #74268ef2;  }
+.riasec-node.e { bottom: 55px; left: 40px; background:  #f2ef5ae7; color: #c1a924; }
+.riasec-node.c { top: 55px; left: 40px; background: #ef8d6ff7; color: #a9432ae9; }
 
 
 .riasec-node small{
@@ -110,18 +124,21 @@
 /* ================= RECOMENDACIONES ================= */
 
 .recomendacion-card {
-  background: #fbf8ff;
+  background: #ffffff;
   padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-top: 20px;
   border-left: 4px solid #6ac7dc;
   transition: all 0.25s ease;
 }
 
 .recomendacion-card:hover {
-  background: #f3ecff;
+  background: #f8f5ff;
   transform: translateX(6px);
   box-shadow: 0 8px 25px rgba(118, 75, 162, 0.18);
+    border: 1px solid #dbcff0;
+
 }
 
 .recomendacion-card strong {

@@ -20,7 +20,7 @@
   font-weight: 800;
   color: #3e3467;
   margin-top: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .cft-heading p {
@@ -30,7 +30,7 @@
 }
 
 .cft-card {
-  margin-top: 40px;
+  margin-top: 60px;
   display: flex;
   align-items: center;
   justify-content: center;

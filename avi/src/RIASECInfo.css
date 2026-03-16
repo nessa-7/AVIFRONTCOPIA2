@@ -175,11 +175,30 @@
 
 
 .h13{
-font-size: 1.9rem;
+  font-size: 1.9rem;
   margin-top: 10px;
-  margin-bottom:30px;
+  margin-bottom:20px;
   color: #3b1858;
   text-align: center;
+}
+
+
+
+.step-content {
+  background: #fdf8ff;
+  border: 1px solid #d8d8f6;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 14px 0 10px;
+  color: #34353f;
+  line-height: 1.6;
+  text-align: center;
+
+}
+
+.step-content p {
+  margin: auto;
+  font-size: 0.96rem;
 }
 
 /* STEPPER */
@@ -190,8 +209,7 @@ font-size: 1.9rem;
   border-radius: 18px;
   background-color: #fbf9ff;
   color: rgb(60, 11, 109);
-  border: 1px solid rgba(139, 57, 177, 0.258);
-  box-shadow: 0 12px 28px rgba(155, 135, 202, 0.35);
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
 }
 
 /* HEADER */
@@ -206,6 +224,13 @@ font-size: 1.9rem;
   font-weight: 600;
   font-size: 1.1rem;
   padding: 0 12px;
+  color: #6f2f94;
+  background: rgba(197, 172, 237, 0.226);
+  border-radius: 8px;
+  border: 1px solid rgba(139, 57, 177, 0.06);
+  box-shadow: 0 3px 5px rgba(155, 135, 202, 0.167);
+  margin: 2px;
+  margin-right: 4px;
 }
 
 /* NAV */
@@ -219,6 +244,8 @@ font-size: 1.9rem;
   font-size: 1.4rem;
   cursor: pointer;
   transition: background .2s ease;
+    box-shadow: 0 3px 5px rgba(155, 135, 202, 0.167);
+
 }
 
 .step-nav:hover {
@@ -273,6 +300,25 @@ font-size: 1.9rem;
   margin-bottom: 8px;
 }
 
+.riasec-ref-link {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: #333;
+  background: #f1f4ff;
+  border: 1px solid #d1d9f9;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.riasec-ref-link a {
+  color: #2e4dd3;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.riasec-ref-link a:hover {
+  color: #1c3bb5;
+}
 
 .Ri-top-cat {
   display: flex;

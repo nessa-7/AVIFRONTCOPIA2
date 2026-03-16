@@ -271,8 +271,23 @@ function ProgramasAdmin() {
       return String(Math.max(0, Math.trunc(n)));
     };
 
+    const normalizarTexto = (texto) => String(texto || "").toLowerCase().trim();
+
     const estadoRaw = tomar("activo", "Activo", "estado", "Estado").toLowerCase();
     const activo = ["true", "1", "si", "s", "activo", "habilitado"].includes(estadoRaw);
+
+    const centroTexto = tomar(
+      "centroId",
+      "CentroId",
+      "idCentro",
+      "centro_id",
+      "centro",
+      "Centro",
+      "nombreCentro",
+      "centroNombre"
+    );
+
+    const centroId = normalizarNumero(centroTexto, "");
 
     return {
       nombre: tomar("nombre", "Nombre"),
@@ -280,7 +295,8 @@ function ProgramasAdmin() {
       descripcion: tomar("descripcion", "Descripcion", "descripción"),
       modalidad: tomar("modalidad", "Modalidad"),
       AR: tomar("AR", "ar", "url", "realidad aumentada"),
-      centroId: normalizarNumero(tomar("centroId", "CentroId", "idCentro", "centro_id")),
+      centroId,
+      centroNombre: centroTexto,
       activo
     };
   };
@@ -311,12 +327,31 @@ function ProgramasAdmin() {
       let exitos = 0;
       const errores = [];
       const centrosValidos = new Set(centros.map((c) => Number(c.idCENTRO)));
+      const centrosPorNombre = new Map(
+        centros.map((c) => [String(c.descripcion || "").toLowerCase().trim(), Number(c.idCENTRO)])
+      );
       const nombresExistentes = new Set(
         programas.map((p) => String(p.nombre || "").trim().toLowerCase()).filter(Boolean)
       );
 
       for (let i = 0; i < rows.length; i++) {
         const fila = normalizarFilaExcel(rows[i]);
+
+        let centroId = Number(fila.centroId);
+        if (!Number.isFinite(centroId) || centroId <= 0) {
+          const centroNombreBuscado = String(fila.centroNombre || fila.centroId || "").trim().toLowerCase();
+          if (centroNombreBuscado) {
+            centroId = centrosPorNombre.get(centroNombreBuscado) || 0;
+          }
+        }
+
+        if (!centroId || !centrosValidos.has(centroId)) {
+          errores.push(`Fila ${i + 2}: Centro no existe (centroId/centroNombre incorrecto)`);
+          continue;
+        }
+
+        fila.centroId = String(centroId);
+
         const errorValidacion = validarPrograma(fila);
         if (errorValidacion) {
           errores.push(`Fila ${i + 2}: ${errorValidacion}`);
@@ -326,11 +361,6 @@ function ProgramasAdmin() {
         const nombreNorm = String(fila.nombre || "").trim().toLowerCase();
         if (nombresExistentes.has(nombreNorm)) {
           errores.push(`Fila ${i + 2}: el nombre del programa ya existe`);
-          continue;
-        }
-
-        if (!centrosValidos.has(Number(fila.centroId))) {
-          errores.push(`Fila ${i + 2}: centroId no existe`);
           continue;
         }
 
@@ -442,7 +472,6 @@ function ProgramasAdmin() {
               <th>ID</th>
               <th>Nombre</th>
               <th>Nivel</th>
-              <th>Centro</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -453,12 +482,7 @@ function ProgramasAdmin() {
                 
                 <td>{p.idPROGRAMA}</td>
                 <td>{p.nombre}</td>
-                <td>{p.nivel}</td>
-                <td>
-                  {p.centro?.descripcion ||
-                  centros.find(c => c.idCENTRO === p.centroId)?.descripcion ||
-                  "Centro no asignado"}
-                </td>                
+                <td>{p.nivel}</td>             
                 <td>
                   <span
                     className={p.activo ? "pm-state pm-state-on" : "pm-state pm-state-off"}

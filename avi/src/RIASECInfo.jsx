@@ -62,12 +62,22 @@ export default function RIASECInfo() {
 
 
         const steps = [
-        "El usuario responde un pretest inicial.",
-        "El microservicio de IA recibe estas respuestas y genera preguntas vocacionales RIASEC específicas para evaluar los intereses del usuario.",
-        "Cada respuesta a estas preguntas se puntúa según los seis tipos del modelo RIASEC.",
-        "Se suman puntos para R, I, A, S, E y C",
-        "Se identifica el perfil vocacional dominante (ej: I-A-S).",
-        "A partir de este perfil, el sistema recomienda programas de formación que se ajustan a los intereses y fortalezas del usuario."
+        {
+          title: "Interpretación de intereses",
+          desc: "Cada respuesta del test se relaciona con uno de los seis tipos de personalidad del modelo RIASEC."
+        },
+        {
+          title: "Construcción del perfil",
+          desc: "El sistema combina los tipos con mayor puntuación para construir un perfil vocacional dominante (por ejemplo: I-A-S)."
+        },
+        {
+          title: "Relación con áreas de estudio",
+          desc: "Cada perfil RIASEC se relaciona con áreas profesionales y programas de formación que comparten características similares."
+        },
+        {
+          title: "Generación de recomendaciones",
+          desc: "A partir de estas relaciones, la aplicación puede recomendar programas de formación que se ajustan mejor a los intereses del usuario."
+        }
         ];
 
         const [currentStep, setCurrentStep] = useState(0);
@@ -131,7 +141,9 @@ export default function RIASECInfo() {
       {/* STEPPER ALGORITMO */}
     <section className="riasec-steps-card">
 
-          <h1 className="h13">¿Cómo utilizamos el modelo RIASEC en AVI?</h1>
+      <h1 className="h13">¿Cómo utilizamos el modelo RIASEC en AVI?</h1>
+
+
 
   <div className="steps-header">
     <button className="step-nav" onClick={prevStep}>
@@ -139,12 +151,16 @@ export default function RIASECInfo() {
     </button>
 
     <div className="step-title">
-      {currentStep + 1}. {steps[currentStep]}
+      {currentStep + 1}. {steps[currentStep].title}
     </div>
 
     <button className="step-nav" onClick={nextStep}>
-      ›
+       ›
     </button>
+  </div>
+
+  <div className="step-content">
+    <p>{steps[currentStep].desc}</p>
   </div>
 
   <div className="steps-bar">
@@ -175,6 +191,17 @@ export default function RIASECInfo() {
     en la teoría vocacional RIASEC desarrollada por John L. Holland.
     El documento se utiliza como base teórica para instrumentos de
     orientación vocacional.
+  </p>
+
+  <p className="riasec-ref-link">
+    Consulta el documento completo en:
+    <a
+      href="https://educacion.gob.ec/wp-content/uploads/downloads/2017/04/Inventario-de-Preferencias-Profesionales-para-Jo%CC%81venesIPPJ.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Inventario de Preferencias Profesionales para Jóvenes (IPPJ)
+    </a>
   </p>
 
 </section>

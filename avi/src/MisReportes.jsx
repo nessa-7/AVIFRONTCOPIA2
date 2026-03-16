@@ -44,7 +44,7 @@ async function traer() {
   return (
 
   <div className="reportes-container">
-    <h2 className="titulo">Mis Reportes</h2>
+    <h2 className="titulo">MIS REPORTES</h2>
 
     {reportes.map((reporte) => (
       <div key={reporte.idREPORTE} className="reporte-card">
@@ -68,32 +68,27 @@ async function traer() {
           <div className="riasec-hex">
             <div className="riasec-node r">
               <span className="riasec-letter">REALISTA</span>
-              <small>Hacer</small>
               <span className="riasec-score">{reporte.puntajeR}</span>
             </div>
             <div className="riasec-node i">
               <span className="riasec-letter">INVESTIGADOR</span>
-              <small>pensar</small>
+
               <span className="riasec-score">{reporte.puntajeI}</span>
             </div>
             <div className="riasec-node a">
               <span className="riasec-letter">ARTISTA</span>
-              <small>crear</small>
               <span className="riasec-score">{reporte.puntajeA}</span>
             </div>
             <div className="riasec-node s">
               <span className="riasec-letter">SOCIAL</span>
-              <small>ayudar</small>
               <span className="riasec-score">{reporte.puntajeS}</span>
             </div>
             <div className="riasec-node e">
               <span className="riasec-letter">EMPRENDEDOR</span>
-              <small>persuadir</small>
               <span className="riasec-score">{reporte.puntajeE}</span>
             </div>
             <div className="riasec-node c">
               <span className="riasec-letter">CONVENCIONAL</span>
-              <small>organizar</small>
               <span className="riasec-score">{reporte.puntajeC}</span>
             </div>
           </div>

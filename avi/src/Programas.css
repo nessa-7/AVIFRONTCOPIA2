@@ -1,26 +1,177 @@
 /* Reset */
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+
+.programas {
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(60deg, #ece4f9 45%, #e9def7 70%);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
-/* Contenedor principal */
-.contenido {
-  padding: 40px;
-  background: #f4f6f9;
-  min-height: 100vh;
-  margin-left: var(--sidebar-width);
-
-}
-
-.contenido h1 {
+.programas h2 {
+  color: #430d64;
   text-align: center;
-  color: #1f2937;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-/* Cards */
-.avi-card {
+.programas-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.programas-btnnivel {
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #3da6d6;
+  min-width: 160px;
+  width: fit-content;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+}
+
+.programas-btnnivel:hover {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.25);
+  transform: translateY(-1px);
+}
+
+.programas-btnnivel:focus {
+  outline: none;
+  border-color: #0ea5e9;
+}
+
+.programas table {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.programas th,
+.programas td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.programas th {
+  background: linear-gradient(135deg, #5abeed, #4ea7ff);
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+}
+
+.programas tbody tr:nth-child(even) {
+  background: #f1f5f9;
+}
+
+.programas tbody tr:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 1024px) {
+  .programas {
+    padding: 16px;
+  }
+
+  .programas table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .programas th,
+  .programas td {
+    padding: 12px 10px;
+  }
+
+  .programas .avi-grid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  .programas {
+    padding: 12px;
+  }
+
+  .programas table,
+  .programas thead,
+  .programas tbody,
+  .programas th,
+  .programas td,
+  .programas tr {
+    display: block;
+  }
+
+  .programas thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .programas tbody tr {
+    margin-bottom: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+  }
+
+  .programas td {
+    position: relative;
+    padding-left: 50%;
+    text-align: right;
+  }
+
+  .programas td:before {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .programas td:nth-of-type(1):before { content: "Nivel"; }
+  .programas td:nth-of-type(2):before { content: "Nombre"; }
+  .programas td:nth-of-type(3):before { content: "Descripción"; }
+
+  .programas .programas-filters {
+    justify-content: space-between;
+  }
+
+  .programas-btnnivel {
+    width: 100%;
+    min-width: initial;
+    text-align: center;
+  }
+
+  .programas .avi-card {
+    padding: 16px;
+  }
+
+  .programas .avi-card input,
+  .programas .avi-card select,
+  .programas .avi-card textarea {
+    padding: 10px;
+  }
+}
+
+.programas .avi-card {
   background: white;
   border-radius: 14px;
   padding: 25px;
@@ -28,20 +179,19 @@
   transition: 0.3s ease;
 }
 
-.avi-card:hover {
+.programas .avi-card:hover {
   transform: translateY(-4px);
 }
 
 /* Formulario */
-.avi-card h3 {
+.programas .avi-card h3 {
   margin-bottom: 15px;
   color: #111827;
-  
 }
 
-.avi-card input,
-.avi-card select,
-.avi-card textarea {
+.programas .avi-card input,
+.programas .avi-card select,
+.programas .avi-card textarea {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -52,15 +202,15 @@
   transition: 0.2s;
 }
 
-.avi-card input:focus,
-.avi-card select:focus,
-.avi-card textarea:focus {
+.programas .avi-card input:focus,
+.programas .avi-card select:focus,
+.programas .avi-card textarea:focus {
   border-color: #16a34a;
   box-shadow: 0 0 0 2px rgba(22,163,74,0.2);
 }
 
 /* Botón principal */
-.btn-avi {
+.programas .btn-avi {
   background: linear-gradient(135deg, #16a34a, #22c55e);
   color: white;
   border: none;
@@ -72,34 +222,33 @@
   transition: 0.3s;
 }
 
-.btn-avi:hover {
+.programas .btn-avi:hover {
   background: linear-gradient(135deg, #15803d, #16a34a);
 }
 
 /* Grid de programas */
-.avi-grid {
+.programas .avi-grid {
   margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
-  
 }
 
 /* Estado */
-.estado-on {
+.programas .estado-on {
   color: #16a34a;
   font-weight: bold;
   margin-top: 10px;
 }
 
-.estado-off {
+.programas .estado-off {
   color: #dc2626;
   font-weight: bold;
   margin-top: 10px;
 }
 
 /* Botón activar / desactivar */
-.avi-card button {
+.programas .avi-card button {
   margin-top: 15px;
   width: 100%;
   padding: 10px;
@@ -111,12 +260,11 @@
   transition: 0.3s;
 }
 
-
-.avi-card button:hover {
+.programas .avi-card button:hover {
   background: #111827;
 }
 
-.descripcion{
+.programas .descripcion {
   margin-top: 10px;
   text-align: justify;
 }

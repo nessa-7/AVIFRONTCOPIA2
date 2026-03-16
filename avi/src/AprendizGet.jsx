@@ -267,147 +267,206 @@ function AprendizGet() {
       reader.readAsArrayBuffer(file);
     });
 
-  const normalizarFilaExcel = (row) => {
-    const tomar = (...claves) => {
-      for (const clave of claves) {
-        if (row[clave] !== undefined && row[clave] !== null && String(row[clave]).trim() !== "") {
-          return String(row[clave]).trim();
-        }
-      }
-      return "";
-    };
-
-    const normalizarId = (valor) => {
-      const raw = String(valor || "").trim();
-      if (!raw) return "";
-      if (/^\d+(\.0+)?$/.test(raw)) return String(Math.trunc(Number(raw)));
-      if (/^\d+E\+\d+$/i.test(raw)) return String(Math.trunc(Number(raw)));
-      return raw.replace(/\D/g, "");
-    };
-
-    const normalizarNumero = (valor, fallback = "0") => {
-      const raw = String(valor || "").trim();
-      if (!raw) return fallback;
-      const n = Number(raw.replace(",", "."));
-      if (!Number.isFinite(n)) return fallback;
-      return String(Math.max(0, Math.trunc(n)));
-    };
-
-    const estadoRaw = tomar("estado", "Estado", "activo", "Activo").toLowerCase();
-    const estado = ["true", "1", "si", "s", "activo", "habilitado"].includes(estadoRaw);
-
-    return {
-      idAPRENDIZ: normalizarId(tomar("idAPRENDIZ", "ID", "id", "identificacion")),
-      tipoDocumento: tomar("tipoDocumento", "TipoDocumento", "tipo_documento"),
-      nombre: tomar("nombre", "Nombre"),
-      apellidos: tomar("apellidos", "Apellidos"),
-      programaId: normalizarNumero(tomar("programaId", "ProgramaId", "idPrograma")),
-      horas_inasistidas: normalizarNumero(
-        tomar("horas_inasistidas", "HorasInasistidas", "horas")
-      ),
-      estado
-    };
+  const normalizarTexto = (texto) => {
+    return String(texto || "")
+      .toLowerCase()
+      .normalize("NFD") // separa letras y tildes
+      .replace(/[\u0300-\u036f]/g, "") // elimina tildes
+      .replace(/\s+/g, " ") // espacios dobles
+      .trim();
   };
+
+  const normalizarFilaExcel = (row) => {
+  const tomar = (...claves) => {
+    for (const clave of claves) {
+      if (row[clave] !== undefined && row[clave] !== null && String(row[clave]).trim() !== "") {
+        return String(row[clave]).trim();
+      }
+    }
+    return "";
+  };
+
+  const normalizarId = (valor) => {
+    const raw = String(valor || "").trim();
+    if (!raw) return "";
+    if (/^\d+(\.0+)?$/.test(raw)) return String(Math.trunc(Number(raw)));
+    if (/^\d+E\+\d+$/i.test(raw)) return String(Math.trunc(Number(raw)));
+    return raw.replace(/\D/g, "");
+  };
+
+  const normalizarNumero = (valor, fallback = "0") => {
+    const raw = String(valor || "").trim();
+    if (!raw) return fallback;
+    const n = Number(raw.replace(",", "."));
+    if (!Number.isFinite(n)) return fallback;
+    return String(Math.max(0, Math.trunc(n)));
+  };
+
+  const estadoRaw = tomar("estado", "Estado", "activo", "Activo").toLowerCase();
+  const estado = ["true", "1", "si", "s", "activo", "habilitado"].includes(estadoRaw);
+
+  return {
+    idAPRENDIZ: normalizarId(tomar("idAPRENDIZ", "ID", "id", "identificacion")),
+    tipoDocumento: tomar("tipoDocumento", "TipoDocumento", "tipo_documento"),
+    nombre: tomar("nombre", "Nombre"),
+    apellidos: tomar("apellidos", "Apellidos"),
+    programaNombre: tomar("programa", "Programa", "nombrePrograma"),
+    horas_inasistidas: normalizarNumero(
+      tomar("horas_inasistidas", "HorasInasistidas", "horas")
+    ),
+    estado
+  };
+};
 
   const subirExcelAprendices = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    setSubiendoExcel(true);
-    try {
-      const data = await leerArchivoExcel(file);
-      const workbook = XLSX.read(data, { type: "array" });
-      const primeraHoja = workbook.SheetNames[0];
-      if (!primeraHoja) {
-        Swal.fire("Error", "El archivo no tiene hojas", "error");
-        return;
+  setSubiendoExcel(true);
+
+  try {
+    const data = await leerArchivoExcel(file);
+    const workbook = XLSX.read(data, { type: "array" });
+    const primeraHoja = workbook.SheetNames[0];
+
+    if (!primeraHoja) {
+      Swal.fire("Error", "El archivo no tiene hojas", "error");
+      return;
+    }
+
+    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[primeraHoja], {
+      defval: "",
+      raw: false
+    });
+
+    if (!rows.length) {
+      Swal.fire("Error", "El archivo esta vacio", "error");
+      return;
+    }
+
+    let exitos = 0;
+    const errores = [];
+
+    const idsExistentes = new Set(
+      aprendices.map((a) => String(a.idAPRENDIZ))
+    );
+
+    // mapa nombre normalizado -> idPrograma
+    const programasPorNombre = new Map(
+      programas.map((p) => [
+        normalizarTexto(p.nombre),
+        p.idPROGRAMA
+      ])
+    );
+
+    for (let i = 0; i < rows.length; i++) {
+
+      const fila = normalizarFilaExcel(rows[i]);
+
+      const programaId = programasPorNombre.get(
+        normalizarTexto(fila.programaNombre)
+      );
+
+      if (!programaId) {
+        errores.push(
+          `Fila ${i + 2}: programa "${fila.programaNombre}" no existe`
+        );
+        continue;
       }
 
-      const rows = XLSX.utils.sheet_to_json(workbook.Sheets[primeraHoja], {
-        defval: "",
-        raw: false
-      });
-      if (!rows.length) {
-        Swal.fire("Error", "El archivo esta vacio", "error");
-        return;
+      fila.programaId = programaId;
+
+      const errorValidacion = validarAprendiz(fila);
+
+      if (errorValidacion) {
+        errores.push(`Fila ${i + 2}: ${errorValidacion}`);
+        continue;
       }
 
-      let exitos = 0;
-      const errores = [];
-      const idsExistentes = new Set(aprendices.map((a) => String(a.idAPRENDIZ)));
-      const programasValidos = new Set(programas.map((p) => Number(p.idPROGRAMA)));
+      if (idsExistentes.has(String(fila.idAPRENDIZ))) {
+        errores.push(`Fila ${i + 2}: el documento ya existe`);
+        continue;
+      }
 
-      for (let i = 0; i < rows.length; i++) {
-        const fila = normalizarFilaExcel(rows[i]);
+      try {
 
-        const errorValidacion = validarAprendiz(fila);
-        if (errorValidacion) {
-          errores.push(`Fila ${i + 2}: ${errorValidacion}`);
-          continue;
-        }
+        const res = await fetchAuth(API_APRENDICES, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            idAPRENDIZ: Number(fila.idAPRENDIZ),
+            tipoDocumento: fila.tipoDocumento,
+            nombre: fila.nombre,
+            apellidos: fila.apellidos,
+            programaId: Number(programaId),
+            horas_inasistidas: Number(fila.horas_inasistidas || 0),
+            estado: Boolean(fila.estado)
+          })
+        });
 
-        if (idsExistentes.has(String(fila.idAPRENDIZ))) {
-          errores.push(`Fila ${i + 2}: el documento ya existe`);
-          continue;
-        }
+        if (!res.ok) {
 
-        if (!programasValidos.has(Number(fila.programaId))) {
-          errores.push(`Fila ${i + 2}: programaId no existe`);
-          continue;
-        }
+          let mensajeError = "No se pudo registrar";
 
-        try {
-          const res = await fetchAuth(API_APRENDICES, {            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              idAPRENDIZ: Number(fila.idAPRENDIZ),
-              tipoDocumento: fila.tipoDocumento,
-              nombre: fila.nombre,
-              apellidos: fila.apellidos,
-              programaId: Number(fila.programaId),
-              horas_inasistidas: Number(fila.horas_inasistidas || 0),
-              estado: Boolean(fila.estado)
-            })
-          });
-
-          if (!res.ok) {
-            let mensajeError = "No se pudo registrar";
-            try {
-              const body = await res.json();
-              mensajeError = body?.mensaje || body?.error || mensajeError;
-            } catch {
-              const txt = await res.text().catch(() => "");
-              if (txt) mensajeError = txt.slice(0, 120);
-            }
-            errores.push(`Fila ${i + 2}: ${mensajeError}`);
-            continue;
+          try {
+            const body = await res.json();
+            mensajeError = body?.mensaje || body?.error || mensajeError;
+          } catch {
+            const txt = await res.text().catch(() => "");
+            if (txt) mensajeError = txt.slice(0, 120);
           }
 
-          exitos++;
-          idsExistentes.add(String(fila.idAPRENDIZ));
-        } catch {
-          errores.push(`Fila ${i + 2}: error de conexion`);
+          errores.push(`Fila ${i + 2}: ${mensajeError}`);
+          continue;
         }
+
+        exitos++;
+        idsExistentes.add(String(fila.idAPRENDIZ));
+
+      } catch {
+
+        errores.push(`Fila ${i + 2}: error de conexion`);
+
       }
 
-      await obtenerAprendices();
-
-      if (!errores.length) {
-        Swal.fire("Exito", `Se registraron ${exitos} aprendices`, "success");
-      } else {
-        Swal.fire({
-          icon: exitos ? "warning" : "error",
-          title: `Registrados: ${exitos} | Errores: ${errores.length}`,
-          text: errores.slice(0, 3).join(" | ")
-        });
-      }
-    } catch {
-      Swal.fire("Error", "No se pudo procesar el archivo Excel", "error");
-    } finally {
-      setSubiendoExcel(false);
-      e.target.value = "";
     }
-  };
+
+    await obtenerAprendices();
+
+    if (!errores.length) {
+
+      Swal.fire(
+        "Exito",
+        `Se registraron ${exitos} aprendices`,
+        "success"
+      );
+
+    } else {
+
+      Swal.fire({
+        icon: exitos ? "warning" : "error",
+        title: `Registrados: ${exitos} | Errores: ${errores.length}`,
+        text: errores.slice(0, 3).join(" | ")
+      });
+
+    }
+
+  } catch {
+
+    Swal.fire(
+      "Error",
+      "No se pudo procesar el archivo Excel",
+      "error"
+    );
+
+  } finally {
+
+    setSubiendoExcel(false);
+    e.target.value = "";
+
+  }
+};
+
 
   return (
     <div className="contenedordelista">

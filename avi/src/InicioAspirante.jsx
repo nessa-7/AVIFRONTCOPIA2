@@ -33,8 +33,8 @@ function InicioAspirante(){
     const [mejorPrograma, setMejorPrograma] = useState(null)
     const [programasRecomendados, setProgramasRecomendados] = useState(null)
     
-    function irProgramas() {
-        navigate("/programas");
+    function irInfo() {
+        navigate("/riasecinfo");
     }
 
     function irComoFunciona() {
@@ -173,6 +173,7 @@ function InicioAspirante(){
                 Descubre tus habilidades y encuentra la carrera ideal para ti
                 mediante nuestro test vocacional inteligente.
               </p>
+              <button type="button" onClick={irInfo}>¿Cómo te evaluamos?</button>
               <button type="button" onClick={irComoFunciona}>Comenzar Test Vocacional</button>
             </div>
             <div className="bv-top-cat">
@@ -234,7 +235,7 @@ function InicioAspirante(){
                 <ul>
                   <li>Termina el test vocacional</li>
                   <li>Explora tus resultados</li>
-                  <li>Califica tus programas favoritos</li>
+                  <li>Elije tus programas favoritos</li>
                 </ul>
               </article>
             </div>
