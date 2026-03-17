@@ -248,3 +248,50 @@ border: 1px solid #e0e0e0;
   border: 1px #7b2cbf solid;
 }
 
+/* Estilos para EditarPerfil */
+.btn-guardar {
+  background: linear-gradient(120deg, #7b2cbf, #4c1d95);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(123, 44, 191, 0.28);
+}
+
+.btn-guardar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dato-item input {
+  width: 100%;
+  border: 1px solid #d2b8ff;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  color: #2b2b2b;
+}
+
+.dato-item input:focus {
+  outline: 2px solid #7b2cbf;
+}
+
+.dato-item span[style] {
+  color: #5a2a86;
+  font-size: 13px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.dato-item span[style]:hover {
+  color: #7b2cbf;
+}
+
+

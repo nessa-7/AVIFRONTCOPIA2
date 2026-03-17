@@ -31,6 +31,7 @@ import AprendizPrediccion from "./AprendicesIA";
 import AprendicesIA from "./AprendicesIA";
 import RIASECInfo from "./RIASECInfo";
 import InicioAdmin from "./InicioAdmin";
+import Calificaciones from "./Calificaciones";
 
 function App() {
 
@@ -64,6 +65,7 @@ function App() {
               <Route path="/inicioadmin" element={<InicioAdmin></InicioAdmin>}></Route>
               <Route path="/comofuncionatest" element={<ComoFuncionaTest></ComoFuncionaTest>}></Route>
               <Route path="/riasecinfo" element={<RIASECInfo></RIASECInfo>}></Route>
+              <Route path="/calificacion" element={<Calificaciones></Calificaciones>}></Route>
 
               <Route path="/admin/aprendices" element={<AprendizGet></AprendizGet>}></Route>
               <Route path="/listaraprendices" element={<AprendizGet />} />

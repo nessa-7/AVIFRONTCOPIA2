@@ -5,9 +5,16 @@ import "./Perfil.css";
 
 function PerfilPopup( {onClose }) {
     const navigate = useNavigate();
-    const { logout, nombre, email, foto} = useAuth();
+    const { token, logout, nombre, email, foto } = useAuth();
 
     function irAEditar() {
+        if (!token) {
+            alert("Tu sesión expiró. Por favor inicia sesión nuevamente.");
+            logout();
+            navigate("/login");
+            return;
+        }
+
         navigate("/editar-perfil");
         onClose();
     }

@@ -2,7 +2,7 @@
 
 .resultado-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #eef1ff 0%, #e4e8fd 50%, #f4f6ff 100%);
+  background: linear-gradient(135deg, #f8ebff 0%, #e9e4fd 50%, #edd0f8 100%);
   display: flex;
   justify-content: center;
   align-items: flex-start; /* IMPORTANTE: evita que suba */
@@ -182,15 +182,37 @@
   margin-bottom: 12px;
 }
 
+.program-reasonp{
+  margin-bottom: 15px;
+}
+
+.qr-section{
+  display: flex;
+  align-items: center; /* centra verticalmente */
+  gap: 15px; /* espacio entre qr y texto */
+  margin-top: 15px;
+}
+
+.qr-section p{
+  margin: 0;
+  font-size: 14px;
+  max-width: 200px;
+  color: #74b0e1;
+}
+
 /* ========== BOTONES ========== */
 
 .acciones {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 35px;
-  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 25px;
+  margin-right: 50px;
+}
+
+.avicontinuar{
+  width: 600px;
 }
 
 .btn-primary {
@@ -198,7 +220,7 @@
   color: #ffffff;
   border: none;
   padding: 12px 28px;
-  border-radius: 50px;
+  border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -206,7 +228,7 @@
   letter-spacing: 0.3px;
   box-shadow: 0 4px 12px rgba(57, 169, 0, 0.2);
   height: 50px;
-  margin-right: 40px;
+  margin-left: -170px;
 }
 
 .btn-primary:hover {

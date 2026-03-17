@@ -18,11 +18,11 @@ overflow:hidden;
 
 background: linear-gradient(
 120deg,
-#6c4cff,
-#9a6cff,
+#a591ff,
+#cfb8ff,
 #c994ff,
 #9a6cff,
-#6c4cff
+#8d73ff
 );
 
 background-size:400% 400%;
@@ -181,7 +181,7 @@ opacity:.5;
 
 .test-riasec-content-pane{
 
-background: rgba(255,255,255,0.75);
+background: rgba(255, 255, 255, 0.658);
 
 backdrop-filter: blur(14px);
 
@@ -217,7 +217,7 @@ white-space:nowrap;
 .progress-bar{
 flex:1;
 height:8px;
-background:#e8e2f7;
+background:#d5c5ff;
 border-radius:20px;
 overflow:hidden;
 }
@@ -293,7 +293,7 @@ width:100%;
 
 border:none;
 
-border-radius:30px;
+border-radius:15px;
 
 padding:16px 22px;
 
@@ -308,6 +308,31 @@ transition:.25s;
 box-shadow:0 6px 14px rgba(0,0,0,0.08);
 
 text-align:left;
+
+color: #fff;
+margin-top: 20px;
+
+}
+
+.riasec-option-encanta {
+  background: linear-gradient(0deg, #00b609, #87f94e);
+}
+
+.riasec-option-gusta {
+  background: linear-gradient(0deg, #c1d826, #f7ff1c);
+}
+
+.riasec-option-neutral {
+  background: linear-gradient(0deg, #888E92, #D8E0E4);
+  color: #3e4143;
+}
+
+.riasec-option-nomegusta {
+  background: linear-gradient(0deg, #c66408, #FFA726);
+}
+
+.riasec-option-odio {
+  background: linear-gradient(0deg, #950d0d, #f44e42);
 }
 
 /* HOVER BOTONES */
@@ -346,7 +371,7 @@ cursor:pointer;
 
 background: linear-gradient(
 90deg,
-#6c4cff,
+#a590ff,
 #9a6cff,
 #b784ff
 );

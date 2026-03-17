@@ -219,11 +219,11 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
 };
 
   const options = [
-    { label: "Me encanta", value: 5 },
-    { label: "Me gusta", value: 4 },
-    { label: "Neutral", value: 3 },
-    { label: "No me gusta", value: 2 },
-    { label: "Odio esto", value: 1 }
+    { label: "Me encanta", value: 5, className: "riasec-option-encanta" },
+    { label: "Me gusta", value: 4, className: "riasec-option-gusta" },
+    { label: "Neutral", value: 3, className: "riasec-option-neutral" },
+    { label: "No me gusta", value: 2, className: "riasec-option-nomegusta" },
+    { label: "Odio esto", value: 1, className: "riasec-option-odio" }
   ];
 
 
@@ -299,7 +299,7 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
               {options.map(opt => (
                 <button
                   key={opt.value}
-                  className="test-riasec-button"
+                  className={`test-riasec-option-btn ${opt.className}`}
                   onClick={() => answerQuestion(opt.value)}
                   disabled={loading}
                 >

@@ -1,3 +1,11 @@
+.mis-reportes-container {
+  background: linear-gradient(60deg, #f8f2ff 45%, #f5effe 70%);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+
+
 .reportes-container {
   max-width: 1400px;
   margin: 20px auto;
@@ -27,7 +35,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
   gap: 20px;
-  background: linear-gradient(180deg, #f9f4ff 0%, #efe7fb 100%);
+  background: linear-gradient(180deg, #faf6ff 0%, #f9f5ff 100%);
 }
 
 .reporte-card:hover {
@@ -131,6 +139,8 @@
   margin-top: 20px;
   border-left: 4px solid #6ac7dc;
   transition: all 0.25s ease;
+  box-shadow: 0 3px 5px rgba(118, 75, 162, 0.18);
+
 }
 
 .recomendacion-card:hover {

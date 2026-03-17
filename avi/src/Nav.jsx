@@ -100,13 +100,14 @@ function Nav() {
 
           <div className="bv-top-user">
             <span>Hola, {nombre}</span>
-            <button type="button" title="Notificaciones" aria-label="Notificaciones">
+          {/*  <button type="button" title="Notificaciones" aria-label="Notificaciones">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 18h12"></path>
                 <path d="M9 18a3 3 0 0 0 6 0"></path>
                 <path d="M7 18V11a5 5 0 0 1 10 0v7"></path>
               </svg>
-            </button>
+              
+            </button> */}
             <button
               type="button"
               onClick={() => setMostrarPerfil(true)}

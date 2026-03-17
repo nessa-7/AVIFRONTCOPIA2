@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import "./MisReportes.css"
+import { div } from "three/src/nodes/math/OperatorNode.js";
 
 function MisReportes() {
 
@@ -42,7 +43,7 @@ async function traer() {
 }
 
   return (
-
+    <div className="mis-reportes-container">
   <div className="reportes-container">
     <h2 className="titulo">MIS REPORTES</h2>
 
@@ -97,6 +98,7 @@ async function traer() {
     ))}
 
     </div>
+</div>
   );
 }
 

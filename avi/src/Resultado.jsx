@@ -4,7 +4,9 @@ import "./Resultado.css"
 import { useEffect, useState } from "react";
 import Avatar3D from "./components/Avatar3D";
 
-function Resultado() {
+import { QRCodeCanvas } from "qrcode.react";
+
+function Resultado(result) {
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -13,6 +15,8 @@ function Resultado() {
 
   const results = location.state?.result;
 
+
+const recommendedPrograms = results?.resultadoIA?.recommendations || [];
 
 useEffect(() => {
   if (!results) return;
@@ -51,15 +55,10 @@ useEffect(() => {
     return <p>No se encontraron resultados.</p>;
   }
 
-  const recommendedPrograms =
-  results?.resultadoIA?.recommendations || [];
-
-  const descargarApp = () => {
-    window.location.href = "https://play.google.com/store";
-  };
+  console.log("RECOMMENDED:", recommendedPrograms);
 
   function verprogramas() {
-    navigate("/programas");
+    navigate("/calificacion", { state: { result: results } });
   }
 
   function irtest() {
@@ -112,7 +111,7 @@ const handleProgramOpen = (program) => {
   const texto = `
   ${program.name} es una excelente opción para ti.
   ${program.reason}.
-  Puedes conocer más información sobre ${program.name} en nuestra aplicación móvil.
+  Puedes conocer más información sobre ${program.name} escaneando el código QR.
   `;
 
   speak(texto);
@@ -163,17 +162,29 @@ const handleProgramOpen = (program) => {
 
               <div className="program-content">
                 <div className="program-content-inner">
-                  <p>{program.reason}</p>
+                  <p className="program-reasonp">{program.reason}</p>
 
-                    <img src="qrAVI.png" className="qrimg"></img>
-                  
+                  <div className="qr-section">
+                    <QRCodeCanvas
+                      value={program.AR}
+                      size={130}
+                    />
+                    <p>Escanea el código QR para conocer más información</p>
+                  </div>
                 </div>
               </div>
             </details>
           ))}
         </div>
 
-        {/* Botones */}
+        <section className="acciones">
+          <img className="avicontinuar" src="avicontinuar.png" alt="" />
+          <button type="button" className="btn-primary" onClick={verprogramas}>
+            Continuar
+          </button>
+        </section>
+
+        {/* Botones 
         <section className="acciones">
           <button type="button" className="btn-primary" onClick={verprogramas}>
             Ver mas programas
@@ -182,6 +193,7 @@ const handleProgramOpen = (program) => {
             Volver a intentar
           </button>
         </section>
+        */}
       </div>
     </div>
   );

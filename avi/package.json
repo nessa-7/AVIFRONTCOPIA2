@@ -3,11 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-
   "engines": {
     "node": "20.x"
   },
-
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,6 +17,7 @@
     "@react-three/fiber": "^9.5.0",
     "chart.js": "^4.5.1",
     "cloudinary": "^2.9.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.1.1",
