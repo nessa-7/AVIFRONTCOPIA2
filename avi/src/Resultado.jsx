@@ -179,6 +179,7 @@ const handleProgramOpen = (program) => {
 
         <section className="acciones">
           <img className="avicontinuar" src="avicontinuar.png" alt="" />
+            <span className="flecha-animada">➜</span>
           <button type="button" className="btn-primary" onClick={verprogramas}>
             Continuar
           </button>
