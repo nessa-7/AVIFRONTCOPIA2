@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./PreTest.css";
 import TestRIASEC from "./TestRIASEC";
 import { useAuth } from "./context/AuthContext";
@@ -81,6 +81,83 @@ export default function Pretest() {
 
 
   const [loading, setLoading] = useState(false);
+  const recognitionRef = useRef(null);
+  const [listeningMic, setListeningMic] = useState(false);
+
+  const normalizeText = (value = "") =>
+    value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const handleSpeechInput = (transcript) => {
+    if (!transcript) return;
+    const currentQuestionData = questions[currentQuestion];
+    if (!currentQuestionData) return;
+
+    if (currentQuestionData.type === "text") {
+      handleChange(transcript);
+      return;
+    }
+
+    const normalizedTranscript = normalizeText(transcript);
+    const match = currentQuestionData.options?.find((opt) =>
+      normalizeText(opt)
+        .split(" ")
+        .some((word) => normalizedTranscript.includes(word))
+    );
+
+    if (match) {
+      handleChange(match);
+    } else {
+      setError("No se entendió tu respuesta. Intenta de nuevo.");
+    }
+  };
+
+  const startMicrophone = () => {
+    if (listeningMic || loading) return;
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Tu navegador no soporta dictado por voz.");
+      return;
+    }
+
+    const recognition =
+      recognitionRef.current || new SpeechRecognition();
+    recognition.lang = "es-CO";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+    recognitionRef.current = recognition;
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0].transcript)
+        .join(" ");
+      handleSpeechInput(transcript);
+      recognition.stop();
+    };
+    recognition.onstart = () => {
+      setListeningMic(true);
+    };
+    recognition.onend = () => {
+      setListeningMic(false);
+    };
+    recognition.onerror = () => {
+      setListeningMic(false);
+      setError("No se pudo escuchar tu voz. Intenta de nuevo.");
+    };
+
+    setError("");
+    recognition.start();
+  };
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.abort?.();
+    };
+  }, []);
 
   const questions=[
 
@@ -232,7 +309,7 @@ const handleSubmit = async () => {
 
   } catch (error) {
     console.error("Error pretest:", error.message);
-    setError("Ocurrió un error al procesar el pretest.");
+    setError("Presiona iniciar test vocacional nuevamente");
     setLoading(false);
   }
 };
@@ -355,20 +432,35 @@ return(
       </p>
       )}
 
-
-      {currentQuestion<questions.length-1?(
-      <button
-      className="botonpretest"
-      type="button"
-      onClick={nextQuestion}
-      >
-      Siguiente
-      </button>
-      ):(
-      <button type="button" className="botonpretest" onClick={handleSubmit}>
-      Iniciar Test Vocacional
-      </button>
-      )}
+      <div className="pretest-actions">
+        {currentQuestion<questions.length-1?(
+        <button
+        className="botonpretest"
+        type="button"
+        onClick={nextQuestion}
+        >
+        Siguiente
+        </button>
+        ):( 
+        <button type="button" className="botonpretest" onClick={handleSubmit}>
+        Iniciar Test Vocacional
+        </button>
+        )}
+        <button
+          type="button"
+          className={`pretest-mic-btn ${listeningMic ? "is-listening" : ""}`}
+          onClick={startMicrophone}
+          aria-label="Responder con voz"
+          disabled={loading}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 4a3 3 0 0 1 3 3v4a3 3 0 0 1-6 0V7a3 3 0 0 1 3-3z"></path>
+            <path d="M5 11a7 7 0 0 0 14 0"></path>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+          </svg>
+        </button>
+      </div>
 
 
 

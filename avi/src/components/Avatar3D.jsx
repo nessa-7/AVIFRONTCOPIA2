@@ -11,7 +11,7 @@ import { applyEmotion } from "./VTuberEngine";
 import useTalkingMouth from "./TalkingMouth";
 
 const AVATAR_URL =
-  "https://models.readyplayer.me/699da146f005c9608f5ee8aa.glb";
+  "avatar.glb";
 
 export default function Avatar3D({ 
   emotion, 

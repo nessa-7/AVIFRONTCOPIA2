@@ -248,19 +248,19 @@
 }
 
 .hyd-card-title {
-  margin: 0 0 6px;
+  margin: 0 5px 6px;
   color: #fff;
-  font-size: 1.26rem;
+  font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .hyd-title {
-  margin: 0;
+  margin: 0 5px;
   color: #fff;
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .hyd-message {
@@ -288,6 +288,7 @@
   position: relative;
   justify-self: center;
   transform: translateX(-12px);
+  margin-right: 50px;
 }
 
 .asp-icon {
@@ -310,11 +311,11 @@
   line-height: 1;
 }
 
-.asp-count {
-  margin: 10px 0 0;
+.asp-count-number {
+  margin: 10px 50px 0;
   text-align: right;
   color: #fff;
-  font-size: 2.8rem;
+  font-size: 8.8rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.8px;

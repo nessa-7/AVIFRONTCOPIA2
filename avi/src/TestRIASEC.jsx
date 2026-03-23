@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Test.css";
 import { useAuth } from "./context/AuthContext";
@@ -90,9 +90,77 @@ export default function TestRIASEC({ pretestScores, sessionId, reporteId }) {
 
 
   const [loading, setLoading] = useState(false);
+  const micRecognitionRef = useRef(null);
+  const [listeningMic, setListeningMic] = useState(false);
+  const [micError, setMicError] = useState("");
+
+  const normalizeText = (value = "") =>
+    value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const handleSpeechAnswer = (transcript) => {
+    if (!transcript || !question) return;
+
+    const normalizedTranscript = normalizeText(transcript);
+    const match = options.find((opt) =>
+      normalizeText(opt.label)
+        .split(" ")
+        .some((word) => normalizedTranscript.includes(word))
+    );
+
+    if (match) {
+      answerQuestion(match.value);
+      setMicError("");
+    } else {
+      setMicError("No se entendió tu respuesta. Intenta decir una de las opciones.");
+    }
+  };
+
+  const startListeningForAnswer = () => {
+    if (listeningMic || loading || !question) return;
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setMicError("Tu navegador no soporta dictado por voz.");
+      return;
+    }
+
+    const recognition =
+      micRecognitionRef.current || new SpeechRecognition();
+    recognition.lang = "es-CO";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+    micRecognitionRef.current = recognition;
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0].transcript)
+        .join(" ");
+      handleSpeechAnswer(transcript);
+      recognition.stop();
+    };
+
+    recognition.onstart = () => setListeningMic(true);
+    recognition.onend = () => setListeningMic(false);
+    recognition.onerror = () => {
+      setListeningMic(false);
+      setMicError("No se pudo escuchar tu voz. Intenta nuevamente.");
+    };
+
+    setMicError("");
+    recognition.start();
+  };
+
+  useEffect(() => {
+    return () => {
+      micRecognitionRef.current?.abort?.();
+    };
+  }, []);
 
   const [isFinishing, setIsFinishing] = useState(false);
-
 
 
 
@@ -166,7 +234,7 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
       setCount(newCount);
 
 
-      if (newCount < 10) {
+      if (newCount < 18) {
 
         getQuestion(testId, updatedScores);
 
@@ -263,13 +331,13 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
         <div className="test-riasec-header">
 
           <span className="question-counter">
-            Pregunta {Math.min(count + 1, 10)} de 10
+            Pregunta {Math.min(count + 1, 18)} de 18
           </span>
 
           <div className="progress-bar">
             <div
               className="progress-fill"
-              style={{ width: `${(count / 10) * 100}%` }}
+              style={{ width: `${(count / 18) * 100}%` }}
             />
           </div>
 
@@ -306,6 +374,23 @@ const getQuestion = async (currentTestId, currentScores = scores) => {
                   {opt.label}
                 </button>
               ))}
+              <div className="test-riasec-actions">
+                <button
+                  type="button"
+                  className={`test-riasec-mic-btn ${listeningMic ? "is-listening" : ""}`}
+                  onClick={startListeningForAnswer}
+                  aria-label="Responder con voz"
+                  disabled={loading || !question}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 4a3 3 0 0 1 3 3v4a3 3 0 0 1-6 0V7a3 3 0 0 1 3-3z"></path>
+                    <path d="M5 11a7 7 0 0 0 14 0"></path>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                  </svg>
+                </button>
+                {micError && <span className="mic-error">{micError}</span>}
+              </div>
             </>
 
           )}

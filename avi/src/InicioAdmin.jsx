@@ -13,12 +13,15 @@ import {
   Filler,
 } from "chart.js";
 import "./InicioAdmin.css";
-import Estadisticas from "./Estadisticas";
+
+import { useAuth } from "./context/AuthContext";
+
 import ProgramasAdmin from "./ProgramasAdmin";
 import AspirantesGet from "./AspirantesGet";
 import AprendizGet from "./AprendizGet";
 import AdminGet from "./AdminGet";
-import { useAuth } from "./context/AuthContext";
+import Estadisticas from "./Estadisticas";
+import AprendicesIA from "./AprendicesIA";
 
 const aspirantesLabelCandidates = [
   "mes",
@@ -193,10 +196,11 @@ function InicioAdmin({ vistaActiva, setVistaActiva }) {
     tecnicos: [],
     tecnologos: [],
   });
-  const [selectedProgram, setSelectedProgram] = useState(null);
   const [selectedTecnicoProgram, setSelectedTecnicoProgram] = useState(null);
   const [selectedTecnologoProgram, setSelectedTecnologoProgram] = useState(null);
   const [selectedTecnologoId, setSelectedTecnologoId] = useState(null);
+  const [showTecnicoList, setShowTecnicoList] = useState(false);
+  const [showTecnologoList, setShowTecnologoList] = useState(false);
   const [tecnologoEvolucion, setTecnologoEvolucion] = useState([]);
   const [tecnologoYear, setTecnologoYear] = useState(new Date().getFullYear());
   const [loadingTecnologoEvolucion, setLoadingTecnologoEvolucion] = useState(false);
@@ -274,69 +278,108 @@ function InicioAdmin({ vistaActiva, setVistaActiva }) {
   const latestAspirante = aspirantesSeries.length ? aspirantesSeries[aspirantesSeries.length - 1] : null;
 
   const testsProgramField = useMemo(() => detectField(testsRows, testsProgramCandidates), [testsRows]);
-  const testsLevelField = useMemo(() => detectField(testsRows, testsLevelCandidates), [testsRows]);
   const testsValueField = useMemo(() => detectField(testsRows, testsValueCandidates), [testsRows]);
-
-  const testsByNivel = useMemo(() => {
-    return testsRows.reduce((acc, row) => {
-      if (!row || typeof row !== "object") return acc;
-      const nivelKey = testsLevelField ?? "nivel";
-      const programaKey = testsProgramField ?? "programa";
-      const valorKey = testsValueField ?? "total";
-      const nivel = String(
-        (row[nivelKey] ?? row.nivel ?? row.tipo ?? row.modalidad ?? "General") ?? "General"
+  const testsAggregatedByProgram = useMemo(() => {
+    const map = {};
+    const programKey = testsProgramField ?? "programa";
+    const valorKey = testsValueField ?? "total";
+    for (const row of testsRows) {
+      if (!row || typeof row !== "object") continue;
+      const label = String(
+        (row[programKey] ?? row.programa ?? row.nombre ?? "Programa") ?? "Programa"
       );
-      const programa = String(
-        (row[programaKey] ?? row.programa ?? row.nombre ?? "Programa") ?? "Programa"
-      );
-      const total = toNumber(
+      const value = toNumber(
         row[valorKey] ??
           row.completados ??
           row.tests ??
           row.cantidad ??
-          row.total ??
           row.valor ??
           row.count ??
-          row.completo ??
+          row.total ??
           0
       );
-      if (!acc[nivel]) acc[nivel] = [];
-      const existing = acc[nivel].find((entry) => entry.programa === programa);
-      if (existing) existing.total += total;
-      else acc[nivel].push({ programa, total });
-      return acc;
-    }, {});
-  }, [testsRows, testsProgramField, testsLevelField, testsValueField]);
-
-  const testsNivelBlocks = useMemo(
-    () =>
-      Object.entries(testsByNivel).map(([nivel, programs]) => {
-        const sorted = [...programs].sort((a, b) => b.total - a.total);
-        const total = sorted.reduce((sum, program) => sum + program.total, 0);
-        return {
-          nivel,
-          total,
-          programas: sorted.slice(0, 3),
-          restCount: Math.max(sorted.length - 3, 0),
-        };
-      }),
-    [testsByNivel]
-  );
-
-  const testsProgramMax = useMemo(() => {
-    let max = 0;
-    for (const block of testsNivelBlocks) {
-      for (const program of block.programas) {
-        if (program.total > max) max = program.total;
-      }
+      map[label] = (map[label] || 0) + value;
     }
-    return max || 1;
-  }, [testsNivelBlocks]);
+    return Object.entries(map).map(([label, value]) => ({ label, value }));
+  }, [testsRows, testsProgramField, testsValueField]);
 
-  const testsTotal = useMemo(
-    () => testsNivelBlocks.reduce((sum, block) => sum + block.total, 0),
-    [testsNivelBlocks]
+  const testsSortedPrograms = useMemo(() => {
+    return [...testsAggregatedByProgram].sort((a, b) => b.value - a.value);
+  }, [testsAggregatedByProgram]);
+
+  const testsMaxValue = testsSortedPrograms[0]?.value || 1;
+
+  const [selectedProgram, setSelectedProgram] = useState(null);
+  const [showTestsList, setShowTestsList] = useState(false);
+
+  useEffect(() => {
+    if (!testsSortedPrograms.length) {
+      setSelectedProgram(null);
+      return;
+    }
+    setSelectedProgram((prev) => {
+      if (prev?.label) {
+        const match = testsSortedPrograms.find((item) => item.label === prev.label);
+        if (match) return { label: match.label, value: match.value };
+      }
+      const first = testsSortedPrograms[0];
+      return { label: first.label, value: first.value };
+    });
+  }, [testsSortedPrograms]);
+
+  const orderedPrograms = useMemo(() => {
+    if (!testsSortedPrograms.length) return [];
+    if (!selectedProgram?.label) return [...testsSortedPrograms];
+    const match = testsSortedPrograms.find((item) => item.label === selectedProgram.label);
+    if (!match) return [...testsSortedPrograms];
+    return [match, ...testsSortedPrograms.filter((item) => item.label !== match.label)];
+  }, [testsSortedPrograms, selectedProgram]);
+
+  const handleProgramSelect = useCallback((program) => {
+    if (!program) return;
+    setSelectedProgram({ label: program.label, value: program.value });
+  }, []);
+
+  const handleTestsBarClick = useCallback(
+    (_, elements) => {
+      const [first] = elements;
+      if (!first) return;
+      const program = orderedPrograms[first.index];
+      handleProgramSelect(program);
+    },
+    [orderedPrograms, handleProgramSelect]
   );
+
+  const testsBarData = useMemo(() => {
+    const entries = orderedPrograms.length ? orderedPrograms : testsSortedPrograms;
+    const labels = entries.map((item) =>
+      item.label.length > 22 ? `${item.label.slice(0, 22)}…` : item.label
+    );
+    const values = entries.map((item) => item.value);
+    const backgroundColor = entries.map((item) =>
+      selectedProgram?.label === item.label ? "#f0bc33" : "#2fb1b8"
+    );
+    const hoverBackgroundColor = entries.map((item) =>
+      selectedProgram?.label === item.label ? "#f5ce6a" : "#2fb1b8"
+    );
+    return {
+      labels: labels.length ? labels : ["Sin datos"],
+      datasets: [
+        {
+          label: "Veces elegido",
+          data: values.length ? values : [0],
+          backgroundColor: backgroundColor.length ? backgroundColor : ["#2fb1b8"],
+          hoverBackgroundColor: hoverBackgroundColor.length ? hoverBackgroundColor : ["#2fb1b8"],
+          borderRadius: 6,
+          barThickness: 20,
+        },
+      ],
+    };
+  }, [orderedPrograms, testsSortedPrograms, selectedProgram]);
+
+  const testsTotal = useMemo(() => {
+    return testsAggregatedByProgram.reduce((sum, program) => sum + program.value, 0);
+  }, [testsAggregatedByProgram]);
 
   const nivelProgramField = useMemo(() => detectField(nivelesRows, nivelProgramCandidates), [nivelesRows]);
   const nivelLevelField = useMemo(() => detectField(nivelesRows, nivelLevelCandidates), [nivelesRows]);
@@ -363,108 +406,6 @@ function InicioAdmin({ vistaActiva, setVistaActiva }) {
     [programasPorNivel]
   );
   const nivelesConDatos = Object.keys(programasPorNivel).length;
-
-  const testsTopPrograms = useMemo(() => {
-    const flat = [];
-    for (const block of testsNivelBlocks) {
-      block.programas.forEach((program) => {
-        flat.push({
-          label: `${block.nivel}: ${program.programa}`,
-          value: program.total,
-        });
-      });
-    }
-    return flat
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 6);
-  }, [testsNivelBlocks]);
-
-  useEffect(() => {
-    if (!testsTopPrograms.length) {
-      setSelectedProgram(null);
-      return;
-    }
-    setSelectedProgram((prev) => {
-      if (prev?.label) {
-        const match = testsTopPrograms.find((item) => item.label === prev.label);
-        if (match) {
-          return { label: match.label, value: match.value };
-        }
-      }
-      const first = testsTopPrograms[0];
-      return { label: first.label, value: first.value };
-    });
-  }, [testsTopPrograms]);
-
-  const orderedPrograms = useMemo(() => {
-    if (!testsTopPrograms.length) return [];
-    if (!selectedProgram?.label) return [...testsTopPrograms];
-    const match = testsTopPrograms.find((item) => item.label === selectedProgram.label);
-    if (!match) return [...testsTopPrograms];
-    return [match, ...testsTopPrograms.filter((item) => item.label !== match.label)];
-  }, [testsTopPrograms, selectedProgram]);
-
-  const handleProgramSelect = useCallback((program) => {
-    if (!program) return;
-    setSelectedProgram({ label: program.label, value: program.value });
-  }, []);
-
-  const handleTestsBarClick = useCallback(
-    (_, elements) => {
-      const [first] = elements;
-      if (!first) return;
-      const program = orderedPrograms[first.index];
-      handleProgramSelect(program);
-    },
-    [orderedPrograms, handleProgramSelect]
-  );
-
-  const testsBarData = useMemo(() => {
-    const labels = orderedPrograms.map((item) =>
-      item.label.length > 22 ? `${item.label.slice(0, 22)}â€¦` : item.label
-    );
-    const values = orderedPrograms.map((item) => item.value);
-    const backgroundColor = orderedPrograms.map((item) =>
-      selectedProgram?.label === item.label ? "#f0bc33" : "#2fb1b8"
-    );
-    const hoverBackgroundColor = orderedPrograms.map((item) =>
-      selectedProgram?.label === item.label ? "#f5ce6a" : "#2fb1b8"
-    );
-    const hoverColors = hoverBackgroundColor.length ? hoverBackgroundColor : ["#2fb1b8"];
-    return {
-      labels: labels.length ? labels : ["Sin datos"],
-      datasets: [
-        {
-          label: "Tests completados",
-          data: values.length ? values : [0],
-          backgroundColor: backgroundColor.length ? backgroundColor : ["#2fb1b8"],
-          hoverBackgroundColor: hoverColors,
-          borderRadius: 6,
-          barThickness: 18,
-        },
-      ],
-    };
-  }, [orderedPrograms, selectedProgram]);
-
-  const testsBarOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        ticks: { color: "#6a5a80", font: { size: 10 } },
-        grid: { display: false },
-      },
-      x: {
-        ticks: { color: "#6a5a80", font: { size: 10 } },
-        grid: { color: "rgba(47,177,184,0.2)" },
-        beginAtZero: true,
-      },
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (context) => `${formatNumber(context.parsed.y ?? 0)} tests` } },
-    },
-  };
 
   const doughnutColors = ["#8e47d4", "#f0bc33", "#2fb1b8", "#de61c7", "#72c6a6", "#ff8c64"];
 
@@ -533,8 +474,28 @@ const mapProgramList = (rows) =>
       const program = orderedTecnicoPrograms[first.index];
       handleTecnicoProgramSelect(program);
     },
-    [orderedTecnicoPrograms, handleTecnicoProgramSelect]
-  );
+      [orderedTecnicoPrograms, handleTecnicoProgramSelect]
+    );
+
+  const testsBarOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        ticks: { color: "#6a5a80", font: { size: 10 } },
+        grid: { display: false },
+      },
+      x: {
+        ticks: { color: "#6a5a80", font: { size: 10 } },
+        grid: { color: "rgba(47,177,184,0.2)" },
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (context) => `${formatNumber(context.parsed.y ?? 0)} tests` } },
+    },
+  };
 
   const tecnicoBarData = useMemo(() => {
     const source = orderedTecnicoPrograms.length ? orderedTecnicoPrograms : tecnicoPrograms;
@@ -620,7 +581,7 @@ const mapProgramList = (rows) =>
       .catch(() => {
         if (!isMounted) return;
         setTecnologoEvolucion([]);
-        setTecnologoEvolucionError("No se pudieron cargar los datos de evoluciÃ³n.");
+        setTecnologoEvolucionError("No se pudieron cargar los datos de evolucion.");
       })
       .finally(() => {
         if (isMounted) setLoadingTecnologoEvolucion(false);
@@ -664,7 +625,7 @@ const mapProgramList = (rows) =>
       labels: MESES_LABELS,
       datasets: [
         {
-          label: selectedTecnologoProgram?.programa ?? "TecnÃ³logo",
+          label: selectedTecnologoProgram?.programa ?? "Tecnologo",
           data: values,
           borderColor: "#8e47d4",
           backgroundColor: "rgba(142,71,212,0.25)",
@@ -719,7 +680,7 @@ const mapProgramList = (rows) =>
       labels: labels.length ? labels : ["Sin datos"],
       datasets: [
         {
-          label: "Programas tecnÃ³logos",
+          label: "Programas tecnologos",
           data: values.length ? values : [0],
           backgroundColor: backgroundColor.length ? backgroundColor : ["#2fb1b8"],
           hoverBackgroundColor: hoverBackgroundColor.length ? hoverBackgroundColor : ["#2fb1b8"],
@@ -769,11 +730,11 @@ const mapProgramList = (rows) =>
   const heroAspirantesLabel = latestAspirante?.label ?? "Mes vigente";
   const heroAspirantesValue = latestAspirante?.value ?? 0;
   const aspirantesMessage = aspirantesSeries.length
-    ? `Ãšltimo mes registrado (${heroAspirantesLabel}): ${formatNumber(heroAspirantesValue)} aspirantes.`
+    ? `Último mes registrado (${heroAspirantesLabel}): ${formatNumber(heroAspirantesValue)} aspirantes.`
     : "Sin datos de aspirantes por el momento.";
 
   const renderVista = () => {
-    if (vistaActiva === "estadisticas") return <Estadisticas />;
+    if (vistaActiva === "estadisticas") return <AprendicesIA />;
     if (vistaActiva === "programas") return <ProgramasAdmin />;
     if (vistaActiva === "aspirantes") return <AspirantesGet />;
     if (vistaActiva === "aprendices") return <AprendizGet />;
@@ -808,17 +769,13 @@ const mapProgramList = (rows) =>
                 <br />
                 Realiza Tus 
                 <br />
-                Procesos Aquí
+                Procesos Aquí!
               </h3>
               <p>
                 Supervisa tests, programas y aspirantes desde un solo tablero, con resúmenes preparados para el equipo administrativo.
               </p>
 
-              <div className="store-buttons">
-                <span>AppStore</span>
-                <span>Google Play</span>
-              </div>
-
+             
               <div className="hero-stats">
                 {heroStats.map((stat) => (
                   <div key={stat.label}>
@@ -840,11 +797,13 @@ const mapProgramList = (rows) =>
             <article className="hero-right">
               <div>
                 <h4 className="hyd-card-title">Aspirantes Registrados</h4>
-                <p className="hyd-title">Número de aspirantes registrados en todo el mes</p>
+                <p className="hyd-title">Cantidad de personas que se han registrado en el sistema</p>
               </div>
 
               <div className="hyd-layout">
-                <div className="hyd-message">{aspirantesMessage}</div>
+                <div className="hyd-message">
+                  <span className="asp-count-number">{formatNumber(totalAspirantes)}</span>
+                </div>
 
                 <div>
                   <div className="asp-icon-wrap">
@@ -854,10 +813,7 @@ const mapProgramList = (rows) =>
                     </svg>
                     <span className="asp-plus">+</span>
                   </div>
-                  <div className="asp-count">
-                    <span className="asp-count-number">{formatNumber(totalAspirantes)}</span>
-                    <small>Total Registrados</small>
-                  </div>
+                  
                 </div>
               </div>
             </article>
@@ -901,9 +857,9 @@ const mapProgramList = (rows) =>
                         <button
                           type="button"
                           className="selected-program-clear"
-                          onClick={() => setSelectedTecnicoProgram(null)}
+                          onClick={() => setShowTecnicoList((prev) => !prev)}
                         >
-                          Ver todos
+                          {showTecnicoList ? "Ocultar detalles" : "Ver todos"}
                         </button>
                       </>
                     ) : (
@@ -912,39 +868,41 @@ const mapProgramList = (rows) =>
                       </span>
                     )}
                   </div>
-                  <div className="tests-programs">
-                    {orderedTecnicoPrograms.map((program) => {
-                      const isActive = selectedTecnicoProgram?.programa === program.programa;
-                      return (
-                        <div
-                          className={`tests-program${isActive ? " tests-program--active" : ""}`}
-                          key={`${program.programa}-${program.total}`}
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={isActive}
-                          onClick={() => handleTecnicoProgramSelect(program)}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" || event.key === " ") {
-                              event.preventDefault();
-                              handleTecnicoProgramSelect(program);
-                            }
-                          }}
-                        >
-                          <span className="tests-program-name">{program.programa}</span>
-                          <span className="tests-program-value">
-                            {formatNumber(program.total)} tests
-                          </span>
-                          <div className="tests-program-bar">
-                            <span
-                              style={{
-                                width: `${(program.total / tecnicoProgramMax) * 100}%`,
-                              }}
-                            ></span>
+                  {showTecnicoList && (
+                    <div className="tests-programs">
+                      {orderedTecnicoPrograms.map((program) => {
+                        const isActive = selectedTecnicoProgram?.programa === program.programa;
+                        return (
+                          <div
+                            className={`tests-program${isActive ? " tests-program--active" : ""}`}
+                            key={`${program.programa}-${program.total}`}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={isActive}
+                            onClick={() => handleTecnicoProgramSelect(program)}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                handleTecnicoProgramSelect(program);
+                              }
+                            }}
+                          >
+                            <span className="tests-program-name">{program.programa}</span>
+                            <span className="tests-program-value">
+                              {formatNumber(program.total)} tests
+                            </span>
+                            <div className="tests-program-bar">
+                              <span
+                                style={{
+                                  width: `${(program.total / tecnicoProgramMax) * 100}%`,
+                                }}
+                              ></span>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </>
               ) : (
                 <p className="indicador-state">No hay programas tecnicos disponibles.</p>
@@ -955,7 +913,8 @@ const mapProgramList = (rows) =>
               <header className="indicador-header">
                 <div>
                   <p className="indicador-kicker">Tests</p>
-                  <h4>Tests completados por programa</h4>
+                  <h4>Tests más elegidos</h4>
+                  
                 </div>
                 <span className="indicador-badge">
                   {testsTotal ? `${formatNumber(testsTotal)} totales` : "Sin datos"}
@@ -963,7 +922,7 @@ const mapProgramList = (rows) =>
               </header>
               {showLoadingIndicadores ? (
                 <p className="indicador-state">Cargando tests...</p>
-              ) : testsNivelBlocks.length ? (
+              ) : testsSortedPrograms.length ? (
                 <>
                   <div className="chart-wrapper chart-wrapper--compact">
                     <Bar data={testsBarData} options={testsBarOptions} onClick={handleTestsBarClick} />
@@ -973,64 +932,60 @@ const mapProgramList = (rows) =>
                       <>
                         <div>
                           <strong>{selectedProgram.label}</strong>
-                          <span>{formatNumber(selectedProgram.value)} tests completados</span>
+                          <span>{formatNumber(selectedProgram.value)} veces elegidos</span>
                         </div>
                         <button
                           type="button"
                           className="selected-program-clear"
-                          onClick={() => setSelectedProgram(null)}
+                          onClick={() => setShowTestsList((prev) => !prev)}
                         >
-                          Ver todos
+                          {showTestsList ? "Ocultar detalles" : "Ver todos"}
                         </button>
                       </>
                     ) : (
-                      <span className="selected-program-prompt">Selecciona un programa para resaltarlo.</span>
+                      <span className="selected-program-prompt">
+                        Selecciona un programa (técnico o tecnólogo) para resaltarlo.
+                      </span>
                     )}
                   </div>
-                  <div className="tests-level">
-                    {testsNivelBlocks.map((block) => (
-                      <div className="tests-level-row" key={block.nivel}>
-                        <div className="tests-level-header">
-                          <strong>{block.nivel}</strong>
-                          <span>{formatNumber(block.total)} tests</span>
-                        </div>
-                        <div className="tests-programs">
-                          {block.programas.map((program) => {
-                            const programLabel = `${block.nivel}: ${program.programa}`;
-                            const isActive = selectedProgram?.label === programLabel;
-                            return (
-                              <div
-                                className={`tests-program${isActive ? " tests-program--active" : ""}`}
-                                key={`${block.nivel}-${program.programa}`}
-                                role="button"
-                                tabIndex={0}
-                                aria-pressed={isActive}
-                                onClick={() => handleProgramSelect({ label: programLabel, value: program.total })}
-                                onKeyDown={(event) => {
-                                  if (event.key === "Enter" || event.key === " ") {
-                                    event.preventDefault();
-                                    handleProgramSelect({ label: programLabel, value: program.total });
-                                  }
+                  {showTestsList && (
+                    <div className="tests-programs">
+                      {testsSortedPrograms.slice(0, 8).map((program) => {
+                        const isActive = selectedProgram?.label === program.label;
+                        return (
+                          <div
+                            key={program.label}
+                            className={`tests-program${isActive ? " tests-program--active" : ""}`}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={isActive}
+                            onClick={() => handleProgramSelect(program)}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                handleProgramSelect(program);
+                              }
+                            }}
+                          >
+                            <span className="tests-program-name">{program.label}</span>
+                            <span className="tests-program-value">
+                              {formatNumber(program.value)} veces
+                            </span>
+                            <div className="tests-program-bar">
+                              <span
+                                style={{
+                                  width: `${(program.value / testsMaxValue) * 100}%`,
                                 }}
-                              >
-                                <span className="tests-program-name">{program.programa}</span>
-                                <span className="tests-program-value">{formatNumber(program.total)}</span>
-                                <div className="tests-program-bar">
-                                  <span style={{ width: `${(program.total / testsProgramMax) * 100}%` }}></span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        {block.restCount > 0 && (
-                          <small className="tests-level-more">+{block.restCount} más programas</small>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                              ></span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </>
               ) : (
-                <p className="indicador-state">No hay registros de tests completados.</p>
+                <p className="indicador-state">No hay datos de tests elegidos.</p>
               )}
             </article>
 
@@ -1067,9 +1022,9 @@ const mapProgramList = (rows) =>
                         <button
                           type="button"
                           className="selected-program-clear"
-                          onClick={() => setSelectedTecnologoProgram(null)}
+                          onClick={() => setShowTecnologoList((prev) => !prev)}
                         >
-                          Ver todos
+                          {showTecnologoList ? "Ocultar detalles" : "Ver todos"}
                         </button>
                       </>
                     ) : (
@@ -1078,47 +1033,49 @@ const mapProgramList = (rows) =>
                       </span>
                     )}
                   </div>
-                  <div className="programas-nivel">
-                    <div className="programas-nivel-block" key="tecnologos">
-                      <div className="programas-nivel-header">
-                        <strong>Tecnologos</strong>
-                        <span>{tecnologoPrograms.length} programas</span>
-                      </div>
-                      <div className="tests-programs">
-                        {orderedTecnologoPrograms.map((entry) => {
-                          const isActive = selectedTecnologoProgram?.programa === entry.programa;
-                          return (
-                            <div
-                              className={`tests-program${isActive ? " tests-program--active" : ""}`}
-                              key={`tecnologo-${entry.programa}`}
-                              role="button"
-                              tabIndex={0}
-                              aria-pressed={isActive}
-                              onClick={() => handleTecnologoProgramSelect(entry)}
-                              onKeyDown={(event) => {
-                                if (event.key === "Enter" || event.key === " ") {
-                                  event.preventDefault();
-                                  handleTecnologoProgramSelect(entry);
-                                }
-                              }}
-                            >
-                              <span className="tests-program-name">{entry.programa}</span>
-                              <span className="tests-program-value">
-                                {formatNumber(entry.total)} tests
-                              </span>
-                              <div className="tests-program-bar">
-                                <span
-                                  style={{
-                                    width: `${(entry.total / tecnologoProgramMax) * 100}%`
-                                  }}
-                                ></span>
+                  {showTecnologoList && (
+                    <div className="programas-nivel">
+                      <div className="programas-nivel-block" key="tecnologos">
+                        <div className="programas-nivel-header">
+                          <strong>Tecnologos</strong>
+                          <span>{tecnologoPrograms.length} programas</span>
+                        </div>
+                        <div className="tests-programs">
+                          {orderedTecnologoPrograms.map((entry) => {
+                            const isActive = selectedTecnologoProgram?.programa === entry.programa;
+                            return (
+                              <div
+                                className={`tests-program${isActive ? " tests-program--active" : ""}`}
+                                key={`tecnologo-${entry.programa}`}
+                                role="button"
+                                tabIndex={0}
+                                aria-pressed={isActive}
+                                onClick={() => handleTecnologoProgramSelect(entry)}
+                                onKeyDown={(event) => {
+                                  if (event.key === "Enter" || event.key === " ") {
+                                    event.preventDefault();
+                                    handleTecnologoProgramSelect(entry);
+                                  }
+                                }}
+                              >
+                                <span className="tests-program-name">{entry.programa}</span>
+                                <span className="tests-program-value">
+                                  {formatNumber(entry.total)} tests
+                                </span>
+                                <div className="tests-program-bar">
+                                  <span
+                                    style={{
+                                      width: `${(entry.total / tecnologoProgramMax) * 100}%`,
+                                    }}
+                                  ></span>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </>
               ) : (
                 <p className="indicador-state">No hay programas tecnologos disponibles.</p>

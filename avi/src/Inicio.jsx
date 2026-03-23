@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./Inicio.css"
-import Chart from "chart.js/auto";
 
 const teamMembers = [
   { name: "Vanessa Rodriguez", role: "Coordinación", variant: "lavender", jobTitle: "Full Stack Developer" },
@@ -41,7 +40,7 @@ const services = [
   },
   {
     title: "Mapa",
-    copy: "Ubica sedes, fechas e itinerarios para acercarte al SENA.",
+    copy: "Conoce la información de los programas y sus entornos.",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 4v16"></path>
@@ -49,6 +48,43 @@ const services = [
         <path d="M6 6l12 12"></path>
       </svg>
     ),
+    variant: "yellow",
+  },
+];
+
+const howSteps = [
+  {
+    number: "1",
+    title: "Registro",
+    description:
+      "Crea tu cuenta en pocos minutos para guardar tu progreso y obtener recomendaciones personalizadas.",
+    bullets: [
+      "Formulario seguro con correo y nombre",
+      "Verifica tu correo para continuar",
+      "Accede a tu cuenta y comienza tu proceso vocacional",
+    ],
+    variant: "cyan",
+  },
+  {
+    number: "2",
+    title: "Inicio",
+    description:
+      "Repasa todo el recorrido del test: respondes, se analiza y llegas hasta la calificación final más las rutas sugeridas.",
+    bullets: [
+      "Resumen visual del test y los puntajes que se derivan de cada sección",
+      "Calificaciones y observaciones finales disponibles al instante",
+    ],
+    variant: "lavender",
+  },
+  {
+    number: "3",
+    title: "Navegación",
+    description: "Explora los resultados, programas sugeridos y la ruta vocacional diseñada para ti.",
+    bullets: [
+      "Consulta tus resultados",
+      "Revisa programas del SENA compatibles",
+      "Descubre tu vocación",
+    ],
     variant: "yellow",
   },
 ];
@@ -64,7 +100,6 @@ export default function Inicio() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState(null);
   const [loading, setLoading] = useState(false);
-  const stepChart = useRef(null);
 
   async function handleSuggestionSubmit(event) {
     event.preventDefault();
@@ -86,61 +121,6 @@ export default function Inicio() {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    if (!stepChart.current) return;
-    const segmentLabelPlugin = {
-      id: "segmentLabel",
-      afterDatasetDraw(chartInstance) {
-        const {
-          ctx,
-          data: { labels },
-        } = chartInstance;
-
-        ctx.save();
-        chartInstance.getDatasetMeta(0).data.forEach((segment, index) => {
-          const label = labels[index];
-          const center = segment.getCenterPoint();
-
-          ctx.font = "600 13px 'Segoe UI', sans-serif";
-          ctx.fillStyle = "#1c1840";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(label, center.x, center.y);
-        });
-
-        ctx.restore();
-      },
-    };
-
-    const stepInstance = new Chart(stepChart.current, {
-      type: "doughnut",
-      data: {
-        labels: ["Inicio", "Registro", "Navegación"],
-        datasets: [
-          {
-            data: [40, 30, 30],
-            backgroundColor: ["#b9a2d8", "#2fb1b8", "#eab733"],
-            borderColor: "#ffffff",
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        cutout: "40%",
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: false },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-      plugins: [segmentLabelPlugin],
-    });
-    return () => stepInstance.destroy();
-  }, []);
-
-
 
   return (
   <main className="landing-page">
@@ -194,13 +174,29 @@ export default function Inicio() {
       </section>
 
       <section className="landing-footer-headline">
-        <h2>¿Cuales son los pasos del aspirante ?</h2>
+        <h2>¿Cuales son tus pasos?</h2>
+      </section>
 
-        <section className="landing-steps">
-          <div className="step-chart-card">
-            <canvas ref={stepChart} aria-label="Pasos del aspirante"></canvas>
-          </div>
-        </section>
+      <section className="landing-steps-panel">
+        <div className="steps-card-row">
+          {howSteps.map((step) => (
+            <article className={`step-card ${step.variant}`} key={step.number}>
+              <div className="step-header">
+                <div className="step-card-number">{step.number} </div>
+                <h3> {step.title}</h3>
+               </div>
+              <div>
+                
+                <p>{step.description}</p>
+                <ul>
+                  {step.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       
@@ -264,4 +260,3 @@ export default function Inicio() {
     </main>
   );
 }
-

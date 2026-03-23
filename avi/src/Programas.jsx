@@ -33,7 +33,7 @@ const Programas = () => {
 
   return (
     <main className="programas">
-      <h2>Programas del CENTRO DE TELEINFORMATICA Y PRODUCCICON INDUSTRIAL</h2>
+      <h2>PROGRAMAS CENTRO DE TELEINFORMATICA Y PRODUCCIÓN INDUSTRIAL</h2>
 
       <div className="programas-filters">
         <select
@@ -48,24 +48,19 @@ const Programas = () => {
         </select>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nivel</th>
-            <th>Nombre del Programa</th>
-            <th>Descripción</th>
-          </tr>
-        </thead>
-          <tbody>
-            {programasFiltrados.map(p => (
-              <tr key={p.idPROGRAMA}>
-                <td>{p.nivel}</td>
-                <td>{p.nombre}</td>
-                <td>{p.descripcion}</td>
-              </tr>
-            ))}
-          </tbody>
-      </table>
+      <div className="avi-grid">
+        {programasFiltrados.map((p) => (
+          <div className="avi-card" key={p.idPROGRAMA}>
+            
+            <span className="nivel">{p.nivel}</span>
+
+            <h3>{p.nombre}</h3>
+
+            <p className="descripcion">{p.descripcion}</p>
+
+          </div>
+        ))}
+      </div>
     </main>
   );
 };

@@ -17,6 +17,9 @@ function EditarPerfil() {
     email: false,
     telefono: false,
     barrio: false,
+    direccion: false,
+    ocupacion: false,
+    institucion: false,
   });
   const [guardando, setGuardando] = useState(false);
   const [subiendoFoto, setSubiendoFoto] = useState(false);
@@ -269,6 +272,17 @@ function EditarPerfil() {
 
   const lapizStyle = { fontSize: "0.8rem", marginLeft: "5px", cursor: "pointer" };
 
+  const camposPerfil = [
+  { key: "idASPIRANTE", label: "IDENTIFICACIÓN", editable: false },
+  { key: "nombre_completo", label: "NOMBRE COMPLETO", editable: true },
+  { key: "email", label: "EMAIL", editable: true },
+  { key: "telefono", label: "TELÉFONO", editable: true },
+  { key: "barrio", label: "BARRIO", editable: true },
+  { key: "direccion", label: "DIRECCIÓN", editable: true },
+  { key: "ocupacion", label: "OCUPACIÓN", editable: false },
+  { key: "institucion", label: "INSTITUCIÓN", editable: false },
+];
+
   return (
     <section className="perfil-page">
       <div className="editar-perfil-container">
@@ -303,30 +317,34 @@ function EditarPerfil() {
           </div>
 
           <div className="perfil-datos">
-            {["idASPIRANTE", "nombre_completo", "email", "telefono", "barrio"].map((campo) => (
-              <div className="dato-item" key={campo}>
-                <span className="dato-label">
-                  {campo === "idASPIRANTE" ? "Identificacion" : campo.replace("_", " ").toUpperCase()}
-                </span>
-                {editando[campo] ? (
-                  campo === "idASPIRANTE" ? (
-                    <span className="dato-valor">{usuario[campo] || "---"}</span>
+            {camposPerfil.map((campo) => (
+              <div className="dato-item" key={campo.key}>
+                <span className="dato-label">{campo.label}</span>
+                <br />
+
+                {editando[campo.key] ? (
+                  campo.key === "idASPIRANTE" ? (
+                    <span className="dato-valor">{usuario[campo.key] || "---"}</span>
                   ) : (
-                  <input
-                    type={campo === "email" ? "email" : "text"}
-                    name={campo}
-                    value={usuario[campo] || ""}
-                    onChange={handleChange}
-                  />
+                    <input
+                      type={campo.key === "email" ? "email" : "text"}
+                      name={campo.key}
+                      value={usuario[campo.key] || ""}
+                      onChange={handleChange}
+                    />
                   )
                 ) : (
-                  <span className="dato-valor">{usuario[campo] || "---"}</span>
+                  <span className="dato-valor">{usuario[campo.key] || "---"}</span>
                 )}
-                {campo !== "idASPIRANTE" ? (
-                  <span style={lapizStyle} onClick={() => toggleEditar(campo)}>
-                    Editar
-                  </span>
-                ) : null}
+
+                {campo.editable && (
+                  <button
+                    className="btn-editar-campo"
+                    onClick={() => toggleEditar(campo.key)}
+                  >
+                    {editando[campo.key] ? "Cancelar" : "✎"}
+                  </button>
+                )}
               </div>
             ))}
           </div>

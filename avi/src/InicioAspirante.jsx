@@ -197,7 +197,7 @@ function InicioAspirante(){
             </button>
             <button type="button" className="bv-top-stat" onClick={irMisResultados}>
               <strong>{mejorPrograma ?? "Realiza el test"}</strong>
-              <small>Mejor Programa para ti</small>
+              <small>Tu programa favorito</small>
             </button>
           </div>
 

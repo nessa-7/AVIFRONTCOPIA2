@@ -2,7 +2,7 @@
 
 .programas {
   margin: 0;
-  padding: 20px;
+  padding: 25px;
   background: linear-gradient(60deg, #efe9f8 45%, #f1e9fc 70%);
   border-radius: 16px;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
@@ -50,126 +50,6 @@
   border-color: #0ea5e9;
 }
 
-.programas table {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  border-collapse: collapse;
-  background: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.programas th,
-.programas td {
-  padding: 14px 12px;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.programas th {
-  background: linear-gradient(135deg, #5abeed, #4ea7ff);
-  color: #ffffff;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 13px;
-}
-
-.programas tbody tr:nth-child(even) {
-  background: #f1f5f9;
-}
-
-.programas tbody tr:hover {
-  background: #e2e8f0;
-}
-
-@media (max-width: 1024px) {
-  .programas {
-    padding: 16px;
-  }
-
-  .programas table {
-    width: 100%;
-    font-size: 13px;
-  }
-
-  .programas th,
-  .programas td {
-    padding: 12px 10px;
-  }
-
-  .programas .avi-grid {
-    gap: 16px;
-  }
-}
-
-@media (max-width: 760px) {
-  .programas {
-    padding: 12px;
-  }
-
-  .programas table,
-  .programas thead,
-  .programas tbody,
-  .programas th,
-  .programas td,
-  .programas tr {
-    display: block;
-  }
-
-  .programas thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
-  .programas tbody tr {
-    margin-bottom: 18px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-  }
-
-  .programas td {
-    position: relative;
-    padding-left: 50%;
-    text-align: right;
-  }
-
-  .programas td:before {
-    position: absolute;
-    top: 14px;
-    left: 12px;
-    width: 45%;
-    white-space: nowrap;
-    font-weight: 700;
-    color: #334155;
-  }
-
-  .programas td:nth-of-type(1):before { content: "Nivel"; }
-  .programas td:nth-of-type(2):before { content: "Nombre"; }
-  .programas td:nth-of-type(3):before { content: "Descripción"; }
-
-  .programas .programas-filters {
-    justify-content: space-between;
-  }
-
-  .programas-btnnivel {
-    width: 100%;
-    min-width: initial;
-    text-align: center;
-  }
-
-  .programas .avi-card {
-    padding: 16px;
-  }
-
-  .programas .avi-card input,
-  .programas .avi-card select,
-  .programas .avi-card textarea {
-    padding: 10px;
-  }
-}
 
 .programas .avi-card {
   background: white;
@@ -228,9 +108,9 @@
 
 /* Grid de programas */
 .programas .avi-grid {
-  margin-top: 40px;
+  margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -267,4 +147,40 @@
 .programas .descripcion {
   margin-top: 10px;
   text-align: justify;
+}
+
+.programas .nivel {
+  display: inline-block;
+  background: linear-gradient(135deg, #5abeed, #4ea7ff);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.programas .avi-card h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.programas .descripcion {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+
+@media (max-width: 1024px) {
+  .programas .avi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .programas .avi-grid {
+    grid-template-columns: 1fr;
+  }
 }

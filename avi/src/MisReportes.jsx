@@ -66,33 +66,56 @@ async function traer() {
 
         <aside className="riasec-side">
           <h4 className="riasec-title">RIASEC</h4>
-          <div className="riasec-hex">
-            <div className="riasec-node r">
-              <span className="riasec-letter">REALISTA</span>
-              <span className="riasec-score">{reporte.puntajeR}</span>
-            </div>
-            <div className="riasec-node i">
-              <span className="riasec-letter">INVESTIGADOR</span>
+          {(() => {
+            const riasecMap = {
+              REALISTA: { score: Number(reporte.puntajeR) || 0, color: '#68cde9', text: 'Práctico, manual, orientado a resultados.' },
+              INVESTIGADOR: { score: Number(reporte.puntajeI) || 0, color: '#ef9cdcf8', text: 'Analítico, curioso, aprende con investigación.' },
+              ARTISTA: { score: Number(reporte.puntajeA) || 0, color: '#5af27d', text: 'Creativo, expresivo, innovación estética.' },
+              SOCIAL: { score: Number(reporte.puntajeS) || 0, color: '#c06adcf2', text: 'Empático, colaborador, ayuda a otros.' },
+              EMPRENDEDOR: { score: Number(reporte.puntajeE) || 0, color: '#f2ef5ae7', text: 'Líder, persuasivo, toma iniciativa.' },
+              CONVENCIONAL: { score: Number(reporte.puntajeC) || 0, color: '#ef8d6ff7', text: 'Organizado, metódico, datos y normas.' },
+            };
 
-              <span className="riasec-score">{reporte.puntajeI}</span>
-            </div>
-            <div className="riasec-node a">
-              <span className="riasec-letter">ARTISTA</span>
-              <span className="riasec-score">{reporte.puntajeA}</span>
-            </div>
-            <div className="riasec-node s">
-              <span className="riasec-letter">SOCIAL</span>
-              <span className="riasec-score">{reporte.puntajeS}</span>
-            </div>
-            <div className="riasec-node e">
-              <span className="riasec-letter">EMPRENDEDOR</span>
-              <span className="riasec-score">{reporte.puntajeE}</span>
-            </div>
-            <div className="riasec-node c">
-              <span className="riasec-letter">CONVENCIONAL</span>
-              <span className="riasec-score">{reporte.puntajeC}</span>
-            </div>
-          </div>
+            const riasecSorted = Object.entries(riasecMap)
+              .map(([key, value]) => ({ key, ...value }))
+              .sort((a, b) => b.score - a.score);
+
+            const [top1, top2] = riasecSorted;
+            const maxScore = Math.max(...riasecSorted.map((item) => item.score), 1);
+
+           
+            return (
+              <>
+                <div className="riasec-summary">
+                  <p className="riasec-principal">
+                    Tu perfil principal es <strong>{top1?.key || 'N/A'}</strong> {top2 ? `con tendencia ${top2.key}` : ''}
+                  </p>
+                  <p>
+                    {reporte.explicacion}
+                  </p>
+                </div>
+
+                <div className="riasec-bars">
+                  {riasecSorted.map((item, index) => (
+                    <div key={item.key} className={`riasec-bar-row ${index < 2 ? 'riasec-top' : ''}`}>
+                      <div className="riasec-rank">{index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}°`}</div>
+                      <div className="riasec-label">{item.key}</div>
+                      <div className="riasec-bar-track">
+                        <div
+                          className="riasec-bar-fill"
+                          style={{ width: `${Math.round((item.score / maxScore) * 100)}%`, backgroundColor: item.color }}
+                          title={`${item.key}: ${item.score}`}
+                        />
+                      </div>
+                      <div className="riasec-score">{item.score}</div>
+                      <div className="riasec-desc">{item.text}</div>
+                    </div>
+                  ))}
+                </div>
+
+              </>
+            );
+          })()}
         </aside>
       </div>
     ))}

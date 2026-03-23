@@ -1,13 +1,13 @@
 .mis-reportes-container {
   background: linear-gradient(60deg, #f8f2ff 45%, #f5effe 70%);
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 5px;
 }
 
 
 
 .reportes-container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 20px auto;
   padding: 10px;
   font-family: 'Segoe UI', sans-serif;
@@ -16,7 +16,7 @@
 
 .titulo {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #3f3170;
   font-size: 36px;
   font-weight: 650;
@@ -27,14 +27,14 @@
 
 .reporte-card {
   border-radius: 18px;
-  padding: 25px;
+  padding: 35px;
   margin-bottom: 35px;
   border: 1px solid #d0bbf5;
   box-shadow: 0 8px 25px rgba(94, 72, 139, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
-  gap: 20px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(220px, 1.2fr);
+  gap: 30px;
   background: linear-gradient(180deg, #faf6ff 0%, #f9f5ff 100%);
 }
 
@@ -58,75 +58,108 @@
 .riasec-side {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 20px;
   border-left: 1px dashed #dbcff0;
-  padding-left: 18px;
+  padding-left: 30px;
+  margin-top: -20px;
 }
 
 .riasec-title {
   font-size: 1rem;
   color: #5b44c0;
   letter-spacing: 0.04em;
+  margin-bottom: 4px;
 }
 
-.riasec-hex {
-  position: relative;
-  width: 480px;
-  height: 300px;
+.riasec-summary {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #d7c8f3;
+  padding: 12px;
+  box-shadow: inset 0 0 0 1px rgba(97, 72, 152, 0.08);
+  margin-top: -10px;
 }
 
-.riasec-hex::before {
-  content: "";
-  position: absolute;
-  inset: 20px 28px;
-  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
-  border: 2px dashed #d6c7ea;
-}
-
-.riasec-node {
-  position: absolute;
-  width: 135px;
-  height: 90px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  gap: 1px;
-  font-weight: 500;
-  color: #fff;
-  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12), 0 6px 12px rgba(88, 60, 140, 0.18);
-}
-
-.riasec-letter { 
-  font-size: 0.9rem; 
-  line-height: 1; 
-  margin-bottom: -25px;
-}
-
-.riasec-score { 
-  font-size: 0.8rem; 
-  line-height: 1; 
-  margin-top: -15px;
+.riasec-principal {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
   font-weight: 700;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: rgba(255, 255, 255, 0.734);
+  color: #3f2c79;
 }
-  
-.riasec-node.r { top: 0; left: 175px; background: #68cde9; color: #1f7289; }
-.riasec-node.i { top: 55px; right: 40px; background: #ef9cdcf8; color: #d03cc1f8;}
-.riasec-node.a { bottom: 55px; right: 40px; background: #5af27d; color: #149c34; }
-.riasec-node.s { bottom: 0; left: 175px; background: #c06adcf2; color: #74268ef2;  }
-.riasec-node.e { bottom: 55px; left: 40px; background:  #f2ef5ae7; color: #c1a924; }
-.riasec-node.c { top: 55px; left: 40px; background: #ef8d6ff7; color: #a9432ae9; }
+
+.riasec-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.riasec-bar-row {
+  display: grid;
+  grid-template-columns: 50px 260px 0.95fr 30px;
+  grid-template-rows: auto auto;
+  gap: 4px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #8f6cee;
+  background: #f5edff;
+}
 
 
-.riasec-node small{
-  position: absolute;
-  gap: 2px;
-  font-weight: 200;
-  color: #000000;
+
+.riasec-rank {
+  font-size: 0.9rem;
+  font-weight: 600;
+  grid-row: 1 / span 2;
 }
+
+.riasec-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #2b1c66;
+}
+
+.riasec-bar-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #e8e2f8;
+  overflow: hidden;
+
+}
+
+.riasec-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.riasec-score {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4d3b85;
+  text-align: right; /* 👈 importante */
+  padding-left: 6px;
+
+}
+
+.riasec-desc {
+  grid-column: 2 / span 3;
+  font-size: 0.8rem;
+  color: #5d4b92;
+}
+
+.riasec-connection {
+  border-top: 1px dashed #d7c8f3;
+  padding-top: 8px;
+  font-size: 0.85rem;
+  color: #472f8b;
+}
+
 
 
 /* ================= RECOMENDACIONES ================= */
@@ -169,7 +202,7 @@
 .fecha {
   font-size: 14px;
   color: #6d5aa7;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 /* ===== SECCION TITULOS ===== */
@@ -183,15 +216,35 @@
 }
 
 /* ================= RESPONSIVE ================= */
-
-@media (max-width: 768px) {
+/* 📱 Celulares pequeños */
+@media (max-width: 480px) {
   .reporte-card {
-    padding: 18px;
+    padding: 15px;
     grid-template-columns: 1fr;
+    gap: 15px;
   }
 
-  .titulo {
-    font-size: 22px;
+  .riasec-side {
+    border-left: none;
+    border-top: 1px dashed #dbcff0;
+    padding-left: 0;
+    padding-top: 15px;
+  }
+
+  .riasec-bar-row {
+    grid-template-columns: 30px 1fr 25px;
+    font-size: 12px;
+  }
+
+  .recomendacion-card {
+    font-size: 13px;
+  }
+}
+
+/* 📱 Tablets */
+@media (max-width: 768px) {
+  .reporte-card {
+    grid-template-columns: 1fr;
   }
 
   .riasec-side {
@@ -199,5 +252,20 @@
     border-top: 1px dashed #dbcff0;
     padding-left: 0;
     padding-top: 18px;
+  }
+}
+
+/* 💻 Pantallas medianas */
+@media (max-width: 1024px) {
+  .reporte-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 🖥 Pantallas grandes */
+@media (min-width: 1400px) {
+  .reporte-card {
+    padding: 40px;
+    gap: 40px;
   }
 }

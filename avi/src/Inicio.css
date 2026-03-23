@@ -35,6 +35,7 @@
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .landing-top-actions {
@@ -269,15 +270,96 @@
   background: #eab733;
 }
 
-.landing-steps {
-  margin: 4px ;
-  padding: 18px;
-  border-radius: 20px;
+.landing-steps-panel {
+  width: calc(100% - 20px);
+  max-width: 100%;
+  margin: 14px auto;
+  background: #fcf9ff90;
+  border-radius: 24px;
+  padding: 32px 40px;
+  border: 1px solid rgba(89, 36, 142, 0.17);
+  box-shadow: 0 16px 40px rgba(62, 24, 87, 0.12);
 }
 
-.step-chart-card {
-  width: 100%;
-  height: 320px;
+.steps-card-row {
+  margin-top: 12px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.step-card {
+  flex: 1;
+  min-width: 250px;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 24px 28px;
+  border: 1px solid #eceaf6;
+  box-shadow: 0 12px 30px rgba(19, 0, 68, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step-card .step-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;  
+}
+
+.step-card-number {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #2fb1b8;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(47, 177, 184, 0.35);
+}
+
+.step-card h3 {
+  color: #2e2e4d;
+  font-size: 1.1rem;
+}
+
+.step-card p {
+  margin: 0;
+  color: #5a5479;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.step-card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+  color: #4b4661;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.step-card li {
+  margin-bottom: 6px;
+}
+
+.step-card.lavender .step-card-number {
+  background: #7b4eb9;
+  box-shadow: 0 4px 12px rgba(123, 78, 185, 0.35);
+}
+
+.step-card.cyan .step-card-number {
+  background: #2fb1b8;
+  box-shadow: 0 4px 12px rgba(47, 177, 184, 0.35);
+}
+
+.step-card.yellow .step-card-number {
+  background: #eab733;
+  box-shadow: 0 4px 12px rgba(234, 183, 51, 0.35);
 }
 
 .landing-team-suggestions {

@@ -148,9 +148,9 @@ function Calificaciones() {
         icon: "success",
         title: "Listo",
         text: "Excelente, tu proceso vocacional ha finalizado.",
-        confirmButtonText: "Ir a inicio",
+        confirmButtonText: "Ir a ver mis reportes",
       }).then(() => {
-        navigate("/inicioaspirante");
+        navigate("/misreportes");
       });
     } catch (error) {
       console.error(error);

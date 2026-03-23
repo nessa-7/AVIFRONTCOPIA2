@@ -165,7 +165,7 @@ border: 1px solid #e0e0e0;
 
 /* Tarjeta de perfil */
 .perfil-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   padding: 24px;
@@ -175,10 +175,8 @@ border: 1px solid #e0e0e0;
 .perfil-card-header {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
+  gap: 16px;
+  padding-bottom: 16px;
 }
 
 .perfil-card-foto {
@@ -208,26 +206,48 @@ border: 1px solid #e0e0e0;
 .perfil-datos {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 24px;
+  margin-top: 10px;
 }
 
 .dato-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  background: #fafafa;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  transition: all 0.2s ease;
+}
+
+.dato-item:hover {
+  border-color: #d2b8ff;
+  box-shadow: 0 2px 8px rgba(123, 44, 191, 0.08);
 }
 
 .dato-label {
-  font-size: 12px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
 }
 
 .dato-valor {
-  font-size: 15px;
-  color: #333;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.btn-editar-campo {
+  align-self: flex-end;
+  background: #f3e8ff00;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+.btn-editar-campo:hover {
+  background: #e9d5ff9a;
 }
 
 .profile-btn{
@@ -250,19 +270,25 @@ border: 1px solid #e0e0e0;
 
 /* Estilos para EditarPerfil */
 .btn-guardar {
-  background: linear-gradient(120deg, #7b2cbf, #4c1d95);
-  border: none;
-  color: #fff;
+  border: 1px solid #c8b1f255;
+  color: #70517e;
   font-weight: 600;
   border-radius: 10px;
   padding: 10px 14px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 4px;
+  border-radius: 12px;
+  height: 20px;
+  background-color: #9783ac15;
 }
 
 .btn-guardar:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(123, 44, 191, 0.28);
+  box-shadow: 0 2px 8px rgba(67, 33, 96, 0.28);
+  background-color: #b3a6be2f;
 }
 
 .btn-guardar:disabled {
@@ -271,16 +297,17 @@ border: 1px solid #e0e0e0;
 }
 
 .dato-item input {
-  width: 100%;
-  border: 1px solid #d2b8ff;
+  margin-top: 6px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
-  color: #2b2b2b;
+  transition: all 0.2s ease;
 }
 
 .dato-item input:focus {
-  outline: 2px solid #7b2cbf;
+  border-color: #7b2cbf;
+  box-shadow: 0 0 0 2px rgba(123, 44, 191, 0.15);
 }
 
 .dato-item span[style] {
@@ -295,3 +322,8 @@ border: 1px solid #e0e0e0;
 }
 
 
+@media (max-width: 768px) {
+  .perfil-datos {
+    grid-template-columns: 1fr;
+  }
+}

@@ -26,9 +26,8 @@ function ComoFuncionaTest() {
               <span className="cft-num">1</span>
               <h3>Responde preguntas clave</h3>
               <ul>
-                <li>Intereses y habilidades</li>
-                <li>Preferencias vocacionales</li>
-                <li>Duracion aproximada: 15-20 minutos</li>
+                <li>Cuentanos tus Intereses y habilidades</li>
+                <li>Duracion aproximada: 5-10 minutos</li>
               </ul>
             </div>
 
@@ -36,7 +35,7 @@ function ComoFuncionaTest() {
               <span className="cft-num">2</span>
               <h3>Analizamos tu perfil</h3>
               <ul>
-                <li>Analisis de afinidad</li>
+                <li>Recibimos tus respuestas</li>
                 <li>Resultado por perfil RIASEC</li>
                 <li>Compatibilidad con programas</li>
               </ul>
@@ -47,8 +46,7 @@ function ComoFuncionaTest() {
               <h3>Recibe tus programas recomendados</h3>
               <ul>
                 <li>Recomendaciones personalizadas</li>
-                <li>Programas SENA sugeridos</li>
-                <li>Ruta vocacional sugerida</li>
+                <li>Programas de formación sugeridos</li>
               </ul>
             </div>
           </div>
