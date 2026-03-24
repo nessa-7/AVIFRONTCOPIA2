@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Inicio.css"
 
+const SUGGESTIONS_ENDPOINT = import.meta.env.VITE_SUGGESTIONS_ENDPOINT?.trim();
+const SUGGESTIONS_EMAIL = import.meta.env.VITE_SUGGESTIONS_EMAIL?.trim();
+
 const teamMembers = [
   { name: "Vanessa Rodriguez", role: "Coordinación", variant: "lavender", jobTitle: "Full Stack Developer" },
   { name: "Cristian Castro", role: "Diseño UX", variant: "cyan", jobTitle: "Android & AR Developer" },
@@ -107,16 +110,47 @@ export default function Inicio() {
     setFormStatus(null);
 
     try {
-      const response = await fetch("/api/suggestions", {
+      let endpoint = SUGGESTIONS_ENDPOINT;
+      let payload = formState;
+
+      if (!endpoint && SUGGESTIONS_EMAIL) {
+        endpoint = `https://formsubmit.co/ajax/${encodeURIComponent(SUGGESTIONS_EMAIL)}`;
+        payload = {
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+          _subject: "Nueva sugerencia desde AVI",
+        };
+      }
+
+      if (!endpoint) {
+        throw new Error("Falta configurar el correo de sugerencias de AVI.");
+      }
+
+      const response = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formState),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error("No se pudo enviar la sugerencia.");
-      setFormStatus({ type: "success", message: "Gracias por la sugerencia, te contactaremos pronto." });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (!response.ok || data?.success === false) {
+        throw new Error(data?.message || "No se pudo enviar la sugerencia.");
+      }
+
+      setFormStatus({ type: "success", message: "Gracias por la sugerencia. Fue enviada al correo de AVI." });
       setFormState({ name: "", email: "", message: "" });
     } catch (error) {
-      setFormStatus({ type: "error", message: error.message });
+      setFormStatus({ type: "error", message: error.message || "No se pudo enviar la sugerencia." });
     } finally {
       setLoading(false);
     }
