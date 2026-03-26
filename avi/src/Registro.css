@@ -152,6 +152,10 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7b7b8e;
 }
 
 .form-group input[type="date"] {
@@ -242,3 +246,47 @@
     width: 100%;
   }
 }
+
+
+/* CONTENEDOR DE TÉRMINOS */
+.terminos-container {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* LABEL GENERAL */
+.terminos-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* CHECKBOX */
+.terminos-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #7a3fca;
+  cursor: pointer;
+}
+
+/* TEXTO NORMAL */
+.terminos-texto {
+  user-select: none;
+}
+
+/* TEXTO CLICKEABLE */
+.terminos-link {
+  color: #7a3fca;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+/* HOVER */
+.terminos-link:hover {
+  color: #5a2ea6;
+}
+

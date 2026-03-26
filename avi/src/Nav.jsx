@@ -124,7 +124,7 @@ function Nav() {
               title="Perfil"
             >
               <img
-                src={foto || "/placeholder.svg"}
+                src={foto || "/placeholder-user.jpg"}
                 alt="Perfil"
                 style={{
                   width: "40px",

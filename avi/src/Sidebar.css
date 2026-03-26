@@ -117,8 +117,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
-  transition: opacity 0.18s, transform 0.18s;
+  margin-top: auto;
+  margin-bottom: 6px;  transition: opacity 0.18s, transform 0.18s;
 }
 
 .logout-btn:hover {

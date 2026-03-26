@@ -182,22 +182,22 @@ function InicioAspirante(){
           </article>
 
           <div className="bv-top-stats">
-            <button type="button" className="bv-top-stat" onClick={irMisResultados}>
+            <button type="button" className="bv-top-stat" >
               <strong>{testsCompletados ?? "Realiza el test"}</strong>
               <small>Tests completados</small>
             </button>
-            <button type="button" className="bv-top-stat" onClick={irRiasecInfo}>
+            <button type="button" className="bv-top-stat" >
               <strong>RIASEC</strong>
               <small>Modelo Vocacional</small>
             </button>
             
-            <button type="button" className="bv-top-stat" onClick={irMisResultados}>
+            <button type="button" className="bv-top-stat" >
               <strong>{programasRecomendados ?? "Realiza el test"}</strong>
               <small>Programas recomendados</small>
             </button>
-            <button type="button" className="bv-top-stat" onClick={irMisResultados}>
+            <button type="button" className="bv-top-stat" >
               <strong>{mejorPrograma ?? "Realiza el test"}</strong>
-              <small>Tu programa favorito</small>
+              <small>Mejor programa para ti</small>
             </button>
           </div>
 

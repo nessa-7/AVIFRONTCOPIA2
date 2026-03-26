@@ -329,3 +329,170 @@
     transform: translateX(12px);
   }
 }
+
+
+/* ================= MOBILE (hasta 480px) ================= */
+
+@media (max-width: 480px) {
+
+  .resultado-container {
+    padding: 80px 12px;
+  }
+
+  .resultado-card {
+    padding: 60px 16px 30px;
+    border-radius: 20px;
+  }
+
+  .resultado-title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .resultado-subtitle {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* Avatar centrado arriba */
+  .avatar-wrapper {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .avatar-circle {
+    width: 120px;
+    height: 120px;
+    border-width: 4px;
+  }
+
+  /* Layout en columna */
+  .resultado-layout {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  /* Tarjetas */
+  .program-summary {
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .program-number {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .program-content {
+    padding: 0 14px 14px;
+  }
+
+  .program-image {
+    max-height: 140px;
+  }
+
+  /* QR */
+  .qr-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .qrimg {
+    width: 120px;
+    margin: 10px 0;
+  }
+
+  .qr-section p {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  /* Botones */
+  .acciones {
+    flex-direction: column;
+    gap: 15px;
+    margin: 25px 0 0;
+  }
+
+  .avicontinuar {
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    font-size: 13px;
+  }
+}
+
+
+/* ================= TABLET (481px - 900px) ================= */
+
+@media (min-width: 481px) and (max-width: 900px) {
+
+  .resultado-container {
+    padding: 90px 20px;
+  }
+
+  .resultado-card {
+    padding: 70px 24px 40px;
+  }
+
+  /* Avatar */
+  .avatar-wrapper {
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .avatar-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* Layout */
+  .resultado-layout {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* QR */
+  .qr-section {
+    flex-wrap: wrap;
+  }
+
+  .qrimg {
+    width: 140px;
+  }
+
+  /* Botones */
+  .acciones {
+    gap: 20px;
+    margin-right: 0;
+  }
+
+  .avicontinuar {
+    width: 220px;
+  }
+}
+
+
+/* ================= MEJORA GENERAL EXTRA ================= */
+
+/* Evita que el avatar se salga en cualquier pantalla */
+.resultado-card {
+  overflow: visible;
+}
+
+/* Hace que textos largos no rompan diseño */
+.program-summary-text {
+  word-break: break-word;
+}
+
+/* Mejora scroll en móviles */
+body {
+  overflow-x: hidden;
+}

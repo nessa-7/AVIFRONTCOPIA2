@@ -65,7 +65,7 @@ async function traer() {
         </div>
 
         <aside className="riasec-side">
-          <h4 className="riasec-title">RIASEC</h4>
+          <h4 className="riasec-title">Puntajes RIASEC</h4>
           {(() => {
             const riasecMap = {
               REALISTA: { score: Number(reporte.puntajeR) || 0, color: '#68cde9', text: 'Práctico, manual, orientado a resultados.' },

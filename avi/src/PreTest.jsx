@@ -314,6 +314,16 @@ const handleSubmit = async () => {
   }
 };
 
+useEffect(() => {
+  const loadVoices = () => {
+    window.speechSynthesis.getVoices();
+  };
+
+  loadVoices();
+
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}, []);
+
 
 
 if(startTest){

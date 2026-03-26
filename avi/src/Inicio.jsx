@@ -130,7 +130,7 @@ export default function Inicio() {
           <span className="hero-star star-2">✦</span>
 
           <div className="hero-copy">
-            <p className="hero-kicker">* Plataforma de orientación vocacional</p>
+            <p className="hero-kicker">* APLICACIÓN VOCACIONAL INSTITUCIONAL</p>
             <h1>
               Bienvenido a AVI
               <br />

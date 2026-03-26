@@ -675,13 +675,14 @@ onClick={()=>abrirModalEditar(asp)}
 Editar
 </button>
 
+{/*
 <button
 className="report-btn"
 onClick={()=>IrReportes(asp.idASPIRANTE, asp.nombre_completo)}
 >
 Ver Reportes
 </button>
-
+*/}
 
 
 </td>

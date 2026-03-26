@@ -38,13 +38,14 @@ function PerfilPopup( {onClose }) {
             <div className="perfil-body">
                 <div className="fotoasp">
                     <img
-                            src={foto || "/placeholder.svg"} // muestra la foto del usuario o placeholder
+                            src={foto || "/placeholder-user.jpg"} 
                             alt={`Perfil de ${nombre || "Aspirante"}`}
                             style={{
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "cover",
-                                borderRadius: "50%", // para que sea redonda
+                                borderRadius: "50%",
+                                border: "2px solid #7b2cbf"
                             }}/>
                 </div>
                 <h2>¡Hola, {nombre || "Aspirante"}!</h2>

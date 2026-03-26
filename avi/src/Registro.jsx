@@ -21,6 +21,8 @@ function Registro() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const [aceptaTerminos, setAceptaTerminos] = useState(false);
+  
   const hoy = new Date().toISOString().split("T")[0];
   const pasoInfo = {
     1: {
@@ -98,6 +100,11 @@ function Registro() {
       return false;
     }
 
+    if (!aceptaTerminos) {
+      Swal.fire("Error", "Debes aceptar los términos y condiciones", "error");
+      return false;
+    }
+
     return true;
   }
 
@@ -148,6 +155,33 @@ function Registro() {
     }
   }
 
+
+
+  function mostrarTerminos() {
+  Swal.fire({
+    title: "Términos y Condiciones",
+    html: `
+      <p>
+        Al registrarte en AVI, aceptas que tus datos serán tratados de acuerdo
+        con las políticas de privacidad vigentes.
+      </p>
+      <ol style="text-align:left">
+        <li style="margin: 15px;">
+          <b>Uso de la información:</b> Los datos recolectados se usarán
+          exclusivamente para fines académicos y de orientación vocacional.
+        </li>
+        <li style="margin: 15px;">
+          <b>Veracidad:</b> El usuario se compromete a suministrar información real.
+        </li>
+        <li style="margin: 15px;">
+          <b>Seguridad:</b> Nos comprometemos a proteger tu información personal.
+        </li>
+      </ol>
+    `,
+    confirmButtonText: "ENTENDIDO",
+    confirmButtonColor: "#7a3fca",
+  });
+}
   
   return (
     <section className="auth-section">
@@ -297,7 +331,24 @@ function Registro() {
                     onChange={(e) => setPass(e.target.value)}
                   />
                   <span className="eye" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? "🙈" : "👁️"}
+                    {showPassword ? (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-eye-closed-icon lucide-eye-closed"><path d="m15 18-.722-3.25"/><path d="M2 8a10.645 10.645 0 0 0 20 0"/><path d="m20 15-1.726-2.05"/><path d="m4 15 1.726-2.05"/><path d="m9 18 .722-3.25"/></svg>
+                  ) : (
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    )
+                  }
                   </span>
                 </div>
 
@@ -318,9 +369,42 @@ function Registro() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   <span className="eye" onClick={() => setShowConfirm(!showConfirm)}>
-                    {showConfirm ? "🙈" : "👁️"}
+                    {showConfirm ? (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-eye-closed-icon lucide-eye-closed"><path d="m15 18-.722-3.25"/><path d="M2 8a10.645 10.645 0 0 0 20 0"/><path d="m20 15-1.726-2.05"/><path d="m4 15 1.726-2.05"/><path d="m9 18 .722-3.25"/></svg>
+                  ) : (
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    )}
                   </span>
                 </div>
+              </div>
+
+              {/* TÉRMINOS */}
+              <div className="terminos-container">
+                <label className="terminos-label">
+                  <input
+                    type="checkbox"
+                    checked={aceptaTerminos}
+                    onChange={(e) => setAceptaTerminos(e.target.checked)}
+                  />
+                  <span className="terminos-texto">
+                    Acepto los{" "}
+                    <span className="terminos-link" onClick={mostrarTerminos}>
+                      términos y condiciones
+                    </span>
+                  </span>
+                </label>
               </div>
             </>
           )}

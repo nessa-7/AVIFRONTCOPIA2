@@ -22,6 +22,7 @@ import AprendizGet from "./AprendizGet";
 import AdminGet from "./AdminGet";
 import Estadisticas from "./Estadisticas";
 import AprendicesIA from "./AprendicesIA";
+import { min } from "three/src/nodes/math/MathNode.js";
 
 const aspirantesLabelCandidates = [
   "mes",
@@ -211,18 +212,22 @@ function InicioAdmin({ vistaActiva, setVistaActiva }) {
   const [loadingIndicadores, setLoadingIndicadores] = useState(true);
   const [indicadoresError, setIndicadoresError] = useState(null);
 
+  const [resumen, setResumen] = useState(null);
+  const API_RESUMEN = import.meta.env.VITE_API_ESTADISTICASTEST;
+
   useEffect(() => {
     let isMounted = true;
     const loadData = async () => {
       setLoadingIndicadores(true);
       setIndicadoresError(null);
       try {
-        const [aspMensualRes, testsProgRes, nivelesRes, aspTotalRes, testsTotalRes] = await Promise.all([
+        const [aspMensualRes, testsProgRes, nivelesRes, aspTotalRes, testsTotalRes, resumenRes] = await Promise.all([
           API_ESTADISTICAS_MENSUAL ? fetchJson(API_ESTADISTICAS_MENSUAL) : Promise.resolve(null),
           API_PROGRAMAS_RECOMENDADOS ? fetchJson(API_PROGRAMAS_RECOMENDADOS) : Promise.resolve(null),
           API_PROGRAMAS_NIVEL ? fetchJson(API_PROGRAMAS_NIVEL) : Promise.resolve(null),
           API_CANTIDAD_ASPIRANTES ? fetchJson(API_CANTIDAD_ASPIRANTES) : Promise.resolve(null),
           API_TEST_COMPLETADOS ? fetchJson(API_TEST_COMPLETADOS) : Promise.resolve(null),
+          API_RESUMEN ? fetchJson(API_RESUMEN) : Promise.resolve(null),
         ]);
 
         if (!isMounted) return;
@@ -245,6 +250,7 @@ function InicioAdmin({ vistaActiva, setVistaActiva }) {
         // Set KPI Totals
         setTotalAspirantes(aspTotalRes?.total ?? aspTotalRes?.data?.total ?? 0);
         setTotalTests(testsTotalRes?.total ?? testsTotalRes?.data?.total ?? 0);
+        setResumen(resumenRes?.data || null);
 
         if (!aspMensualRes && !testsProgRes && !nivelesRes) {
           setIndicadoresError("No se pudieron conectar las APIs de indicadores.");
@@ -498,7 +504,7 @@ const mapProgramList = (rows) =>
   };
 
   const tecnicoBarData = useMemo(() => {
-    const source = orderedTecnicoPrograms.length ? orderedTecnicoPrograms : tecnicoPrograms;
+    const source = orderedTecnicoPrograms.length ? orderedTecnicoPrograms : tecnicoPrograms.slice(0,5);
     const labels = source.map((program) =>
       program.programa.length > 22 ? `${program.programa.slice(0, 22)}...` : program.programa
     );
@@ -665,7 +671,7 @@ const mapProgramList = (rows) =>
   }, [tecnologoPrograms]);
 
   const tecnologoBarData = useMemo(() => {
-    const source = orderedTecnologoPrograms.length ? orderedTecnologoPrograms : tecnologoPrograms;
+    const source = orderedTecnologoPrograms.length ? orderedTecnologoPrograms : tecnologoPrograms.slice(0,5);
     const labels = source.map((program) =>
       program.programa.length > 22 ? `${program.programa.slice(0, 22)}...` : program.programa
     );
@@ -711,6 +717,26 @@ const mapProgramList = (rows) =>
     },
   };
 
+const resumenAreaData = useMemo(() => {
+  if (!resumen) return null;
+
+  return {
+    labels: ["Hoy", "Semana Actual", "Mes Actual"],
+    datasets: [
+      {
+        label: "Tests realizados",
+        data: [resumen.hoy, resumen.semana, resumen.mes],
+        borderColor: "#6edcdc",
+        backgroundColor: "rgba(186, 232, 238, 0.5)",
+        tension: 0.4,
+        fill: true,
+        pointRadius: 5,
+        pointBackgroundColor: "#5cd2ea",  
+      },
+    ],
+  };
+}, [resumen]);
+
   const heroStats = [
     {
       label: "Aspirantes registrados",
@@ -719,11 +745,7 @@ const mapProgramList = (rows) =>
     {
       label: "Tests completados",
       value: totalTests,
-    },
-    {
-      label: `Programas (${nivelesConDatos || 1} niveles)`,
-      value: nivelesRows.length,
-    },
+    }
   ];
 
   const showLoadingIndicadores = loadingIndicadores && !indicadoresError;
@@ -734,7 +756,8 @@ const mapProgramList = (rows) =>
     : "Sin datos de aspirantes por el momento.";
 
   const renderVista = () => {
-    if (vistaActiva === "estadisticas") return <AprendicesIA />;
+    if (vistaActiva === "analisis") return <AprendicesIA />;
+    if (vistaActiva === "estadisticas") return <Estadisticas />;
     if (vistaActiva === "programas") return <ProgramasAdmin />;
     if (vistaActiva === "aspirantes") return <AspirantesGet />;
     if (vistaActiva === "aprendices") return <AprendizGet />;
@@ -748,9 +771,10 @@ const mapProgramList = (rows) =>
         <>
           <header className="dash-header">
             <div>
-              <h2>Hi, {nombre}</h2>
-              <p>Let's look at your daily activity overview.</p>
+              <h2>Hola, {nombre}</h2>
+              <p>Analiza un resumen de la actividad diaria.</p>
             </div>
+            {/*
             <div className="header-right">
               <span className="search-pill">Search for healthy metrics</span>
               <button type="button" className="notify-btn" title="Notificaciones">
@@ -759,7 +783,7 @@ const mapProgramList = (rows) =>
                   <path d="M10 19a2 2 0 0 0 4 0"></path>
                 </svg>
               </button>
-            </div>
+            </div> */}
           </header>
 
           <section className="hero-row">
@@ -772,17 +796,12 @@ const mapProgramList = (rows) =>
                 Procesos Aquí!
               </h3>
               <p>
-                Supervisa tests, programas y aspirantes desde un solo tablero, con resúmenes preparados para el equipo administrativo.
+                Supervisa tests, programas, aspirantes y aprendices desde un solo tablero, con resúmenes preparados para el equipo administrativo.
               </p>
 
              
               <div className="hero-stats">
-                {heroStats.map((stat) => (
-                  <div key={stat.label}>
-                    <strong>{formatNumber(stat.value)}</strong>
-                    <small>{stat.label}</small>
-                  </div>
-                ))}
+                
               </div>
 
               <div className="hero-sparkles" aria-hidden="true">
@@ -851,7 +870,6 @@ const mapProgramList = (rows) =>
                         <div>
                           <strong>{selectedTecnicoProgram.programa}</strong>
                           <span>
-                            {formatNumber(selectedTecnicoProgram.total)} tests completados
                           </span>
                         </div>
                         <button
@@ -913,41 +931,36 @@ const mapProgramList = (rows) =>
               <header className="indicador-header">
                 <div>
                   <p className="indicador-kicker">Tests</p>
-                  <h4>Tests más elegidos</h4>
+                  <h4>Tests Realizados</h4>
                   
                 </div>
-                <span className="indicador-badge">
-                  {testsTotal ? `${formatNumber(testsTotal)} totales` : "Sin datos"}
-                </span>
+                
               </header>
               {showLoadingIndicadores ? (
                 <p className="indicador-state">Cargando tests...</p>
               ) : testsSortedPrograms.length ? (
                 <>
                   <div className="chart-wrapper chart-wrapper--compact">
-                    <Bar data={testsBarData} options={testsBarOptions} onClick={handleTestsBarClick} />
-                  </div>
-                  <div className="selected-program-banner">
-                    {selectedProgram ? (
-                      <>
-                        <div>
-                          <strong>{selectedProgram.label}</strong>
-                          <span>{formatNumber(selectedProgram.value)} veces elegidos</span>
-                        </div>
-                        <button
-                          type="button"
-                          className="selected-program-clear"
-                          onClick={() => setShowTestsList((prev) => !prev)}
-                        >
-                          {showTestsList ? "Ocultar detalles" : "Ver todos"}
-                        </button>
-                      </>
-                    ) : (
-                      <span className="selected-program-prompt">
-                        Selecciona un programa (técnico o tecnólogo) para resaltarlo.
-                      </span>
-                    )}
-                  </div>
+                    {resumenAreaData ? (
+  <Line
+    data={resumenAreaData}
+    options={{
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    }}
+  />
+) : (
+  <p>Cargando resumen...</p>
+)} 
+                  </div>                    
                   {showTestsList && (
                     <div className="tests-programs">
                       {testsSortedPrograms.slice(0, 8).map((program) => {
@@ -1015,9 +1028,7 @@ const mapProgramList = (rows) =>
                       <>
                         <div>
                           <strong>{selectedTecnologoProgram.programa}</strong>
-                          <span>
-                            {formatNumber(selectedTecnologoProgram.total)} tests completados
-                          </span>
+                          
                         </div>
                         <button
                           type="button"
@@ -1037,8 +1048,6 @@ const mapProgramList = (rows) =>
                     <div className="programas-nivel">
                       <div className="programas-nivel-block" key="tecnologos">
                         <div className="programas-nivel-header">
-                          <strong>Tecnologos</strong>
-                          <span>{tecnologoPrograms.length} programas</span>
                         </div>
                         <div className="tests-programs">
                           {orderedTecnologoPrograms.map((entry) => {
