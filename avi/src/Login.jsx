@@ -136,7 +136,7 @@ function Login() {
                 </span>
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Contrasena"
+                  placeholder="Contraseña"
                   required
                   onChange={(e) => setPass(e.target.value)}
                 />

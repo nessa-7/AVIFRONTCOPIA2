@@ -1,20 +1,42 @@
 /* ====================================================================
    AprendicesIA.css — Dashboard Inteligente AVI
-   Paleta de marca: verde #39a900 | azul #00304d | amarillo #FDC300
+   Paleta exacta del Sidebar:
+     Rail: #9862e0 → #7a47cc → #6435b5
+     Gold: #f0bc33
+     Fondo app: #f0ecf8 / #f5f1fb
+     Texto oscuro: #3d2b6b
    ==================================================================== */
+
+/* ── Variables compartidas con el sistema ────────────────────────────────── */
+:root {
+  --ia-purple-deep:  #6435b5;
+  --ia-purple-mid:   #7a47cc;
+  --ia-purple-top:   #9862e0;
+  --ia-purple-light: #f0ecf8;
+  --ia-purple-faint: #f5f1fb;
+  --ia-gold:         #f0bc33;
+  --ia-gold-pale:    #fff7d9;
+  --ia-teal:         #14B8A6;
+  --ia-rose:         #F472B6;
+  --ia-text-dark:    #3d2b6b;
+  --ia-text-mid:     #5d3a8f;
+  --ia-text-soft:    #8f82a8;
+}
 
 /* ── Página principal ──────────────────────────────────────────────────── */
 .ia-page {
-  margin-left: var(--sidebar-width, 240px);
+  margin-left: var(--sidebar-width, 64px);
   min-height: 100vh;
-  background: #f4f6f9;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--ia-purple-faint);
+  font-family: "Poppins", "Segoe UI", system-ui, sans-serif;
 }
 
-/* ── HERO ──────────────────────────────────────────────────────────────── */
+/* ── HERO — mismo gradiente que el sidebar rail ─────────────────────────── */
 .ia-hero {
-  background: linear-gradient(135deg, #00304d 0%, #004d7a 60%, #006fa6 100%);
-  padding: 36px 40px 40px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.18), transparent 40%),
+    linear-gradient(135deg, #9862e0 0%, #7a47cc 55%, #6435b5 100%);
+  padding: 38px 40px 42px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -28,20 +50,24 @@
 }
 
 .ia-breadcrumb {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-hero-title {
-  margin: 8px 0 6px;
+  margin: 10px 0 6px;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #fff;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.3px;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-hero-icon {
@@ -50,22 +76,22 @@
 
 .ia-hero-sub {
   color: rgba(255, 255, 255, 0.75);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   margin: 0;
+  font-weight: 400;
 }
 
-/* ── SYNC PANEL ─────────────────────────────────────────────────────────── */
+/* ── SYNC CARD ──────────────────────────────────────────────────────────── */
 .ia-sync-panel {
   flex-shrink: 0;
-  width: 320px;
+  width: 310px;
 }
 
 .ia-sync-card {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 10px 36px rgba(100, 53, 181, 0.22);
 }
 
 .ia-sync-header {
@@ -76,47 +102,57 @@
 }
 
 .ia-sync-badge {
-  font-size: 12px;
-  color: #FDC300;
-  font-weight: 600;
+  font-size: 11px;
+  color: var(--ia-purple-mid);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Badge Activo → menta verdosa suave */
+.ia-sync-status {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  background: #D1FAE5;
+  color: #065f46;
   letter-spacing: 0.3px;
 }
 
-.ia-sync-status {
-  font-size: 12px;
-  color: #5afa8d;
-  font-weight: 500;
-}
-
 .ia-sync-desc {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
-  margin: 0 0 14px;
-  line-height: 1.5;
+  font-size: 12.5px;
+  color: var(--ia-text-soft);
+  margin: 0 0 16px;
+  line-height: 1.6;
 }
 
+/* Botón Sincronizar → Dorado del sistema */
 .ia-sync-btn {
   width: 100%;
-  padding: 11px 18px;
-  background: linear-gradient(135deg, #39a900, #2d8a00);
-  color: #fff;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #f0bc33, #d9a820);
+  color: #3d2b6b;
   border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(57, 169, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(240, 188, 51, 0.4);
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.2px;
 }
 
 .ia-sync-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #44c200, #39a900);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(57, 169, 0, 0.5);
+  background: linear-gradient(135deg, #ffd55a, #f0bc33);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(240, 188, 51, 0.5);
 }
 
 .ia-sync-btn:disabled {
@@ -126,49 +162,47 @@
 }
 
 .ia-sync-btn--loading {
-  background: linear-gradient(135deg, #2d7a00, #1e5c00);
+  background: linear-gradient(135deg, #d9a820, #b88b10);
 }
 
 .ia-spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #fff;
+  border: 2px solid rgba(61, 43, 107, 0.3);
+  border-top-color: #3d2b6b;
   border-radius: 50%;
   animation: ia-spin 0.7s linear infinite;
   display: inline-block;
 }
 
 @keyframes ia-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .ia-sync-result {
   margin-top: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   font-size: 12.5px;
 }
 
 .ia-sync-result--ok {
-  background: rgba(57, 169, 0, 0.15);
-  border: 1px solid rgba(57, 169, 0, 0.35);
-  color: #c8ffb0;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065f46;
 }
 
 .ia-sync-result--err {
-  background: rgba(220, 50, 50, 0.15);
-  border: 1px solid rgba(220, 50, 50, 0.35);
-  color: #ffc4c4;
+  background: #FFF1F2;
+  border: 1px solid #FECDD3;
+  color: #9d174d;
 }
 
 .ia-fabric-detail {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--ia-text-soft);
   font-size: 11px;
 }
 
@@ -178,16 +212,17 @@
   gap: 0;
   padding: 0 40px;
   background: #fff;
-  border-bottom: 2px solid #e8ecf0;
+  border-bottom: 2px solid var(--ia-purple-light);
+  box-shadow: 0 2px 12px rgba(100, 53, 181, 0.06);
 }
 
 .ia-tab {
-  padding: 14px 22px;
+  padding: 15px 24px;
   border: none;
   background: transparent;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--ia-text-soft);
   cursor: pointer;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
@@ -195,45 +230,47 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-tab:hover {
-  color: #00304d;
-  background: #f8fafc;
+  color: var(--ia-purple-mid);
+  background: var(--ia-purple-faint);
 }
 
+/* Tab activo: color y subrayado del sidebar */
 .ia-tab--active {
-  color: #39a900;
-  border-bottom-color: #39a900;
-  font-weight: 600;
+  color: var(--ia-purple-deep);
+  border-bottom-color: var(--ia-purple-mid);
+  font-weight: 700;
 }
 
+/* Badge contador: dorado del sistema */
 .ia-tab-count {
-  background: #39a900;
+  background: var(--ia-purple-mid);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
-  padding: 1px 7px;
+  padding: 2px 8px;
   border-radius: 20px;
-  min-width: 20px;
+  min-width: 22px;
   text-align: center;
 }
 
 /* ── CONTENIDO TAB ──────────────────────────────────────────────────────── */
 .ia-tab-content {
-  padding: 28px 40px 40px;
+  padding: 32px 40px 48px;
 }
 
-/* ── POWERBI ────────────────────────────────────────────────────────────── */
+/* ── POWERBI WRAPPER ────────────────────────────────────────────────────── */
 .ia-powerbi-wrapper {
   position: relative;
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  background: rgba(30, 30, 47, 0.85);
-  backdrop-filter: blur(10px);
-  border: 1px solid #2ecc71;
+  box-shadow: 0 6px 40px rgba(100, 53, 181, 0.14);
+  background: var(--ia-purple-light);
   min-height: 800px;
+  border: 1px solid rgba(122, 71, 204, 0.12);
 }
 
 .ia-powerbi-frame {
@@ -250,7 +287,7 @@
   opacity: 1;
 }
 
-/* ── MENSAJE DE LOGIN INSTITUCIONAL ─────────────────────────────────────── */
+/* Overlay mensaje login institucional */
 .ia-powerbi-auth-overlay {
   position: absolute;
   top: 80px;
@@ -259,72 +296,72 @@
   text-align: center;
   width: 90%;
   max-width: 600px;
-  z-index: 1; /* Detrás del iframe cargado, visible si el iframe es transparente o mientras carga */
-  pointer-events: none; /* Evita que bloquee clics en el botón de PowerBI */
+  z-index: 1;
+  pointer-events: none;
 }
 
 .ia-powerbi-auth-overlay h3 {
-  color: #2ecc71;
-  font-size: 1.3rem;
+  color: var(--ia-purple-mid);
+  font-size: 1.2rem;
   margin-bottom: 10px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-weight: 700;
 }
 
 .ia-powerbi-auth-overlay p {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  color: var(--ia-text-mid);
+  font-size: 0.93rem;
+  line-height: 1.6;
 }
 
-/* ── TOOLBAR DE POWER BI ────────────────────────────────────────────────── */
+/* Toolbar: mismo gradiente que el sidebar */
 .ia-powerbi-toolbar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 48px;
-  background: rgba(15, 15, 25, 0.8);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(46, 204, 113, 0.3);
+  height: 50px;
+  background: linear-gradient(135deg, #9862e0 0%, #7a47cc 55%, #6435b5 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 22px;
   z-index: 10;
 }
 
 .ia-powerbi-toolbar-label {
   font-size: 13px;
   font-weight: 600;
-  color: #2ecc71;
+  color: #fff;
   letter-spacing: 0.3px;
+  font-family: "Poppins", sans-serif;
 }
 
+/* Botón Refrescar → teal */
 .ia-iframe-refresh-btn {
-  padding: 6px 14px;
-  background: transparent;
-  border: 1px solid rgba(46, 204, 113, 0.5);
-  border-radius: 6px;
+  padding: 7px 16px;
+  background: var(--ia-teal);
+  border: none;
+  border-radius: 10px;
   font-size: 12px;
-  font-weight: 500;
-  color: #e2e8f0;
+  font-weight: 600;
+  color: #fff;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 3px 10px rgba(20, 184, 166, 0.35);
 }
 
 .ia-iframe-refresh-btn:hover {
-  background: rgba(46, 204, 113, 0.15);
-  border-color: #2ecc71;
-  color: #fff;
+  background: #0D9488;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(20, 184, 166, 0.45);
 }
 
-/* ──────────────────────────────────────────────────────────────────────── */
-
+/* Skeleton loader */
 .ia-powerbi-skeleton {
   position: absolute;
   inset: 0;
-  padding: 70px 24px 24px; /* Espacio para el toolbar */
+  padding: 72px 24px 24px;
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -333,130 +370,135 @@
 }
 
 .ia-skeleton-bar {
-  height: 18px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(46, 204, 113, 0.05) 25%, rgba(46, 204, 113, 0.15) 50%, rgba(46, 204, 113, 0.05) 75%);
+  height: 16px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,
+    rgba(122, 71, 204, 0.07) 25%,
+    rgba(122, 71, 204, 0.18) 50%,
+    rgba(122, 71, 204, 0.07) 75%);
   background-size: 200% 100%;
   animation: ia-shimmer 1.4s infinite;
-  width: 60%;
+  width: 55%;
 }
 
 .ia-skeleton-bar--sm {
-  width: 35%;
-  height: 13px;
+  width: 32%;
+  height: 12px;
 }
 
 .ia-skeleton-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 14px;
   margin-top: 8px;
 }
 
 .ia-skeleton-card {
   height: 120px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, rgba(46, 204, 113, 0.05) 25%, rgba(46, 204, 113, 0.15) 50%, rgba(46, 204, 113, 0.05) 75%);
+  border-radius: 16px;
+  background: linear-gradient(90deg,
+    rgba(122, 71, 204, 0.07) 25%,
+    rgba(122, 71, 204, 0.18) 50%,
+    rgba(122, 71, 204, 0.07) 75%);
   background-size: 200% 100%;
   animation: ia-shimmer 1.4s infinite;
 }
 
 @keyframes ia-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-/* Empty PowerBI */
+/* Empty state */
 .ia-empty-powerbi {
   text-align: center;
-  padding: 60px 24px;
+  padding: 64px 24px;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(100, 53, 181, 0.08);
 }
 
-.ia-empty-icon {
-  font-size: 3.5rem;
-  margin-bottom: 16px;
-}
+.ia-empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
 
 .ia-empty-powerbi h3 {
-  color: #00304d;
-  font-size: 1.25rem;
+  color: var(--ia-purple-deep);
+  font-size: 1.2rem;
   margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .ia-empty-powerbi p {
-  color: #6b7280;
-  font-size: 0.95rem;
-  max-width: 480px;
+  color: var(--ia-text-soft);
+  font-size: 0.93rem;
+  max-width: 460px;
   margin: 0 auto 16px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .ia-empty-example {
-  background: #f4f6f9;
-  border: 1px dashed #c8d0db;
-  border-radius: 8px;
-  padding: 10px 16px;
+  background: var(--ia-purple-light);
+  border: 1.5px dashed #c4b5fd;
+  border-radius: 10px;
+  padding: 10px 18px;
   display: inline-block;
 }
 
 .ia-empty-example code {
   font-size: 12.5px;
-  color: #39a900;
+  color: var(--ia-purple-mid);
 }
 
-/* ── PREDICCIONES ────────────────────────────────────────────────────────── */
+/* ── PREDICCIONES HEADER ─────────────────────────────────────────────────── */
 .ia-pred-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   flex-wrap: wrap;
   gap: 12px;
 }
 
 .ia-pred-title {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #00304d;
+  color: var(--ia-purple-deep);
   margin: 0 0 4px;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-pred-sub {
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 12.5px;
+  color: var(--ia-text-soft);
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
+/* Botón Actualizar → dorado */
 .ia-refresh-btn {
-  padding: 9px 18px;
-  background: #fff;
-  border: 1.5px solid #d1d5db;
-  border-radius: 10px;
+  padding: 9px 22px;
+  background: linear-gradient(135deg, #f0bc33, #d9a820);
+  border: none;
+  border-radius: 12px;
   font-size: 13px;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 700;
+  color: #3d2b6b;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(240, 188, 51, 0.35);
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-refresh-btn:hover {
-  border-color: #39a900;
-  color: #39a900;
-  background: #f0fde8;
+  background: linear-gradient(135deg, #ffd55a, #f0bc33);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(240, 188, 51, 0.45);
 }
 
-/* Tabla */
+/* ── TABLA ──────────────────────────────────────────────────────────────── */
 .ia-pred-table-wrap {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(100, 53, 181, 0.09);
   overflow: auto;
 }
 
@@ -467,46 +509,53 @@
   min-width: 720px;
 }
 
+/* Cabecera — fondo lavanda del sistema */
 .ia-pred-table thead tr {
-  background: linear-gradient(135deg, #00304d, #004d7a);
+  background: var(--ia-purple-light);
 }
 
 .ia-pred-table thead th {
-  padding: 13px 16px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 600;
-  font-size: 12px;
+  padding: 14px 18px;
+  color: var(--ia-purple-deep);
+  font-weight: 700;
+  font-size: 11.5px;
   text-align: left;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.7px;
   text-transform: uppercase;
   white-space: nowrap;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-pred-row {
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid #f0ecf8;
   transition: background 0.15s ease;
 }
 
+.ia-pred-row:nth-child(even) {
+  background: #fdfcff;
+}
+
 .ia-pred-row:hover {
-  background: #f8fcf6;
+  background: var(--ia-purple-faint);
 }
 
 .ia-pred-table td {
-  padding: 12px 16px;
+  padding: 13px 18px;
   vertical-align: middle;
   color: #374151;
 }
 
 .ia-pred-programa {
-  font-weight: 600;
-  color: #00304d !important;
+  font-weight: 700;
+  color: var(--ia-purple-deep) !important;
+  font-family: "Poppins", sans-serif;
 }
 
 .ia-pred-row:last-child {
   border-bottom: none;
 }
 
-/* Demanda bar */
+/* Barras de Demanda y Confianza → púrpura del sistema */
 .ia-demanda-bar-wrap {
   display: flex;
   align-items: center;
@@ -515,28 +564,27 @@
 
 .ia-demanda-val {
   font-weight: 700;
-  color: #FDC300;
+  color: var(--ia-purple-mid);
   font-size: 13px;
   min-width: 34px;
 }
 
 .ia-demanda-bar {
   flex: 1;
-  height: 6px;
-  background: #e8ecf0;
-  border-radius: 4px;
+  height: 7px;
+  background: var(--ia-purple-light);
+  border-radius: 6px;
   overflow: hidden;
   min-width: 60px;
 }
 
 .ia-demanda-fill {
   height: 100%;
-  background: linear-gradient(90deg, #FDC300, #f0a800);
-  border-radius: 4px;
+  background: linear-gradient(90deg, #9862e0, #c4b5fd);
+  border-radius: 6px;
   transition: width 0.5s ease;
 }
 
-/* Confianza */
 .ia-confianza {
   display: flex;
   align-items: center;
@@ -546,34 +594,34 @@
 .ia-confianza span {
   font-size: 12.5px;
   font-weight: 600;
-  color: #374151;
+  color: var(--ia-text-dark);
   min-width: 34px;
 }
 
 .ia-confianza-bar {
   flex: 1;
-  height: 5px;
-  background: #e8ecf0;
-  border-radius: 4px;
+  height: 6px;
+  background: var(--ia-purple-light);
+  border-radius: 6px;
   overflow: hidden;
   min-width: 50px;
 }
 
 .ia-confianza-fill {
   height: 100%;
-  background: linear-gradient(90deg, #39a900, #5cd600);
-  border-radius: 4px;
+  background: linear-gradient(90deg, #7a47cc, #c4b5fd);
+  border-radius: 6px;
   transition: width 0.5s ease;
 }
 
 .ia-trimestre {
   font-weight: 600;
-  color: #6b7280 !important;
+  color: var(--ia-text-soft) !important;
   font-size: 13px;
 }
 
 .ia-fecha {
-  color: #9ca3af !important;
+  color: #9CA3AF !important;
   font-size: 12.5px;
   white-space: nowrap;
 }
@@ -582,49 +630,23 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 4px 11px;
   border-radius: 20px;
   font-size: 11.5px;
   font-weight: 600;
   white-space: nowrap;
+  font-family: "Poppins", sans-serif;
 }
 
-.badge-alta {
-  background: #d1fae5;
-  color: #065f46;
-}
+.badge-alta     { background: #D1FAE5; color: #065f46; }
+.badge-media    { background: var(--ia-gold-pale); color: #92400e; }
+.badge-baja     { background: #FCE7F3; color: #9D174D; }
+.badge-aumentar { background: #CCFBF1; color: #0F766E; }
+.badge-mantener { background: var(--ia-purple-light); color: var(--ia-purple-deep); }
+.badge-suspender{ background: #FCE7F3; color: #9D174D; }
+.badge-nivel    { background: var(--ia-purple-light); color: var(--ia-purple-deep); }
 
-.badge-media {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge-baja {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.badge-aumentar {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.badge-mantener {
-  background: #e0f2fe;
-  color: #0369a1;
-}
-
-.badge-suspender {
-  background: #fce7f3;
-  color: #9d174d;
-}
-
-.badge-nivel {
-  background: rgba(0, 48, 77, 0.08);
-  color: #00304d;
-}
-
-/* Loading rows */
+/* ── LOADING Y EMPTY ─────────────────────────────────────────────────────── */
 .ia-loading-rows {
   display: flex;
   flex-direction: column;
@@ -632,21 +654,20 @@
 }
 
 .ia-loading-row {
-  height: 50px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #e8ecf0 25%, #f4f6f8 50%, #e8ecf0 75%);
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0ecf8 25%, #f5f1fb 50%, #f0ecf8 75%);
   background-size: 200% 100%;
   animation: ia-shimmer 1.4s infinite;
 }
 
-/* Empty predicciones */
 .ia-empty-pred {
   text-align: center;
-  padding: 48px 24px;
-  color: #6b7280;
+  padding: 52px 24px;
+  color: var(--ia-text-soft);
   font-size: 14px;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(100, 53, 181, 0.07);
   line-height: 1.7;
 }

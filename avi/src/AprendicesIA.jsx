@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "./context/AuthContext";
 import "./AprendicesIA.css";
 
 function AprendicesIA() {
+  const { token } = useAuth();
+
   const POWERBI_URL =
     import.meta.env.VITE_POWERBI_DASHBOARD ||
     "https://app.powerbi.com/reportEmbed?reportId=5ee80452-9c3c-4661-a78c-9ba23d95ffef&autoAuth=true&ctid=cbc2c381-2f2e-4d93-91d1-506c9316ace7";
@@ -20,7 +23,11 @@ function AprendicesIA() {
   const fetchPredicciones = useCallback(async () => {
     setLoadingPred(true);
     try {
-      const res  = await fetch(API_PREDICCIONES);
+      const res  = await fetch(API_PREDICCIONES, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       const json = await res.json();
       setPredicciones(json.data || []);
     } catch {
@@ -38,7 +45,10 @@ function AprendicesIA() {
     try {
       const res  = await fetch(API_POWERBI_SYNC, {
         method:  "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body:    JSON.stringify({ enviar_a_powerbi: true }),
       });
       const json = await res.json();
