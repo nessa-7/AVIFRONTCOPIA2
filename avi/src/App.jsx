@@ -25,13 +25,12 @@ import MisReportes from "./MisReportes";
 import ReportesAspirante from "./ReportesAspirante";
 import InicioAspirante from "./InicioAspirante";
 import ComoFuncionaTest from "./ComoFuncionaTest";
-
 import AprendizGet from "./AprendizGet";
-import AprendizPrediccion from "./AprendicesIA";
-import AprendicesIA from "./AprendicesIA";
 import RIASECInfo from "./RIASECInfo";
 import InicioAdmin from "./InicioAdmin";
 import Calificaciones from "./Calificaciones";
+import DashboardAnalitica from "./DashboardAnalitica";
+
 
 function App() {
 
@@ -69,8 +68,7 @@ function App() {
 
               <Route path="/admin/aprendices" element={<AprendizGet></AprendizGet>}></Route>
               <Route path="/listaraprendices" element={<AprendizGet />} />
-              <Route path="/prediccion-aprendiz/:id" element={<AprendicesIA></AprendicesIA>} ></Route>
-              <Route path="/prediccion-aprendiz" element={<AprendicesIA></AprendicesIA>} ></Route>
+              <Route path="/dashboard-demanda" element={<DashboardAnalitica />} />
             </Routes>
           
         </BrowserRouter>

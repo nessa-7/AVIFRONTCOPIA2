@@ -1,0 +1,900 @@
+/* ============================================================
+   DashboardAnalitica.css — Dashboard de Demanda SENA CTPI
+   (Minimalista, adaptado al esquema de colores del sistema)
+   ============================================================ */
+
+.da-root {
+  --text-1:     #3b2c5a;
+  --text-2:     #5c4a7a;
+  --text-3:     #8a7a9c;
+  --border:     #ece3f7;
+  --border-soft: #f2e8ff;
+  --violet:     #8e47d4;
+  --teal:       #42b9c1;
+  --blue:       #2563EB;
+  --amber:      #d3a928;
+  --red:        #DC2626;
+  --green:      #16A34A;
+  --bg-card:    #ffffff;
+  --radius-lg:  20px;
+  --radius-md:  16px;
+  --radius-sm:  12px;
+  
+  width: 100%;
+  color: var(--text-1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: inherit;
+}
+
+/* ── Loading ── */
+.da-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: 1.5rem;
+  color: var(--text-2);
+}
+
+.da-spinner-lg {
+  width: 52px; height: 52px;
+  border: 4px solid #f2e8ff;
+  border-top-color: var(--violet);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Header ── */
+.da-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 24px 28px;
+  background: radial-gradient(circle at 78% 26%, rgba(219, 195, 250, 0.4), transparent 40%), #f8f4ff;
+  border: 1.5px solid #e8ddf8;
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.da-header-left {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  position: relative;
+}
+
+.da-header-title {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.da-header-sub {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  margin: 6px 0 0;
+  font-weight: 500;
+}
+
+.da-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+/* Status badge */
+.da-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+}
+
+.da-status-badge.active  { color: #2ea664; background: #ebfcf2; border-color: #bbf0d4; }
+.da-status-badge.inactive{ color: #d94a4a; background: #ffeded; border-color: #ffd1d1; }
+
+.da-status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.da-status-dot.pulse {
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,166,100,0.4); }
+  50%      { opacity: 0.6; box-shadow: 0 0 0 4px rgba(46,166,100,0); }
+}
+
+.da-last-sync {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+/* Refresh button */
+.da-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--violet);
+  border-radius: 999px;
+  color: var(--violet);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(142, 71, 212, 0.15);
+  position: relative;
+}
+
+.da-refresh-btn:hover:not(:disabled) {
+  background: var(--violet);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(142, 71, 212, 0.25);
+}
+
+.da-refresh-btn:hover::after {
+  content: "Traer datos";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #3b2c5a;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  margin-top: 8px;
+  z-index: 10;
+}
+
+.da-refresh-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.da-refresh-icon {
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.3s;
+  line-height: 1;
+}
+.da-refresh-icon.spin { animation: spin 0.7s linear infinite; }
+
+/* ── KPI Grid ── */
+.da-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.da-kpi-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 24px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 110px;
+}
+
+/* Projected Shadows based on color */
+.da-kpi-card:hover { transform: translateY(-2px) translateX(-2px); }
+.da-kpi-card.accent-violet:hover { box-shadow: 6px 6px 0px 0px rgba(142, 71, 212, 0.2); border-color: var(--violet); }
+.da-kpi-card.accent-teal:hover   { box-shadow: 6px 6px 0px 0px rgba(66, 185, 193, 0.2); border-color: var(--teal); }
+.da-kpi-card.accent-red:hover    { box-shadow: 6px 6px 0px 0px rgba(220, 38, 38, 0.2); border-color: var(--red); }
+.da-kpi-card.accent-blue:hover   { box-shadow: 6px 6px 0px 0px rgba(37, 99, 235, 0.2); border-color: var(--blue); }
+.da-kpi-card.accent-amber:hover  { box-shadow: 6px 6px 0px 0px rgba(211, 169, 40, 0.2); border-color: var(--amber); }
+
+.da-kpi-label { 
+  font-size: 0.75rem; 
+  color: var(--text-3); 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+  margin-bottom: 8px;
+}
+
+.da-kpi-value { 
+  font-size: 1.85rem; 
+  font-weight: 800; 
+  color: var(--text-1); 
+  line-height: 1.1; 
+  letter-spacing: -0.5px;
+}
+.da-kpi-value--sm  { font-size: 1.25rem; }
+.da-kpi-value--xs  { font-size: 1.1rem; }
+
+/* ── Pills filtro periodo ── */
+.da-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(74, 52, 117, 0.04);
+}
+
+.da-pills-label { font-size: 0.8rem; color: var(--text-2); font-weight: 700; margin-right: 4px; }
+
+.da-pill {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 71, 212, 0.25);
+  background: #faf6ff;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.da-pill:hover { background: #f0e6ff; color: var(--violet); }
+.da-pill.active { 
+  background: linear-gradient(180deg, rgba(142, 71, 212, 0.15), rgba(142, 71, 212, 0.05));
+  border-color: var(--violet); 
+  color: var(--violet); 
+}
+
+/* ── Legend & Filters ── */
+.da-legend-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.da-level-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.da-level-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.da-level-btn:hover { border-color: var(--violet); color: var(--violet); background: #fdfcff; }
+.da-level-btn.active { background: var(--violet); color: #fff; border-color: var(--violet); box-shadow: 0 4px 10px rgba(142,71,212,0.25); }
+
+.prog-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.prog-legend.scroll-enabled::-webkit-scrollbar { width: 4px; }
+.prog-legend.scroll-enabled::-webkit-scrollbar-thumb { background: #d1bced; border-radius: 2px; }
+
+.prog-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.prog-legend-item:hover { transform: translateY(-1px); border-color: #d1bced; }
+.prog-legend-item.active { background: #f3ecfb; border-color: var(--violet); color: var(--violet); }
+
+.prog-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Card Styles ── */
+.da-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  position: relative;
+  transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(74, 52, 117, 0.06);
+}
+
+.da-card:hover { transform: translateY(-3px) translateX(-3px); box-shadow: 8px 8px 0px 0px rgba(142, 71, 212, 0.12); border-color: #d1bced; }
+
+.da-card--full { grid-column: 1 / -1; }
+
+.da-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.da-card-header h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Predicciones IA cards */
+.da-pred-card:hover { transform: translateY(-4px) translateX(-4px); box-shadow: 8px 8px 0px 0px rgba(142, 71, 212, 0.15); }
+.da-pred-card.selected { border-color: var(--violet); box-shadow: 8px 8px 0px 0px rgba(142, 71, 212, 0.25); }
+
+/* Utilities */
+.da-mini-bar-bg { width: 100%; height: 8px; background: #f0ecf5; border-radius: 4px; overflow: hidden; }
+.da-mini-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Scrollbar global */
+.da-root *::-webkit-scrollbar { width: 5px; height: 5px; }
+.da-root *::-webkit-scrollbar-thumb { background: rgba(142, 71, 212, 0.3); border-radius: 3px; }
+
+/* ── Tabs ── */
+.da-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
+  margin-top: 10px;
+}
+
+.da-tab {
+  padding: 10px 24px;
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-3);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.da-tab:hover {
+  background: rgba(142, 71, 212, 0.05);
+  color: var(--text-2);
+}
+
+.da-tab.active {
+  color: var(--violet);
+  background: #fdfcff;
+}
+
+.da-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--violet);
+  border-radius: 3px 3px 0 0;
+}
+
+.da-tab-badge {
+  background: var(--violet);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ── Container Predicciones (Grid) ── */
+.da-pred-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.da-pred-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* ── Cards de Predicción (Base) ── */
+.da-pred-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(74, 52, 117, 0.04);
+}
+
+.da-pred-card.muted {
+  opacity: 0.45;
+  filter: grayscale(80%);
+}
+
+.da-pred-card-color-bar {
+  height: 6px;
+  width: 100%;
+}
+
+.da-pred-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.da-pred-card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.25;
+}
+
+.da-pred-card-nivel {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.da-pred-card-demand {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-top: 8px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.da-pred-card-label {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.da-pred-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+.da-pred-trimestre {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  font-weight: 600;
+}
+
+.da-pred-card-conf {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+
+.da-pred-card-conf strong {
+  color: var(--violet);
+}
+
+/* ── Badges de Tendencia ── */
+.da-trend-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* ── Tabla ── */
+.da-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.da-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background: var(--bg-card);
+}
+
+.da-table th {
+  background: rgba(142, 71, 212, 0.03);
+  padding: 14px 16px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border);
+}
+
+.da-table td {
+  padding: 16px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+
+.da-table-row {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.da-table-row:hover { background: #faf6ff; }
+.da-table-row.row-selected { background: rgba(142, 71, 212, 0.05); }
+.da-table-row.row-muted { opacity: 0.4; }
+
+.da-table-num {
+  font-weight: 700;
+  color: var(--text-3);
+  width: 40px;
+}
+
+.da-table-prog {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.da-table-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Charts Grid ── */
+.da-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .da-charts-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Custom Chart Tooltip ── */
+.chart-custom-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: 0 12px 35px rgba(74, 52, 117, 0.18);
+  border: 1.5px solid var(--border);
+  pointer-events: none;
+  min-width: 230px;
+  transform: translate(0, 0); /* Positioned by JS clientX/Y */
+  transition: opacity 0.2s ease, top 0.1s linear, left 0.1s linear;
+}
+
+.chart-tip-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text-1);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border-soft);
+  line-height: 1.2;
+}
+
+.chart-tip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.chart-tip-row:last-child {
+  margin-bottom: 0;
+}
+
+.chart-tip-row span {
+  color: var(--text-3);
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+.chart-tip-row strong {
+  color: var(--text-1);
+  font-weight: 800;
+}
+
+/* ── Error bar ── */
+.da-error-bar {
+  padding: 12px 18px;
+  background: #fff5f5;
+  border: 1.5px solid #ffd1d1;
+  border-radius: var(--radius-md);
+  color: #d94a4a;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ── No data placeholder ── */
+.da-no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  color: var(--text-3);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ── Card badge ── */
+.da-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(142, 71, 212, 0.1);
+  border: 1px solid rgba(142, 71, 212, 0.25);
+  color: var(--violet);
+  font-size: 0.75rem;
+  font-weight: 700;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Prog badge (floating in pills-row) ── */
+.da-prog-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(142, 71, 212, 0.1);
+  border: 1px solid rgba(142, 71, 212, 0.3);
+  color: var(--violet);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.da-prog-badge-x {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--violet);
+  font-size: 0.85rem;
+  padding: 0;
+  opacity: 0.7;
+}
+.da-prog-badge-x:hover { opacity: 1; }
+
+/* ── Donut legend ── */
+.da-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.da-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-2);
+  transition: opacity 0.2s;
+}
+.da-donut-legend-item.muted { opacity: 0.35; }
+.da-donut-legend-item strong {
+  margin-left: auto;
+  font-weight: 800;
+  color: var(--text-1);
+}
+.da-donut-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Prog legend label ── */
+.prog-legend-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+.prog-legend-item.muted { opacity: 0.38; }
+
+/* ── Hints ── */
+.da-empty-legend {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  font-style: italic;
+  padding: 4px 8px;
+}
+.da-pill--ultima { font-weight: 700; }
+
+/* ── Error bar ── */
+.da-error-bar {
+  padding: 12px 18px;
+  background: #fff5f5;
+  border: 1.5px solid #ffd1d1;
+  border-radius: var(--radius-md);
+  color: #d94a4a;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ── No data placeholder ── */
+.da-no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  color: var(--text-3);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ── Card badge (selected program label inside card header) ── */
+.da-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(142, 71, 212, 0.1);
+  border: 1px solid rgba(142, 71, 212, 0.25);
+  color: var(--violet);
+  font-size: 0.75rem;
+  font-weight: 700;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Prog badge (floating pill in pills-row) ── */
+.da-prog-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(142, 71, 212, 0.1);
+  border: 1px solid rgba(142, 71, 212, 0.3);
+  color: var(--violet);
+  font-size: 0.78rem;
+  font-weight: 700;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.da-prog-badge-x {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--violet);
+  font-size: 0.85rem;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+}
+.da-prog-badge-x:hover { opacity: 1; }
+
+/* ── Donut legend ── */
+.da-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.da-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-2);
+  transition: opacity 0.2s;
+}
+
+.da-donut-legend-item.muted { opacity: 0.35; }
+
+.da-donut-legend-item strong {
+  margin-left: auto;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.da-donut-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Prog-legend label (text inside legend pills) ── */
+.prog-legend-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.prog-legend-item.muted { opacity: 0.38; }
+
+/* ── Empty legend hint ── */
+.da-empty-legend {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* ── Pill ultima override ── */
+.da-pill--ultima {
+  font-weight: 700;
+}
+

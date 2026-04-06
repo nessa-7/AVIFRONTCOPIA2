@@ -21,7 +21,7 @@ import AspirantesGet from "./AspirantesGet";
 import AprendizGet from "./AprendizGet";
 import AdminGet from "./AdminGet";
 import Estadisticas from "./Estadisticas";
-import AprendicesIA from "./AprendicesIA";
+import DashboardAnalitica from "./DashboardAnalitica";
 import { min } from "three/src/nodes/math/MathNode.js";
 
 const aspirantesLabelCandidates = [
@@ -756,7 +756,7 @@ const resumenAreaData = useMemo(() => {
     : "Sin datos de aspirantes por el momento.";
 
   const renderVista = () => {
-    if (vistaActiva === "analisis") return <AprendicesIA />;
+    if (vistaActiva === "analisis") return <DashboardAnalitica />;
     if (vistaActiva === "estadisticas") return <Estadisticas />;
     if (vistaActiva === "programas") return <ProgramasAdmin />;
     if (vistaActiva === "aspirantes") return <AspirantesGet />;
