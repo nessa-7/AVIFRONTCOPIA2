@@ -521,10 +521,12 @@ to{transform:rotate(360deg)}
 /* RESPONSIVE */
 @media (max-width: 900px){
   .test-riasec-container{
-    padding:24px 14px;
-    align-items:flex-start;
-    overflow-y:auto;
-    overflow-x:hidden;
+    animation: none;
+    background: linear-gradient(
+      120deg,
+      #6c4cff,
+      #9a6cff,
+      #c994ff)
   }
 
   .test-riasec-layout{
